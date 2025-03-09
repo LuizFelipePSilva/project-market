@@ -1,0 +1,58 @@
+<div class="cards-container">
+  <div
+    class="table-card"
+    *ngFor="let table of tables; trackBy: trackByTableId"
+    [ngClass]="'status-' + table.status.toLowerCase()"
+    (click)="openTableDetails(table)"
+    [class.clickable]="table.status === 'Pedido'"
+  >
+    <div class="card-content">
+      <p>{{ table.numberTable }}</p>
+      <p>{{ table.status }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+  <span>Página {{ currentPage }} de {{ dataSource.last_page }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage >= dataSource.last_page">
+    Próxima
+  </button>
+</div>
+
+<div class="table-details-sidebar" [class.show]="showSidebar">
+  <button class="close-btn" (click)="closeTableDetails()">×</button>
+  <h2>Detalhes do Pedido da Mesa</h2>
+  <div *ngIf="selectedTableDetails">
+    <p>
+      <strong>Numero da Mesa: </strong>{{ selectedTableDetails.numberTable }}
+    </p>
+    <p><strong>Cliente: </strong>{{ selectedTableDetails.order.Cliente }}</p>
+    <p>
+      <strong>Pagamento: </strong>{{ selectedTableDetails.order.TipoPagamento }}
+    </p>
+    <p>
+      <strong>Status: </strong>{{ selectedTableDetails.order.StatusDoPedido }}
+    </p>
+    <p>
+      <strong>Observacoes: </strong
+      >{{ selectedTableDetails.order["Observaçoes"] }}
+    </p>
+    <p>
+      <strong>Hora do Pedido: </strong
+      >{{ selectedTableDetails.order.HoraDoPedido | date : "HH:mm - dd/MM/yy" }}
+    </p>
+    <h3>Produtos</h3>
+    <ul>
+      <li *ngFor="let item of selectedTableDetails.order.Produtos">
+        {{ item.Produto }} ({{ item.Quantidade }}x) - R$
+        {{ item.ValorTotal | number : "1.2-2" }}
+      </li>
+    </ul>
+    <p>
+      <strong>Valor Total: </strong
+      >{{ selectedTableDetails.order.ValorTotalDaComanda }}
+    </p>
+  </div>
+</div>

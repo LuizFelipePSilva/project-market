@@ -1,0 +1,64 @@
+<div class="products-container" *ngIf="{ userRole: AppComponent.userRole$ | async } as state">
+  <h2 class="section-title">Produtos</h2>
+  
+  <div class="table-wrapper">
+    <table class="innovative-table">
+      <thead>
+        <tr class="table-header">
+          <th>Nome</th>
+          <th>Preço</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Descrição</th>
+          <th *ngIf="state.userRole === 'admin'">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr 
+          *ngFor="let product of init; trackBy: trackByProductId"
+          class="product-row"
+          [ngClass]="{'active-row': selectedProduct === product.id}"
+          (click)="toggleProductDetails(product.id)">
+          <td data-label="Nome">
+            <div class="product-name">
+              <i class="fas fa-cube"></i>
+              {{ product.name }}
+            </div>
+          </td>
+          <td data-label="Preço" class="price-cell">
+            {{ product.value | currency:'BRL' }}
+          </td>
+          <td data-label="Categoria">
+            <span class="category-tag">{{ product.category }}</span>
+          </td>
+          <td data-label="Status">
+            <span class="status-badge" [ngClass]="product.status.toLowerCase()">
+              {{ product.status }}
+            </span>
+          </td>
+          <td data-label="Descrição" class="description-cell">
+            <div class="description-content">
+              {{ product.description }}
+              <div class="description-overlay" *ngIf="selectedProduct !== product.id"></div>
+            </div>
+          </td>
+          <td *ngIf="state.userRole === 'admin'" data-label="Ações">
+            <button (click)="deleteProduct(product.id)" class="delete-btn">
+              <i class="fas fa-trash"></i> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="pagination-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <span class="page-indicator">Página {{ currentPage }} de {{ dataSource.last_page }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage >= dataSource.last_page" class="pagination-btn">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
