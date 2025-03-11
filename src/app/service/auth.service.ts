@@ -14,9 +14,15 @@ export class AuthService {
 
   private userRoleSubject = new BehaviorSubject<UserRole>(null);
   user$ = this.userRoleSubject.asObservable();
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.loadingSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     this.verifySession().subscribe();
+  }
+
+  setLoading(isLoading: boolean) {
+    this.loadingSubject.next(isLoading);
   }
 
   verifySession(): Observable<{ message: UserRole }> {
