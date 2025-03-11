@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, UserRole } from './service/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
+import {
+  RouterOutlet,
+  Router,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -23,6 +29,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.verifySession().subscribe();
+    this.isLoading$ = this.authService.isLoading$;
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.authService.setLoading(true);
+      } else if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
+      ) {
+        this.authService.setLoading(false);
+      }
+    });
   }
 
   toggleMenu(): void {
@@ -34,9 +53,15 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
+    this.authService.setLoading(true);
     this.authService.logout().subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']).then(() => {
+          this.authService.setLoading(false);
+        });
+      },
+      error: () => {
+        this.authService.setLoading(false);
       },
     });
   }
