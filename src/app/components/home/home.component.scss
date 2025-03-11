@@ -1,3 +1,5 @@
+// styles.scss
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
 
 // Variáveis de Cor
@@ -160,6 +162,7 @@ $color-gray: #e0e0e0;
   }
 }
 
+// Benefit Card
 .benefit-card {
   background: $color-white;
   padding: 2.5rem;
@@ -193,6 +196,80 @@ $color-gray: #e0e0e0;
 }
 
 // Devices Section
+
+// Notebook com moldura realista
+.device-frame--notebook {
+  width: 600px;
+  height: 340px;
+  background: $color-black; // simula a moldura externa
+  border-radius: 8px;
+  padding: 8px; // "bezel" da tela
+  position: relative;
+  box-shadow: 0 5px 15px rgba($color-black, 0.3);
+
+  .device-image {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 4px; // tela levemente arredondada
+    object-fit: cover;
+  }
+
+  .device-detail--keyboard {
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 12px;
+    background: darken($color-gray, 15%);
+    border-radius: 0 0 8px 8px;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 500px;
+    height: 280px;
+  }
+}
+
+// Celular com moldura e detalhe de notch/alto-falante
+.device-frame--phone {
+  width: 280px;
+  height: 560px;
+  background: $color-black; // simula a moldura externa
+  border-radius: 40px;
+  padding: 8px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba($color-black, 0.3);
+
+  .device-image {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 30px; // bordas suaves para a tela
+    object-fit: cover;
+  }
+
+  // Faixa que simula o notch ou alto-falante
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 6px;
+    background: rgba($color-white, 0.6);
+    border-radius: 3px;
+  }
+  
+  @media (max-width: 768px) {
+    width: 220px;
+    height: 440px;
+  }
+}
+
 .devices-heading {
   text-align: center;
   max-width: 800px;
@@ -238,48 +315,6 @@ $color-gray: #e0e0e0;
   }
 }
 
-.device-frame {
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba($color-black, 0.1);
-  background: $color-white;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  &--notebook {
-    width: 600px;
-    height: 340px;
-    
-    @media (max-width: 768px) {
-      width: 100%;
-      max-width: 500px;
-      height: 280px;
-    }
-
-    .device-image {
-      border-bottom: 12px solid darken($color-gray, 15%);
-    }
-  }
-
-  &--phone {
-    width: 280px;
-    height: 560px;
-    
-    @media (max-width: 768px) {
-      width: 220px;
-      height: 440px;
-    }
-
-    .device-image {
-      border: 6px solid $color-black;
-      border-radius: 25px;
-    }
-  }
-}
-
 .device-image-wrapper {
   position: relative;
   height: 100%;
@@ -301,16 +336,6 @@ $color-gray: #e0e0e0;
 }
 
 .device-detail {
-  &--keyboard {
-    position: absolute;
-    bottom: -12px;
-    left: 0;
-    right: 0;
-    height: 12px;
-    background: darken($color-gray, 20%);
-    border-radius: 0 0 20px 20px;
-  }
-
   &--camera {
     position: absolute;
     top: 15px;
