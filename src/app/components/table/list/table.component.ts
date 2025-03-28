@@ -79,7 +79,7 @@ export class TableComponent implements OnInit {
   }
   loadTable(page: number): void {
     this.http
-      .get<ITablePaginate>(`/v1/api/v1/api/table/show?page=${page}`, {
+      .get<ITablePaginate>(`/v1/api/v1/api/table/show?page=${page}&limit=20`, {
         withCredentials: true,
       })
       .subscribe((response) => {

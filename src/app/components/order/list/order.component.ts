@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 export interface IOrder {
   id?: number;
   nameClient: string;
-  payment: 'Dinheiro' | 'Cartao' | 'Pix';
+  payment: 'Dinheiro' | 'Cartao' | 'Pix' | null;
   status: 'Aberto' | 'Pendente' | 'Concluido' | 'Cancelado';
   obs: string;
   createdAt: Date;
@@ -89,7 +89,7 @@ export class OrderComponent implements OnInit {
     const query = this.searchTerm ? `&nameClient=${this.searchTerm}` : '';
     this.http
       .get<IOrderPaginate>(
-        `/v1/api${this.url_API}?page=${page}&status=${this.selectedStatus}${query}`,
+        `/v1/api${this.url_API}?page=${page}&status=${this.selectedStatus}${query}&limit=20`,
         { withCredentials: true }
       )
       .subscribe((response) => {
