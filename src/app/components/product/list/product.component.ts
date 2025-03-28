@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { AppComponent } from '../../../app.component';
 import { AuthService, UserRole } from '../../../service/auth.service';
 import { Observable } from 'rxjs';
+import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 
 interface IProduct {
   id: string;
@@ -28,7 +29,7 @@ interface IProductPaginate {
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ErrorPopupComponent],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })
@@ -39,6 +40,7 @@ export class ProductComponent {
   url_API = `/v1/api/product/`;
   init: IProduct[] = [];
   logado: boolean = true;
+  errorMessage: string | null = null;
 
   dataSource: IProductPaginate = {
     per_page: 0,
@@ -68,10 +70,13 @@ export class ProductComponent {
           this.init = this.init.filter((product) => product.id !== productId);
         },
         (error) => {
-          console.error('Erro ao excluir produto:', error);
+          this.errorMessage = error.error.message;
         }
       );
     }
+  }
+  closeErrorPopup() {
+    this.errorMessage = null;
   }
   toggleProductDetails(productId: string) {
     this.selectedProduct =
