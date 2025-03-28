@@ -1,0 +1,168 @@
+// Variáveis de tema
+$themes: (
+  light: (
+    primary:  #6a0572,
+    secondary:  #9c27b0,
+    background: #f8f9fa,
+    text: #212121,
+    border: #dee2e6,
+    error: #dc3545,
+    hover: #e9ecef
+  ),
+  dark: (
+    primary: #2196f3,
+    secondary: #ba68c8,
+    background: #121212,
+    text: #e0e0e0,
+    border: #424242,
+    error: #ff5252,
+    hover: #2d2d2d
+  )
+);
+
+// Mixins
+@mixin theme($property, $key) {
+  @each $theme, $colors in $themes {
+    .theme-#{$theme} & {
+      #{$property}: map-get($colors, $key);
+    }
+  }
+}
+
+@mixin transition($properties...) {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  @include theme('background', background);
+  @include theme('border-color', border);
+  border: 1px solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    @include theme('color', primary);
+    font-size: 2rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .container-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      @include theme('color', text);
+      font-weight: 500;
+    }
+
+    input {
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid;
+      @include theme('border-color', border);
+      @include theme('background-color', background);
+      @include theme('color', text);
+      @include transition;
+
+      &:focus {
+        outline: none;
+        border-width: 2px;
+        @include theme('border-color', primary);
+      }
+
+      &[aria-invalid="true"] {
+        border-color: map-get(map-get($themes, light), error);
+        
+        .theme-dark & {
+          border-color: map-get(map-get($themes, dark), error);
+        }
+      }
+    }
+
+    span {
+      color: map-get(map-get($themes, light), "primary");
+      font-size: 0.875rem;
+      height: 1.25rem;
+      display: block;
+
+      .theme-dark & {
+        color: map-get(map-get($themes, dark), error);
+      }
+    }
+  }
+
+  .register {
+    text-align: center;
+    margin: 1rem 0;
+
+    a {
+      @include theme('color', primary);
+      text-decoration: none;
+      @include transition;
+
+      &:hover {
+        text-decoration: underline;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  button[type="submit"] {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    @include theme('background-color', primary);
+    @include theme('color', background);
+    @include transition;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &:disabled {
+      background-color: map-get(map-get($themes, light), border);
+      cursor: not-allowed;
+
+      .theme-dark & {
+        background-color: map-get(map-get($themes, dark), border);
+      }
+    }
+  }
+
+  .error {
+    color: map-get(map-get($themes, light), error);
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    @include theme('background-color', hover);
+
+    .theme-dark & { 
+      color: map-get(map-get($themes, dark), error);
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 480px) {
+  .login-container {
+    margin: 1rem;
+    padding: 1.5rem;
+    
+    h2 {
+      font-size: 1.75rem;
+    }
+  }
+}
