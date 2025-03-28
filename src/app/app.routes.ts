@@ -3,14 +3,13 @@ import { HomeComponent } from './components/home/home.component';
 import { ProductComponent } from './components/product/list/product.component';
 import { OrderComponent } from './components/order/list/order.component';
 import { TableComponent } from './components/table/list/table.component';
-import { AuthComponent } from './components/auth/auth.component';
+import { AuthComponent } from './components/auth/login/auth.component';
 import { authGuard } from './auth/auth.guard';
 import { CreateOrderComponent } from './components/order/create-order/create-order.component';
 import { CreateProductComponent } from './components/product/create-product/create-product.component';
 import { ReportComponent } from './components/report/report.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'home',
     component: HomeComponent,
@@ -52,5 +51,5 @@ export const routes: Routes = [
     data: { roles: ['admin'] },
   },
   { path: 'login', component: AuthComponent },
-  { path: '**', redirectTo: 'home' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
