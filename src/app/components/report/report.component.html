@@ -1,19 +1,19 @@
 <form (ngSubmit)="generateReport()" class="report-form">
   <div class="form-group">
     <label for="reportType">Tipo de Relatório:</label>
-    <select 
+    <select
       id="reportType"
       name="type"
       [(ngModel)]="selectedType"
       class="form-control"
     >
-      <option *ngFor="let type of reportTypes" [value]="type">{{ type }}</option>
+      <option *ngFor="let type of reportTypesBr" [value]="type">
+        {{ type }}
+      </option>
     </select>
   </div>
-  
-  <button type="submit" class="btn-generate">
-    Gerar Relatório
-  </button>
+
+  <button type="submit" class="btn-generate">Gerar Relatório</button>
 
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}

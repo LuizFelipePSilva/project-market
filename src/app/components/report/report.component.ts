@@ -11,10 +11,18 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './report.component.scss',
 })
 export class ReportComponent {
-  reportTypes: string[] = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
-  selectedType: string = 'Monthly';
+  reportMap: { [key: string]: string } = {
+    Diario: 'Daily',
+    Semanal: 'Weekly',
+    Mensal: 'Monthly',
+    Anual: 'Yearly',
+  };
+
+  reportTypesBr: string[] = Object.keys(this.reportMap);
+  selectedType: string = 'Diario';
   errorMessage: string = '';
   url_API = `/v1/api/reports/create`;
+
   constructor(private http: HttpClient) {}
 
   generateReport(): void {
@@ -22,8 +30,8 @@ export class ReportComponent {
       this.errorMessage = 'Por favor selecione um tipo de relatório';
       return;
     }
-
-    const reportRequest = { type: this.selectedType };
+    const selectedTypeEn = this.reportMap[this.selectedType];
+    const reportRequest = { type: selectedTypeEn };
 
     this.http
       .post('/v1/api' + this.url_API, reportRequest, {
