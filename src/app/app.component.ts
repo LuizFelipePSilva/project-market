@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.verifySession().subscribe();
     this.isLoading$ = this.authService.isLoading$;
 
     this.router.events.subscribe((event) => {
