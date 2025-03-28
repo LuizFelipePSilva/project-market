@@ -12,7 +12,6 @@ $color-white: #ffffff;
 $color-black: #000000;
 $color-gray: #e0e0e0;
 
-// Mixins
 @mixin flex-center($direction: row) {
   display: flex;
   flex-direction: $direction;
@@ -20,8 +19,8 @@ $color-gray: #e0e0e0;
   justify-content: center;
 }
 
-@mixin hover-effect($translateY: -5px) {
-  transition: transform 0.3s ease;
+@mixin hover-effect($translateY: -3px) {
+  transition: transform 0.5s ease;
   &:hover {
     transform: translateY($translateY);
   }
@@ -34,7 +33,7 @@ $color-gray: #e0e0e0;
   background: $color-background;
   transition: margin 0.3s ease;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     margin-left: 0;
   }
 }
@@ -119,8 +118,8 @@ $color-gray: #e0e0e0;
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, $color-light, $color-secondary);
-      transition: left 0.4s ease;
+      background: linear-gradient(45deg, $color-secondary, $color-secondary);
+      transition: left 0.5s ease;
       z-index: -1;
     }
 
