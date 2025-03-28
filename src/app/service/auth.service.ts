@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export type UserRole = 'admin' | 'clerk' | 'employee' | 'user' | null;
@@ -10,7 +10,7 @@ export type UserRole = 'admin' | 'clerk' | 'employee' | 'user' | null;
   providedIn: 'root',
 })
 export class AuthService {
-  urlDefaultForProxy = '/v1/api/';
+  urlDefaultForProxy = '/v1/api';
 
   private userRoleSubject = new BehaviorSubject<UserRole>(null);
   user$ = this.userRoleSubject.asObservable();
@@ -20,7 +20,9 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
     this.verifySession().subscribe();
   }
-
+  public getCurrentUserRole(): UserRole {
+    return this.userRoleSubject.value;
+  }
   setLoading(isLoading: boolean) {
     this.loadingSubject.next(isLoading);
   }
@@ -34,6 +36,10 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.userRoleSubject.next(response.message);
+        }),
+        catchError((error) => {
+          this.userRoleSubject.next(null);
+          return throwError(() => error);
         })
       );
   }
@@ -41,7 +47,7 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this.http
       .post(
-        this.urlDefaultForProxy + 'v1/api/session/login',
+        this.urlDefaultForProxy + '/v1/api/session/login',
         { email, password },
         { withCredentials: true }
       )

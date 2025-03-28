@@ -1,3 +1,10 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+>
+</app-error-popup>
+
 <div
   class="products-container"
   *ngIf="{ userRole: AppComponent.userRole$ | async } as state"

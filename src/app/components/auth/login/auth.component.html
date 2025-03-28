@@ -1,0 +1,39 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+>
+</app-error-popup>
+<div class="theme-light">
+  <div class="login-container">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="container-form">
+        <label>Email:</label>
+        <input type="email" formControlName="email" required />
+        <span
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
+          Email inválido
+        </span>
+      </div>
+
+      <div class="container-form">
+        <label>Senha:</label>
+        <input type="password" formControlName="password" required />
+        <span
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          Senha deve ter no mínimo 8 caracteres
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+    </form>
+  </div>
+</div>

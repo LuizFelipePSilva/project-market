@@ -5,15 +5,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../service/auth.service';
+import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { take } from 'rxjs';
+import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ErrorPopupComponent],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })
@@ -47,5 +48,9 @@ export class AuthComponent {
         this.errorMessage = err.error.message;
       },
     });
+  }
+
+  closeErrorPopup() {
+    this.errorMessage = null;
   }
 }
