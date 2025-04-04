@@ -1,3 +1,10 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+>
+</app-error-popup>
+<h1 class="section-title">Gerenciamento de Mesas</h1>
 <div class="cards-container">
   <div
     class="table-card"
@@ -7,8 +14,8 @@
     [class.clickable]="table.status === 'Pedido'"
   >
     <div class="card-content">
-      <p>{{ table.numberTable }}</p>
-      <p>{{ table.status }}</p>
+      <p class="mesa-number">{{ table.numberTable }}</p>
+      <p class="status-badge">{{ table.status }}</p>
     </div>
   </div>
 </div>
@@ -22,37 +29,140 @@
 </div>
 
 <div class="table-details-sidebar" [class.show]="showSidebar">
-  <button class="close-btn" (click)="closeTableDetails()">×</button>
-  <h2>Detalhes do Pedido da Mesa</h2>
-  <div *ngIf="selectedTableDetails">
-    <p>
-      <strong>Numero da Mesa: </strong>{{ selectedTableDetails.numberTable }}
-    </p>
-    <p><strong>Cliente: </strong>{{ selectedTableDetails.order.Cliente }}</p>
-    <p>
-      <strong>Pagamento: </strong>{{ selectedTableDetails.order.TipoPagamento }}
-    </p>
-    <p>
-      <strong>Status: </strong>{{ selectedTableDetails.order.StatusDoPedido }}
-    </p>
-    <p>
-      <strong>Observacoes: </strong
-      >{{ selectedTableDetails.order["Observaçoes"] }}
-    </p>
-    <p>
-      <strong>Hora do Pedido: </strong
-      >{{ selectedTableDetails.order.HoraDoPedido | date : "HH:mm - dd/MM/yy" }}
-    </p>
-    <h3>Produtos</h3>
-    <ul>
-      <li *ngFor="let item of selectedTableDetails.order.Produtos">
-        {{ item.Produto }} ({{ item.Quantidade }}x) - R$
-        {{ item.ValorTotal | number : "1.2-2" }}
-      </li>
-    </ul>
-    <p>
-      <strong>Valor Total: </strong
-      >{{ selectedTableDetails.order.ValorTotalDaComanda }}
-    </p>
+  <button class="sidebar-close-btn" (click)="closeTableDetails()">×</button>
+
+  <div class="sidebar-content" *ngIf="selectedTableDetails">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Detalhes do Pedido</h2>
+    </div>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span class="info-label">Número da Mesa:</span>
+        <span class="info-value">{{ selectedTableDetails.numberTable }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Número do Pedido:</span>
+        <span class="info-value">{{ selectedTableDetails.order.id }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Cliente:</span>
+        <span class="info-value">{{ selectedTableDetails.order.Cliente }}</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span class="info-label">Pagamento:</span>
+        <span class="info-value">{{
+          selectedTableDetails.order.TipoPagamento
+        }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Status:</span>
+        <span class="status-tag">{{
+          selectedTableDetails.order.StatusDoPedido
+        }}</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span class="info-label">Observações:</span>
+        <span class="info-value">{{
+          selectedTableDetails.order["Observaçoes"]
+        }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Hora do Pedido:</span>
+        <span class="info-value">{{
+          selectedTableDetails.order.HoraDoPedido | date : "HH:mm - dd/MM/yy"
+        }}</span>
+      </div>
+    </div>
+
+    <div class="products-section">
+      <h3 class="products-title">Produtos</h3>
+      <ul class="products-list">
+        <li
+          class="product-item"
+          *ngFor="let item of selectedTableDetails.order.Produtos"
+        >
+          {{ item.Produto }} ({{ item.Quantidade }}x) - R$
+          {{ item.ValorTotal | number : "1.2-2" }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="total-section">
+      <div class="total-item">
+        <span class="total-label">Valor Total:</span>
+        <span class="total-value"
+          >R$ {{ selectedTableDetails.order.ValorTotalDaComanda }}</span
+        >
+      </div>
+      <div class="transfer-buttons">
+        <button (click)="OpenTranfer()" class="transfer-btn">
+          Transferir Pedidos
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="transferTable; selectedTableDetails"
+  class="popup-transfer-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="transferTitle"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="CloseTranfer()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <form
+      [formGroup]="tableTransfer"
+      (ngSubmit)="onSubmit()"
+      class="transfer-form"
+    >
+      <h2 id="transferTitle" class="title">Transferir Pedido</h2>
+      <p class="instructions">Para qual mesa deseja transferir o pedido?</p>
+
+      <div class="input-group">
+        <input
+          type="number"
+          id="tableNumber"
+          placeholder="Número da mesa"
+          min="1"
+          formControlName="tableNumberFinal"
+          required
+          aria-required="true"
+          class="table-input"
+          name="tableNumber"
+        />
+        <span class="input-icon">#</span>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn transfer-btn">
+          Confirmar Transferência
+        </button>
+      </div>
+    </form>
   </div>
 </div>
