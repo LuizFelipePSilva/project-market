@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, UserRole } from './service/auth.service';
+import { AuthService, UserRole } from './services/auth-services/auth.service';
 import { CommonModule } from '@angular/common';
 import {
   RouterOutlet,
