@@ -2,7 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AppComponent } from '../../../app.component';
-import { AuthService, UserRole } from '../../../service/auth.service';
+import {
+  AuthService,
+  UserRole,
+} from '../../../services/auth-services/auth.service';
 import { Observable } from 'rxjs';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 

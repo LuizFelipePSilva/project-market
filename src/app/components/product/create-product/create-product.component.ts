@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -7,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ProductServiceService } from '../service/product-service.service';
+import { ProductServiceService } from '../../../services/product-service/product-service.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -42,7 +41,7 @@ export class CreateProductComponent {
       .createProduct(name, Number(value), category, description)
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/product']);
+          this.router.navigate(['/product/create']);
         },
         error: (err) => {
           console.error('Request error:', err);
