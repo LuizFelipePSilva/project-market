@@ -8,6 +8,9 @@ import { authGuard } from './auth/auth.guard';
 import { CreateOrderComponent } from './components/order/create-order/create-order.component';
 import { CreateProductComponent } from './components/product/create-product/create-product.component';
 import { ReportComponent } from './components/report/report.component';
+import { CreateTableComponent } from './components/table/create-table/create-table.component';
+import { ListUserComponent } from './components/user/list-user/list-user.component';
+import { CashierComponent } from './components/cashier/cashier.component';
 
 export const routes: Routes = [
   {
@@ -45,10 +48,28 @@ export const routes: Routes = [
     data: { roles: ['admin', 'clerk', 'employee'] },
   },
   {
+    path: 'table/create',
+    component: CreateTableComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'clerk'] },
+  },
+  {
     path: 'relatorio',
     component: ReportComponent,
     canActivate: [authGuard],
     data: { roles: ['admin'] },
+  },
+  {
+    path: 'user',
+    component: ListUserComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin'] },
+  },
+  {
+    path: 'casher',
+    component: CashierComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'clerk'] },
   },
   { path: 'login', component: AuthComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
