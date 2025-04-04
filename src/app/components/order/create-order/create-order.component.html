@@ -1,0 +1,101 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+>
+</app-error-popup>
+<div class="container">
+  <div class="menu-container">
+    <div *ngFor="let category of categories" class="category-section">
+      <h2 class="category-title">{{ category }}</h2>
+      <div class="products-grid">
+        <div
+          *ngFor="let product of productsByCategory[category]"
+          class="product-card"
+        >
+          <img
+            [src]="product.imageUrl || 'assets/placeholder.jpg'"
+            class="product-image"
+            alt="{{ product.name }}"
+          />
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            <div class="product-footer">
+              <span class="product-price">
+                {{ product.value | currency : "BRL" : "symbol" : "1.2-2" }}
+              </span>
+              <button (click)="addToCart(product)" class="add-button">
+                {{ getCartQuantity(product.id) }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carrinho de Compras -->
+  <div class="cart-container">
+    <div class="cart-header">
+      <h2>Meu Pedido</h2>
+      <span class="total-price">
+        Total: {{ totalCart | currency : "BRL" : "symbol" : "1.2-2" }}
+      </span>
+    </div>
+
+    <form (ngSubmit)="confirmOrder()" class="order-form">
+      <input
+        [(ngModel)]="orderData.nameClient"
+        name="nameClient"
+        placeholder="Nome do Cliente"
+        required
+      />
+
+      <select [(ngModel)]="orderData.payment" name="payment" required>
+        <option value="Pix">Pix</option>
+        <option value="Cartao">Cartão</option>
+        <option value="Dinheiro">Dinheiro</option>
+      </select>
+
+      <input
+        [(ngModel)]="orderData.numberTable"
+        name="numberTable"
+        type="number"
+        placeholder="Número da Mesa"
+        min="1"
+        required
+      />
+
+      <textarea
+        [(ngModel)]="orderData.obs"
+        name="obs"
+        placeholder="Observações do Pedido"
+      ></textarea>
+
+      <!-- Itens do Carrinho -->
+      <div class="cart-items">
+        <div *ngFor="let item of cartItems" class="cart-item">
+          <span>{{ getProductName(item.id) }} x{{ item.quantity }}</span>
+          <div class="item-actions">
+            <button
+              type="button"
+              (click)="updateQuantity(item.id, item.quantity - 1)"
+              [disabled]="item.quantity <= 0"
+            >
+              -
+            </button>
+            <button
+              type="button"
+              (click)="updateQuantity(item.id, item.quantity + 1)"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="confirm-button">Confirmar Pedido</button>
+    </form>
+  </div>
+</div>
