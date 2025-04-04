@@ -1,4 +1,5 @@
 // Variáveis de tema
+@use "sass:map";
 $themes: (
   light: (
     primary:  #6a0572,
@@ -24,7 +25,7 @@ $themes: (
 @mixin theme($property, $key) {
   @each $theme, $colors in $themes {
     .theme-#{$theme} & {
-      #{$property}: map-get($colors, $key);
+      #{$property}: map.get($colors, $key)
     }
   }
 }
@@ -82,7 +83,7 @@ $themes: (
       }
 
       &[aria-invalid="true"] {
-        border-color: map-get(map-get($themes, light), error);
+        border-color: map.get(map.get($themes, light), error);
         
         .theme-dark & {
           border-color: map-get(map-get($themes, dark), error);
@@ -142,7 +143,7 @@ $themes: (
   }
 
   .error {
-    color: map-get(map-get($themes, light), error);
+    color: map.get(map.get($themes, light), error);
     text-align: center;
     margin-top: 1rem;
     padding: 0.5rem;

@@ -1,7 +1,6 @@
 // styles.scss
-
+@use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
-
 // Variáveis de Cor
 $color-primary: #6a0572;
 $color-secondary: #9c27b0;
@@ -221,7 +220,7 @@ $color-gray: #e0e0e0;
     transform: translateX(-50%);
     width: 90%;
     height: 12px;
-    background: darken($color-gray, 15%);
+    background: color.adjust($color-gray, $lightness: -15%);
     border-radius: 0 0 8px 8px;
   }
   
