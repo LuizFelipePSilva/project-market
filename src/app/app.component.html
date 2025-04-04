@@ -4,97 +4,173 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
-    <button class="menu-toggle" aria-label="Abrir menu" (click)="toggleMenu()">
-      ☰
-    </button>
+    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+
     <ng-container *ngIf="{ userRole: userRole$ | async } as state">
       <ul class="nav-links" [ngClass]="{ open: isMenuOpen }">
+        <!-- Página Inicial -->
         <li>
           <a href="/home">
             <i class="fa-solid fa-house"></i>
             <span>Página Inicial</span>
           </a>
         </li>
-        <li
-          *ngIf="
-            state.userRole === 'admin' ||
-            state.userRole === 'clerk' ||
-            state.userRole === 'employee' ||
-            state.userRole === 'user'
-          "
-        >
-          <button (click)="toggleSubMenu('product')" class="submenu-toggle">
-            <i class="fa-solid fa-box"></i>
-            <span>Produtos</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <ul *ngIf="openSubMenu === 'product'" class="submenu">
-            <li *ngIf="state.userRole === 'admin'">
-              <a href="/product/create">Criar Produto</a>
-            </li>
-            <li><a href="/product">Gerenciar Produtos</a></li>
-            <li><a href="/product/list">Listar Produtos</a></li>
-          </ul>
+
+        <li *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'">
+          <a href="/casher">
+            <i class="fa-solid fa-wallet"></i>
+            Caixa
+          </a>
         </li>
-        <li
-          *ngIf="
-            state.userRole === 'admin' ||
-            state.userRole === 'clerk' ||
-            state.userRole === 'employee'
-          "
-        >
+
+        <li *ngIf="state.userRole">
           <button (click)="toggleSubMenu('order')" class="submenu-toggle">
-            <i class="fa-solid fa-clipboard"></i>
+            <i class="fa-solid fa-clipboard-list"></i>
             <span>Pedidos</span>
             <i class="fa-solid fa-chevron-down"></i>
           </button>
           <ul *ngIf="openSubMenu === 'order'" class="submenu">
-            <li><a href="/order/create">Criar Pedidos</a></li>
-            <li><a href="/order">Gerenciar Pedidos</a></li>
-            <li><a href="/order/list">Listar Pedidos</a></li>
+            <li
+              *ngIf="
+                state.userRole === 'admin' ||
+                state.userRole === 'clerk' ||
+                state.userRole === 'employee'
+              "
+            >
+              <a href="/order/create">
+                <i class="fa-solid fa-plus-circle"></i>
+                Novo Pedido
+              </a>
+            </li>
+            <li
+              *ngIf="
+                state.userRole === 'admin' ||
+                state.userRole === 'clerk' ||
+                state.userRole === 'employee'
+              "
+            >
+              <a href="/order">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Gerenciar
+              </a>
+            </li>
+            <li>
+              <a href="/order/list">
+                <i class="fa-solid fa-list"></i>
+                Listar Todos
+              </a>
+            </li>
           </ul>
         </li>
-        <li
-          *ngIf="
-            state.userRole === 'admin' ||
-            state.userRole === 'clerk' ||
-            state.userRole === 'employee'
-          "
-        >
+
+        <!-- Mesas -->
+        <li *ngIf="state.userRole">
           <button (click)="toggleSubMenu('table')" class="submenu-toggle">
-            <i class="fa-solid fa-border-all"></i>
+            <i class="fa-solid fa-table-cells"></i>
             <span>Mesas</span>
             <i class="fa-solid fa-chevron-down"></i>
           </button>
           <ul *ngIf="openSubMenu === 'table'" class="submenu">
-            <li *ngIf="state.userRole === 'admin'">
-              <a href="/table/create">Criar Mesa</a>
+            <li
+              *ngIf="
+                state.userRole === 'admin' ||
+                state.userRole === 'clerk' ||
+                state.userRole === 'employee'
+              "
+            >
+              <a href="/table/create">
+                <i class="fa-solid fa-plus-circle"></i>
+                Nova Mesa
+              </a>
             </li>
-            <li><a href="/table">Ver Mesas</a></li>
+            <li
+              *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'"
+            >
+              <a href="/table">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Gerenciar
+              </a>
+            </li>
+            <li>
+              <a href="/table/list">
+                <i class="fa-solid fa-list"></i>
+                Listar Todas
+              </a>
+            </li>
           </ul>
         </li>
-        <li *ngIf="state.userRole === 'admin'">
-          <a href="/relatorio">
-            <i class="fa-solid fa-briefcase"></i>
-            <span>Relátorio</span>
-          </a>
-        </li>
+
+        <!-- Produtos -->
         <li *ngIf="state.userRole">
+          <button (click)="toggleSubMenu('product')" class="submenu-toggle">
+            <i class="fa-solid fa-box-open"></i>
+            <span>Produtos</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul *ngIf="openSubMenu === 'product'" class="submenu">
+            <li
+              *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'"
+            >
+              <a href="/product/create">
+                <i class="fa-solid fa-plus-circle"></i>
+                Novo Produto
+              </a>
+            </li>
+            <li
+              *ngIf="
+                state.userRole === 'admin' ||
+                state.userRole === 'clerk' ||
+                state.userRole === 'employee'
+              "
+            >
+              <a href="/product">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Gerenciar
+              </a>
+            </li>
+            <li>
+              <a href="/product/list">
+                <i class="fa-solid fa-list"></i>
+                Listar Todos
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Administração -->
+        <li *ngIf="state.userRole === 'admin'">
+          <button (click)="toggleSubMenu('admin')" class="submenu-toggle">
+            <i class="fa-solid fa-lock"></i>
+            <span>Administração</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul *ngIf="openSubMenu === 'admin'" class="submenu">
+            <li>
+              <a href="/relatorio"
+                ><i class="fa-solid fa-chart-pie"></i> Relatórios</a
+              >
+            </li>
+            <li>
+              <a href="/user"
+                ><i class="fa-solid fa-users-gear"></i> Usuários</a
+              >
+            </li>
+          </ul>
+        </li>
+
+        <!-- Login/Logout -->
+        <li *ngIf="state.userRole; else login">
           <button (click)="logout()" class="logout-btn">
-            <i class="fa-solid fa-right-from-bracket"></i>
+            <i class="fa-solid fa-power-off"></i>
             <span>Sair</span>
           </button>
         </li>
-        <li *ngIf="!state.userRole">
-          <a href="/login">
-            <i class="fa-solid fa-key"></i>
-            <span>Login</span>
-          </a>
-        </li>
+        <ng-template #login>
+          <li>
+            <a href="/login"><i class="fa-solid fa-key"></i> Login</a>
+          </li>
+        </ng-template>
       </ul>
     </ng-container>
   </nav>

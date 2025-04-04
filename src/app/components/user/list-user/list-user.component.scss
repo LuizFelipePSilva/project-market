@@ -1,0 +1,298 @@
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+$roxo-primario: #6a0572;
+$roxo-secundario: #9c27b0;
+$roxo-claro: #d6a2e8;
+$roxo-escuro: #4a0250;
+$cinza-claro: #e0e0e0;
+$branco: #ffffff;
+$preto: #000000;
+
+.users-container {
+  padding: 20px;
+  margin-left: 200px;
+  width: calc(100% - 200px);
+
+  .section-title {
+    color: $roxo-escuro;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    border-left: 4px solid $roxo-primario;
+  }
+
+  .table-wrapper {
+    background: $branco;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .innovative-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    .table-header {
+      background: linear-gradient(45deg, $roxo-escuro, $roxo-primario);
+      color: $branco;
+
+      th {
+        padding: 1.2rem;
+        font-weight: 500;
+        transition: background 0.3s ease;
+        
+        &:hover {
+          background: rgba($branco, 0.1);
+        }
+      }
+    }
+
+    .user-row {
+      border-bottom: 1px solid rgba($cinza-claro, 0.3);
+      transition: background 0.2s ease;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba($roxo-claro, 0.05);
+      }
+
+      &.active-row {
+        background: rgba($roxo-claro, 0.1);
+      }
+
+      td {
+        padding: 1.2rem;
+
+        .user-name {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 500;
+
+          .fa-user {
+            color: $roxo-secundario;
+          }
+        }
+
+        .role-tag {
+          display: inline-block;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 0.85rem;
+          font-weight: 500;
+
+          &.admin {
+            background: rgba($roxo-primario, 0.15);
+            color: $roxo-escuro;
+          }
+          &.clerk {
+            background: rgba(#4a148c, 0.15);
+            color: #4a148c;
+          }
+          &.employee {
+            background: rgba(#9c27b0, 0.15);
+            color: #7b1fa2;
+          }
+          &.user {
+            background: rgba(#d500f9, 0.15);
+            color: #aa00ff;
+          }
+        }
+
+        .status-badge {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 0.85rem;
+          font-weight: 500;
+
+          &.ativo {
+            background: rgba(#00C851, 0.15);
+            color: #007E33;
+          }
+          &.inativo {
+            background: rgba(#ff4444, 0.15);
+            color: #CC0000;
+          }
+        }
+
+        .actions-container {
+          display: flex;
+          gap: 0.5rem;
+          justify-content: flex-end;
+        }
+
+        .delete-btn {
+          background: #ff4444;
+          color: #ffffff;
+          padding: 8px 12px;
+          border: none;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+          transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+          
+          i {
+            font-size: 1rem;
+          }
+        
+          &:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+            box-shadow: 0 3px 8px rgba(255, 68, 68, 0.3);
+          }
+        
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+
+        .edit-btn {
+          @extend .delete-btn;
+          background: $roxo-secundario;
+          
+          &:hover {
+            background: color.adjust($roxo-secundario, $lightness: -10%);
+            box-shadow: 0 3px 8px rgba($roxo-secundario, 0.3);
+          }
+        }
+      }
+
+      .email-cell {
+        color: color.adjust($preto, $lightness: 30%);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    .pagination-btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      background: $roxo-primario;
+      color: $branco;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover:not(:disabled) {
+        background: $roxo-secundario;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      &:disabled {
+        background: $cinza-claro;
+        color: rgba($preto, 0.5);
+        cursor: not-allowed;
+      }
+    }
+
+    .page-indicator {
+      color: $roxo-escuro;
+      font-weight: 500;
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 20px;
+
+    .innovative-table {
+      thead {
+        display: none;
+      }
+
+      tbody {
+        display: block;
+      }
+
+      .user-row {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 2px solid $roxo-primario;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba($roxo-primario, 0.2);
+        background-color: $branco;
+
+        &:hover {
+          background: $branco; 
+        }
+
+        td {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 0.75rem;
+          padding: 0;
+
+          &::before {
+            content: attr(data-label) ": ";
+            font-weight: bold;
+            color: $roxo-escuro;
+            margin-bottom: 0.25rem;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        .actions-container {
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}
+/* Adicione estas classes no SCSS */
+.actions-container {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  
+  button {
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  
+  .user-row {
+    position: relative;
+    
+    .actions-container {
+      padding-right: 0;
+      justify-content: flex-start;
+      margin-top: 1rem;
+      
+      button {
+        transform: scale(0.9);
+      }
+    }
+  }
+}

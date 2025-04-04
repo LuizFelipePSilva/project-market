@@ -1,6 +1,6 @@
+@use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-/* Variáveis */
 $roxo-primario: #6a0572;
 $roxo-secundario: #9c27b0;
 $roxo-claro: #d6a2e8;
@@ -163,12 +163,12 @@ $breakpoint-small-mobile: 480px;
 }
 
 .pedidos-abertos {
-  background-color: lighten(#5e7cb3, 5%);
+  background-color: color.adjust(#5e7cb3, $lightness: 5%);
   color: $branco;
 }
 
 .producao {
-  background-color: lighten(#ff9d2b, 5%);
+  background-color: color.adjust(#ff9d2b, $lightness: 5%);
   color: $preto;
 }
 
@@ -220,7 +220,7 @@ $breakpoint-small-mobile: 480px;
 
     /* Cores por status */
     &.status-aberto {
-      background: linear-gradient(135deg, lighten(#5e7cb3, 10%), #5e7cb3);
+      background: linear-gradient(135deg, color.adjust(#5e7cb3, $lightness: 10%), #5e7cb3);
       color: $branco;
 
       &:hover {
@@ -362,137 +362,185 @@ $breakpoint-small-mobile: 480px;
 }
 
 /* Sidebar Detalhes */
-.order-details-sidebar {
+.table-details-sidebar {
   position: fixed;
   top: 0;
   right: 0;
-  bottom: 0;
-  width: 350px;
-  max-width: 100%;
-  background-color: #2c2c2c;
-  color: #ffffff;
-  padding: 25px;
-  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.3);
-  overflow-y: auto;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(145deg, #2a2a2a, #1d1d1d);
+  color: $branco;
+  box-shadow: -8px 0 30px rgba($preto, 0.3);
   z-index: 1000;
-  transition: transform 0.3s ease, opacity 0.3s ease;
   transform: translateX(100%);
-  opacity: 0;
-  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 
   &.show {
     transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
   }
 
-  @media (max-width: $breakpoint-mobile) {
-    width: 100%;
-    padding: 20px 15px;
-
-    button {
-      flex: 1 1 100%;
-      margin: 5px 0;
-    }
-
-    div[ngIf] > div {
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    h2 {
-      font-size: 1.3rem;
-    }
-
-    p, li {
-      font-size: 0.9rem;
-    }
-  }
-
-  div[ngIf] > div {
-    display: flex;
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-
-  button {
-    flex: 1;
-    padding: 12px 24px;
+  .sidebar-close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 2rem;
+    background: none;
     border: none;
-    border-radius: 8px;
+    color: $branco;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba($branco, 0.1);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-    }
+    transition: transform 0.2s ease;
 
-    &:nth-child(2) {
-      background: linear-gradient(135deg, $verde-sucesso, darken($verde-sucesso, 10%));
-      box-shadow: 0 4px 12px rgba($verde-sucesso, 0.25);
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba($verde-sucesso, 0.35);
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+
+  .sidebar-header {
+    padding: 1.5rem;
+    background: rgba($preto, 0.2);
+    border-bottom: 1px solid rgba($branco, 0.1);
+
+    .sidebar-title {
+      margin: 0;
+      font-size: 1.8rem;
+      color: $roxo-claro;
+    }
+  }
+
+  .info-section {
+    padding: 1.5rem;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+    .info-item {
+      background: rgba($branco, 0.05);
+      border-radius: 8px;
+      padding: 1rem;
+
+      .info-label {
+        color: $roxo-claro;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .info-value {
+        color: $branco;
+        font-size: 1.1rem;
         
-        &::before {
-          opacity: 1;
+        &:empty::before {
+          content: "N/A";
+          color: rgba($branco, 0.5);
         }
       }
     }
-    
-    &:first-child {
-      background: linear-gradient(135deg, $vermelho-erro, darken($vermelho-erro, 10%));
-      box-shadow: 0 4px 12px rgba($vermelho-erro, 0.25);
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba($vermelho-erro, 0.35);
-        
-        &::before {
-          opacity: 1;
+  }
+
+  .products-section {
+    padding: 1.5rem;
+
+    .products-title {
+      color: $roxo-claro;
+      border-bottom: 1px solid rgba($branco, 0.1);
+      padding-bottom: 0.5rem;
+    }
+
+    .products-list {
+      list-style: none;
+      padding: 0;
+
+      .product-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba($branco, 0.05);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        span:last-child {
+          color: $roxo-claro;
+          font-weight: 500;
         }
       }
     }
+  }
 
-    &:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 6px rgba($preto, 0.2);
+  .total-section {
+    padding: 1.5rem;
+    margin-top: auto;
+    background: rgba($preto, 0.2);
+
+    .total-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+
+      .total-label {
+        color: $roxo-claro;
+      }
+
+      .total-value {
+        color: $branco;
+        font-weight: bold;
+      }
+    }
+
+    .action-buttons {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+      button {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+
+        &.transfer-btn {
+          background: $verde-sucesso;
+          color: $branco;
+          
+          &:hover {
+            background: #0b8059;
+            transform: translateY(-2px);
+          }
+
+          &.success {
+            background: $verde-sucesso;
+            
+            &:hover {
+              background: darken($verde-sucesso, 10%);
+            }
+          }
+
+          &.danger {
+            background: $vermelho-erro;
+            
+            &:hover {
+              background: darken($vermelho-erro, 10%);
+            }
+          }
+        }
+      }
     }
   }
-}
 
-/* Botão de Fechar no Sidebar */
-.close-btn {
-  padding: 4px 10px;
-  background: rgba($branco, 0.1);
-  color: $branco;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: rgba($branco, 0.2);
-    transform: rotate(90deg);
+  @media (min-width: 768px) {
+    width: 80%;
+    max-width: 1200px;
+    border-radius: 16px 0 0 16px;
   }
 }
-
 
 @media (max-width: $breakpoint-mobile) {
   .section-title,
@@ -504,8 +552,18 @@ $breakpoint-small-mobile: 480px;
   }
 
   .status-buttons button,
-  .pagination button,
-  .order-details-sidebar button {
+  .pagination button {
     padding: 10px 15px;
+  }
+
+  .table-details-sidebar {
+    .info-section {
+      grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+      grid-template-columns: 1fr;
+      margin-bottom: 4rem;
+    }
   }
 }

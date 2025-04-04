@@ -1,7 +1,7 @@
 // auth.guard.ts
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
-import { AuthService, UserRole } from '../service/auth.service';
+import { AuthService, UserRole } from '../services/auth-services/auth.service';
 import { map } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = (route) => {

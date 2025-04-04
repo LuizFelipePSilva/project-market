@@ -172,7 +172,7 @@ export class OrderComponent implements OnInit {
     this.http
       .patch<any>(
         `/v1/api/v1/api/orders/change/${orderId}`,
-        { status: 'Concluido' },
+        { status: 'Pronto' },
         { withCredentials: true }
       )
       .subscribe({

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../../../service/auth.service';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { AuthService } from '../auth-services/auth.service';
+import { catchError, Observable, throwError } from 'rxjs';
 
 interface IProduct {
   id: string;
@@ -37,7 +37,6 @@ export class ProductServiceService {
         { withCredentials: true }
       )
       .pipe(
-        tap((response) => console.log('Product created:', response)),
         catchError((error) => {
           console.error('Error creating product:', error);
           return throwError(() => error);

@@ -2,55 +2,29 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../../../app.component';
-import { table } from 'console';
-
-export interface ITable {
-  id: string;
-  numberTable: number;
-  orderId: number;
-  status: 'Aberto' | 'Reservado' | 'Pedido' | 'Inutilizavel';
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
-}
-
-export interface ITablePaginate {
-  per_page: number;
-  total: number;
-  current_page: number;
-  data: ITable[];
-  last_page: number;
-}
-
-export interface IRequestOrderForTable {
-  numberTable: number;
-  order: {
-    id: number;
-    Cliente: string;
-    TipoPagamento: string;
-    StatusDoPedido: string;
-    Observaçoes: string | null;
-    HoraDoPedido: Date;
-    ValorTotalDaComanda: number;
-    Produtos: Array<{
-      Produto: string;
-      Quantidade: number;
-      ValorUnitario: number;
-      ValorTotal: number;
-    }>;
-  };
-}
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { IRequestOrderForTable } from '../domain/IRequestOrderForTable';
+import { ITable } from '../domain/ITable';
+import { ITablePaginate } from '../domain/ITablePaginate';
+import { ISwitchOrderTable } from '../domain/ISwitchOrderTable';
+import { Router } from '@angular/router';
+import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
+import { TransferServiceService } from '../../../services/table-services/transfer-service.service';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, ErrorPopupComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit {
-  constructor(private http: HttpClient, public appComponent: AppComponent) {}
-
+  tableTransfer: FormGroup;
   tables: ITable[] = [];
   dataSource: ITablePaginate = {
     per_page: 0,
@@ -65,6 +39,22 @@ export class TableComponent implements OnInit {
   showSidebar: boolean = false;
   isProcessing: boolean = false;
   selectedTable: ITable | null = null;
+  transferTable: boolean = false;
+  errorMessage: string | null = null;
+
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    public appComponent: AppComponent,
+    private Router: Router,
+    private transferService: TransferServiceService
+  ) {
+    this.tableTransfer = this.fb.group({
+      tableNumberOrigin: ['', [Validators.required]],
+      orderId: ['', [Validators.required]],
+      tableNumberFinal: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit() {
     this.loadTable(this.currentPage);
@@ -85,10 +75,7 @@ export class TableComponent implements OnInit {
       .subscribe((response) => {
         this.dataSource = response;
         this.currentPage = response.current_page;
-        this.tables = response.data.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
+        this.tables = response.data;
       });
   }
 
@@ -168,5 +155,44 @@ export class TableComponent implements OnInit {
           console.log(error);
         },
       });
+  }
+  OpenTranfer() {
+    if (this.selectedTableDetails) {
+      this.tableTransfer.patchValue({
+        tableNumberOrigin: this.selectedTableDetails.numberTable,
+        orderId: this.selectedTableDetails.order.id,
+        tableNumberFinal: '',
+      });
+    }
+    this.transferTable = true;
+  }
+  CloseTranfer() {
+    this.transferTable = false;
+    this.tableTransfer.reset();
+  }
+  onSubmit() {
+    if (this.tableTransfer.invalid || !this.selectedTableDetails) return;
+    this.errorMessage = null;
+    const { tableNumberOrigin, orderId, tableNumberFinal } =
+      this.tableTransfer.value;
+
+    this.transferService
+      .transferSubmit(tableNumberOrigin, orderId, tableNumberFinal)
+      .subscribe({
+        next: () => {
+          this.transferTable = false;
+          this.showSidebar = false;
+          this.tableTransfer.reset();
+          this.loadTable(this.currentPage);
+        },
+        error: (err) => {
+          this.errorMessage =
+            err.error?.message ||
+            'Ocorreu um erro inesperado. Tente novamente.';
+        },
+      });
+  }
+  closeErrorPopup() {
+    this.errorMessage = null;
   }
 }

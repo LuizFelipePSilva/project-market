@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../../service/auth.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { take } from 'rxjs';
