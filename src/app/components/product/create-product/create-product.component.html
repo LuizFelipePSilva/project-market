@@ -1,35 +1,58 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+
 <div class="product-container">
   <h2>Criar Produto</h2>
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div class="container-form">
       <label>Nome do Produto</label>
-      <input type="text" formControlName="name" required>
-      <span *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+      <input type="text" formControlName="name" required />
+      <span
+        *ngIf="
+          productForm.get('name')?.invalid && productForm.get('name')?.touched
+        "
+      >
         Nome é nescessário
       </span>
     </div>
     <div class="container-form">
       <label>Valor</label>
-      <input type="number" formControlName="value" required>
-      <span *ngIf="productForm.get('value')?.invalid && productForm.get('value')?.touched">
+      <input type="number" formControlName="value" required />
+      <span
+        *ngIf="
+          productForm.get('value')?.invalid && productForm.get('value')?.touched
+        "
+      >
         Valor é nescessário
       </span>
     </div>
     <div class="container-form">
       <label>Categoria</label>
-      <input type="text" formControlName="category" required>
-      <span *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched">
+      <input type="text" formControlName="category" required />
+      <span
+        *ngIf="
+          productForm.get('category')?.invalid &&
+          productForm.get('category')?.touched
+        "
+      >
         Categoria é nescessário
       </span>
     </div>
     <div class="container-form">
       <label>Descrição</label>
-      <input type="text" formControlName="description" required>
-      <span *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+      <input type="text" formControlName="description" required />
+      <span
+        *ngIf="
+          productForm.get('description')?.invalid &&
+          productForm.get('description')?.touched
+        "
+      >
         Descrição tem que ter no minimo 10 caracteres.
       </span>
     </div>
     <button type="submit" [disabled]="productForm.invalid">Criar</button>
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
   </form>
 </div>
