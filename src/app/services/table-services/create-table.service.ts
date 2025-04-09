@@ -4,19 +4,21 @@ import { AuthService } from '../auth-services/auth.service';
 import { catchError, throwError } from 'rxjs';
 import { ITable } from '../../components/table/domain/ITable';
 import { ICreateManyTableResponse } from '../../components/table/domain/ICreateManyTable';
-
+import { environment } from '../../../environments/environment.development';
 @Injectable({
   providedIn: 'root',
 })
 export class CreateTableService {
-  urlDefaultForProxy = '/v1/api/';
+  private baseUrl = `${environment.apiUrl}/table`;
+
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.verifySession().subscribe();
   }
+
   createTable(numberTable: number) {
     return this.http
       .post<ITable>(
-        this.urlDefaultForProxy + 'v1/api/table/create',
+        `${this.baseUrl}/create`,
         { numberTable },
         { withCredentials: true }
       )
@@ -26,10 +28,11 @@ export class CreateTableService {
         })
       );
   }
+
   createManyTable(numberTableInital: number, numberTableFinal: number) {
     return this.http
       .post<ICreateManyTableResponse>(
-        this.urlDefaultForProxy + 'v1/api/table/createMany',
+        `${this.baseUrl}/createMany`,
         { numberTableInital, numberTableFinal },
         { withCredentials: true }
       )

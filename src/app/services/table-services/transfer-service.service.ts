@@ -3,12 +3,14 @@ import { ISwitchOrderTable } from '../../components/table/domain/ISwitchOrderTab
 import { catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth-services/auth.service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransferServiceService {
-  urlDefaultForProxy = '/v1/api/';
+  private baseUrl = `${environment.apiUrl}/table`;
+
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.verifySession().subscribe();
   }
@@ -20,7 +22,7 @@ export class TransferServiceService {
   ) {
     return this.http
       .post<ISwitchOrderTable>(
-        this.urlDefaultForProxy + 'v1/api/table/switch',
+        `${this.baseUrl}/switch`,
         {
           tableNumberOrigin,
           orderId,
