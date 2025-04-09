@@ -224,34 +224,34 @@ $breakpoint-small-mobile: 480px;
       color: $branco;
 
       &:hover {
-        background: linear-gradient(135deg, lighten(#5e7cb3, 20%), darken(#5e7cb3, 5%));
+        background: linear-gradient(135deg, color.adjust(#5e7cb3, $lightness: 20%, $space: hsl), color.adjust(#5e7cb3, $lightness: -5%, $space: hsl));
       }
     }
 
     &.status-pendente {
-      background: linear-gradient(135deg, lighten(#ff9d2b, 10%), #ff9d2b);
+      background: linear-gradient(135deg, color.adjust(#ff9d2b, $lightness: 10%, $space: hsl), #ff9d2b);
       color: $preto;
 
       &:hover {
-        background: linear-gradient(135deg, lighten(#ff9d2b, 20%), darken(#ff9d2b, 5%));
+        background: linear-gradient(135deg, color.adjust(#ff9d2b, $lightness: 20%, $space: hsl), color.adjust(#ff9d2b, $lightness: -5%, $space: hsl));
       }
     }
 
     &.status-concluido {
-      background: linear-gradient(135deg, lighten(#06b610, 10%), #06b610);
+      background: linear-gradient(135deg, color.adjust(#06b610, $lightness: 10%, $space: hsl), #06b610);
       color: $branco;
 
       &:hover {
-        background: linear-gradient(135deg, lighten(#06b610, 20%), darken(#06b610, 5%));
+        background: linear-gradient(135deg, color.adjust(#06b610, $lightness: 20%, $space: hsl), color.adjust(#06b610, $lightness: -5%, $space: hsl));
       }
     }
 
     &.status-cancelado {
-      background: linear-gradient(135deg, lighten(#e63c3c, 10%), #e63c3c);
+      background: linear-gradient(135deg, color.adjust(#e63c3c, $lightness: 10%, $space: hsl), #e63c3c);
       color: $branco;
 
       &:hover {
-        background: linear-gradient(135deg, lighten(#e63c3c, 20%), darken(#e63c3c, 5%));
+        background: linear-gradient(135deg, color.adjust(#e63c3c, $lightness: 20%, $space: hsl), color.adjust(#e63c3c, $lightness: -5%, $space: hsl));
       }
     }
 
@@ -519,7 +519,7 @@ $breakpoint-small-mobile: 480px;
             background: $verde-sucesso;
             
             &:hover {
-              background: darken($verde-sucesso, 10%);
+              background: color.adjust($verde-sucesso, $lightness: -10%, $space: hsl);
             }
           }
 
@@ -527,7 +527,7 @@ $breakpoint-small-mobile: 480px;
             background: $vermelho-erro;
             
             &:hover {
-              background: darken($vermelho-erro, 10%);
+              background: color.adjust($vermelho-erro, $lightness: -10%, $space: hsl);
             }
           }
         }
