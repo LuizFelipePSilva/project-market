@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AppComponent } from '../../../app.component';
 import { CommonModule } from '@angular/common';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
+import { environment } from '../../../../environments/environment.development'; // ajuste isso para .ts ou .prod.ts conforme necessário
 
 interface IUser {
   id: string;
@@ -43,13 +44,15 @@ export class ListUserComponent {
 
   currentPage: number = 1;
   init: IUser[] = [];
-  url_API = `/v1/api/v1/api/user`;
+  url_API = `${environment.apiUrl}/user`;
   errorMessage: string | null = null;
   selectedUser: string | null = null;
 
   loadUser(page = 1) {
     this.http
-      .get<IUserPaginate>(`${this.url_API}/show?page=${page}`)
+      .get<IUserPaginate>(`${this.url_API}/show?page=${page}`, {
+        withCredentials: true,
+      })
       .subscribe({
         next: (response) => {
           this.dataSource = response;
@@ -82,7 +85,6 @@ export class ListUserComponent {
 
   // Ações do usuário
   editUser(userId: string) {
-    // Implementar navegação para edição
     console.log('Editar usuário:', userId);
   }
 
