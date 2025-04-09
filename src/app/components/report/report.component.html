@@ -1,3 +1,8 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
 <form (ngSubmit)="generateReport()" class="report-form">
   <div class="form-group">
     <label for="reportType">Tipo de Relatório:</label>
@@ -14,8 +19,4 @@
   </div>
 
   <button type="submit" class="btn-generate">Gerar Relatório</button>
-
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
 </form>

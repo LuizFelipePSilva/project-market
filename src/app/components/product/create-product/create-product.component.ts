@@ -8,11 +8,12 @@ import {
 } from '@angular/forms';
 import { ProductServiceService } from '../../../services/product-service/product-service.service';
 import { Router } from '@angular/router';
+import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 
 @Component({
   selector: 'app-create-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ErrorPopupComponent],
   templateUrl: './create-product.component.html',
   styleUrl: './create-product.component.scss',
 })
@@ -32,7 +33,9 @@ export class CreateProductComponent {
       description: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
-
+  closeErrorPopup() {
+    this.errorMessage = null;
+  }
   onSubmit() {
     if (this.productForm.invalid) return;
     this.errorMessage = null;
@@ -44,7 +47,6 @@ export class CreateProductComponent {
           this.router.navigate(['/product/create']);
         },
         error: (err) => {
-          console.error('Request error:', err);
           this.errorMessage =
             err.error?.message ||
             'Ocorreu um erro inesperado. Tente novamente.';

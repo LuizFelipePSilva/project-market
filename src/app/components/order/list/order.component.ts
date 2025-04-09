@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
+import { environment } from '../../../../environments/environment.development';
 
 export interface IOrder {
   id?: number;
@@ -44,14 +46,14 @@ export interface IOrderResponse {
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ErrorPopupComponent],
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
-  url_API = `/v1/api/orders/show`;
+  url_API = `/orders/show`;
   orders: IOrder[] = [];
   dataSource: IOrderPaginate = {
     per_page: 0,
@@ -66,7 +68,10 @@ export class OrderComponent implements OnInit {
   showSidebar: boolean = false;
   searchTerm: string = '';
   selectedStatus: string = 'Aberto';
-
+  errorMessage: string | null = null;
+  closeErrorPopup() {
+    this.errorMessage = null;
+  }
   ngOnInit(): void {
     this.loadOrders(this.currentPage);
     this.intervalId = setInterval(() => {
@@ -87,16 +92,18 @@ export class OrderComponent implements OnInit {
 
   loadOrders(page: number): void {
     const query = this.searchTerm ? `&nameClient=${this.searchTerm}` : '';
-    this.http
-      .get<IOrderPaginate>(
-        `/v1/api${this.url_API}?page=${page}&status=${this.selectedStatus}${query}&limit=20`,
-        { withCredentials: true }
-      )
-      .subscribe((response) => {
+
+    const url = `${environment.apiUrl}${this.url_API}?page=${page}&status=${this.selectedStatus}${query}&limit=20`;
+    this.http.get<IOrderPaginate>(url, { withCredentials: true }).subscribe({
+      next: (response) => {
         this.dataSource = response;
         this.currentPage = response.current_page;
         this.orders = response.data;
-      });
+      },
+      error: (error) => {
+        this.errorMessage = error.error.message;
+      },
+    });
   }
 
   onSearch(): void {
@@ -121,24 +128,24 @@ export class OrderComponent implements OnInit {
 
   openOrderDetails(orderId: number): void {
     this.http
-      .get<IOrderResponse>(`/v1/api/v1/api/orders/view/${orderId}`, {
+      .get<IOrderResponse>(`${environment.apiUrl}/orders/view/${orderId}`, {
         withCredentials: true,
       })
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response) => {
           this.selectedOrderDetails = response;
           this.showSidebar = true;
         },
-        (error) => {
-          console.error('Erro ao carregar detalhes do pedido:', error);
-        }
-      );
+        error: (error) => {
+          this.errorMessage = error.error.message;
+        },
+      });
   }
 
   Cancelar(orderId: Number) {
     this.http
       .patch<any>(
-        `/v1/api/v1/api/orders/change/${orderId}`,
+        `${environment.apiUrl}/orders/change/${orderId}`,
         { status: 'Cancelado' },
         { withCredentials: true }
       )
@@ -147,7 +154,7 @@ export class OrderComponent implements OnInit {
           this.loadOrders(this.currentPage);
         },
         error: (error) => {
-          console.log(error);
+          this.errorMessage = error.error.message;
         },
       });
   }
@@ -155,7 +162,7 @@ export class OrderComponent implements OnInit {
   Aprovar(orderId: Number) {
     this.http
       .patch<any>(
-        `/v1/api/v1/api/orders/change/${orderId}`,
+        `${environment.apiUrl}/orders/change/${orderId}`,
         { status: 'Pendente' },
         { withCredentials: true }
       )
@@ -164,14 +171,14 @@ export class OrderComponent implements OnInit {
           this.loadOrders(this.currentPage);
         },
         error: (error) => {
-          console.log(error);
+          this.errorMessage = error.error.message;
         },
       });
   }
   Concluir(orderId: Number) {
     this.http
       .patch<any>(
-        `/v1/api/v1/api/orders/change/${orderId}`,
+        `${environment.apiUrl}/orders/change/${orderId}`,
         { status: 'Pronto' },
         { withCredentials: true }
       )
@@ -180,7 +187,7 @@ export class OrderComponent implements OnInit {
           this.loadOrders(this.currentPage);
         },
         error: (error) => {
-          console.log(error);
+          this.errorMessage = error.error.message;
         },
       });
   }

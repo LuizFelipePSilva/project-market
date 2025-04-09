@@ -8,6 +8,7 @@ import {
 } from '../../../services/auth-services/auth.service';
 import { Observable } from 'rxjs';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
+import { environment } from '../../../../environments/environment.development';
 
 interface IProduct {
   id: string;
@@ -40,7 +41,7 @@ export class ProductComponent {
   constructor(private http: HttpClient, public AppComponent: AppComponent) {}
 
   title = 'meu-app-cafeteria';
-  url_API = `/v1/api/product/`;
+  url_API = '/product';
   init: IProduct[] = [];
   logado: boolean = true;
   errorMessage: string | null = null;
@@ -57,18 +58,18 @@ export class ProductComponent {
   selectedProduct: string | null = null;
 
   loadProducts(page = 1) {
-    this.http
-      .get<IProductPaginate>(`/v1/api/${this.url_API}?page=${page}`)
-      .subscribe((response) => {
-        this.dataSource = response;
-        this.currentPage = response.current_page;
-        this.init = this.dataSource.data;
-      });
+    const url = `${environment.apiUrl}${this.url_API}?limit=1000`;
+    this.http.get<IProductPaginate>(url).subscribe((response) => {
+      this.dataSource = response;
+      this.currentPage = response.current_page;
+      this.init = this.dataSource.data;
+    });
   }
 
   deleteProduct(productId: string) {
     if (confirm('Tem certeza que deseja excluir este produto?')) {
-      this.http.delete(`/v1/api/${this.url_API}/delete/${productId}`).subscribe(
+      const url = `${environment.apiUrl}${this.url_API}/delete/${productId}`;
+      this.http.delete(url).subscribe(
         () => {
           this.init = this.init.filter((product) => product.id !== productId);
         },

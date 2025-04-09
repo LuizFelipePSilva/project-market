@@ -1,9 +1,9 @@
 <app-error-popup
   *ngIf="errorMessage"
   [errorMessage]="errorMessage"
-  (close)="closeErrorPopup()"
->
-</app-error-popup>
+  (close)="errorMessage = null"
+></app-error-popup>
+
 <div class="cashier-container">
   <!-- Cabeçalho -->
   <div class="header">
@@ -27,7 +27,7 @@
     >
       <div class="card-header">
         <div class="order-info">
-          <span class="order-number">#{{ order.id }}</span>
+          <span class="order-number">#{{ order.id }} </span>
           <span class="order-time">{{ order.createdAt | date : "HH:mm" }}</span>
         </div>
         <button
@@ -47,7 +47,7 @@
 
       <div class="products-scroll">
         <div
-          *ngFor="let item of selectedOrderDetails?.Comanda?.Produtos"
+          *ngFor="let item of orderDetailsMap[order.id]?.Comanda?.Produtos"
           class="product-item"
         >
           <div class="quantity">{{ item.Quantidade }}x</div>
@@ -62,7 +62,7 @@
         <div class="total">
           Total:
           {{
-            selectedOrderDetails?.Comanda?.ValorTotalDaComanda
+            orderDetailsMap[order.id].Comanda.ValorTotalDaComanda
               | currency : "BRL"
           }}
         </div>
@@ -118,9 +118,7 @@
           <input
             type="number"
             [(ngModel)]="paymentData.receivedValue"
-            (input)="
-              calculateChange(selectedOrderDetails!.Comanda.ValorTotalDaComanda)
-            "
+            (input)="calculateChange()"
             min="0"
             step="0.01"
           />

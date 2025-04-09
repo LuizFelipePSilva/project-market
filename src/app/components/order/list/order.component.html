@@ -1,3 +1,8 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
 <div class="search-container">
   <div class="search-group">
     <input

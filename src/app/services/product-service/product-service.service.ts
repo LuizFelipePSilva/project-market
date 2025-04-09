@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth-services/auth.service';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 interface IProduct {
   id: string;
@@ -19,7 +20,8 @@ interface IProduct {
   providedIn: 'root',
 })
 export class ProductServiceService {
-  urlDefaultForProxy = '/v1/api/';
+  private baseUrl = `${environment.apiUrl}/product`;
+
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.verifySession().subscribe();
   }
@@ -32,7 +34,7 @@ export class ProductServiceService {
   ): Observable<IProduct> {
     return this.http
       .post<IProduct>(
-        this.urlDefaultForProxy + 'v1/api/product/',
+        `${this.baseUrl}/`,
         { name, value, category, description },
         { withCredentials: true }
       )

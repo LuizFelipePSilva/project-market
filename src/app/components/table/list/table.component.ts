@@ -15,6 +15,7 @@ import { ISwitchOrderTable } from '../domain/ISwitchOrderTable';
 import { Router } from '@angular/router';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 import { TransferServiceService } from '../../../services/table-services/transfer-service.service';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-table',
@@ -41,7 +42,7 @@ export class TableComponent implements OnInit {
   selectedTable: ITable | null = null;
   transferTable: boolean = false;
   errorMessage: string | null = null;
-
+  urlAPi = '/table';
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -68,8 +69,9 @@ export class TableComponent implements OnInit {
     }
   }
   loadTable(page: number): void {
+    const url = `${environment.apiUrl}${this.urlAPi}/show?page=${page}&limit=20`;
     this.http
-      .get<ITablePaginate>(`/v1/api/v1/api/table/show?page=${page}&limit=20`, {
+      .get<ITablePaginate>(url, {
         withCredentials: true,
       })
       .subscribe((response) => {
@@ -98,11 +100,9 @@ export class TableComponent implements OnInit {
   openTableDetails(table: ITable): void {
     if (table.status === 'Pedido') {
       this.selectedTable = table;
+      const url = `${environment.apiUrl}${this.urlAPi}/orders/${table.numberTable}`;
       this.http
-        .get<IRequestOrderForTable>(
-          `/v1/api/v1/api/table/orders/${table.numberTable}`,
-          { withCredentials: true }
-        )
+        .get<IRequestOrderForTable>(url, { withCredentials: true })
         .subscribe(
           (response) => {
             this.selectedTableDetails = response;
@@ -120,9 +120,10 @@ export class TableComponent implements OnInit {
   }
 
   InutilzarMesa(tableId: string) {
+    const url = `${environment.apiUrl}${this.urlAPi}/change/${tableId}`;
     this.http
       .patch<any>(
-        `/v1/api/v1/api/table/change/${tableId}`,
+        url,
         {
           status: 'Inutilizavel',
         },
@@ -139,9 +140,10 @@ export class TableComponent implements OnInit {
   }
 
   AbrirMesa(tableId: string) {
+    const url = `${environment.apiUrl}${this.urlAPi}/change/${tableId}`;
     this.http
       .patch<any>(
-        `/v1/api/v1/api/table/change/${tableId}`,
+        url,
         {
           status: 'Aberto',
         },

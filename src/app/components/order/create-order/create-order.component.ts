@@ -7,6 +7,7 @@ import { IProduct } from '../domain/IProduct';
 import { OrderData } from '../domain/OrderData';
 import { IProductPaginate } from '../domain/IProductPaginate';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-create-order',
@@ -17,13 +18,15 @@ import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 })
 export class CreateOrderComponent {
   constructor(private http: HttpClient) {}
-
-  url_API = 'v1/api/product';
+  url_API = '/product';
   productsByCategory: { [key: string]: IProduct[] } = {};
   categories: string[] = [];
   cartItems: CartItem[] = [];
   allProducts: IProduct[] = [];
   errorMessage: string | null = null;
+  showSuccessPopup = false;
+  showCartSidebar = false;
+  showConfirmationPopup = false;
   orderData: OrderData = {
     nameClient: '',
     payment: 'Pix',
@@ -35,6 +38,11 @@ export class CreateOrderComponent {
   ngOnInit() {
     this.loadProducts();
   }
+
+  toggleConfirmationPopup() {
+    this.showConfirmationPopup = !this.showConfirmationPopup;
+  }
+
   closeErrorPopup() {
     this.errorMessage = null;
   }
@@ -48,28 +56,30 @@ export class CreateOrderComponent {
   }
 
   loadProducts() {
-    this.http
-      .get<IProductPaginate>(`/v1/api/${this.url_API}?limit=1000`)
-      .subscribe({
-        next: (response) => {
-          this.allProducts = response.data;
-          this.productsByCategory = this.groupByCategory(response.data);
-          this.categories = Object.keys(this.productsByCategory);
-        },
-        error: (err) => console.error('Error loading products:', err),
-      });
+    const url = `${environment.apiUrl}${this.url_API}?limit=1001`;
+
+    this.http.get<IProductPaginate>(url).subscribe({
+      next: (response) => {
+        this.allProducts = response.data;
+        this.productsByCategory = this.groupByCategory(response.data);
+        this.categories = Object.keys(this.productsByCategory);
+      },
+      error: (err) => (this.errorMessage = err.error.message),
+    });
   }
 
-  getCartQuantity(productId: string): string | number {
+  getCartQuantity(productId: string): number {
     const item = this.cartItems.find((i) => i.id === productId);
-    return item?.quantity || 'Adicionar';
+    return item?.quantity || 0;
   }
 
   addToCart(product: IProduct) {
     const existing = this.cartItems.find((i) => i.id === product.id);
-    existing
-      ? existing.quantity++
-      : this.cartItems.push({ id: product.id, quantity: 1 });
+    if (existing) {
+      existing.quantity++;
+    } else {
+      this.cartItems.push({ id: product.id, quantity: 1 });
+    }
   }
 
   updateQuantity(productId: string, newQuantity: number) {
@@ -100,9 +110,15 @@ export class CreateOrderComponent {
       ...this.orderData,
       products: this.cartItems,
     };
-
-    this.http.post('/v1/api/v1/api/orders/create', orderPayload).subscribe({
+    const url = `${environment.apiUrl}/orders/create`;
+    this.http.post(url, orderPayload).subscribe({
       next: () => {
+        this.showSuccessPopup = true;
+
+        setTimeout(() => {
+          this.showSuccessPopup = false;
+        }, 3000);
+        this.showCartSidebar = false;
         this.cartItems = [];
         this.orderData = {
           nameClient: '',

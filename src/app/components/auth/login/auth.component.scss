@@ -86,19 +86,19 @@ $themes: (
         border-color: map.get(map.get($themes, light), error);
         
         .theme-dark & {
-          border-color: map-get(map-get($themes, dark), error);
+          border-color: map.get(map.get($themes, dark), error);
         }
       }
     }
 
     span {
-      color: map-get(map-get($themes, light), "primary");
+      color: map.get(map.get($themes, light), "primary");
       font-size: 0.875rem;
       height: 1.25rem;
       display: block;
 
       .theme-dark & {
-        color: map-get(map-get($themes, dark), error);
+        color: map.get(map.get($themes, dark), error);
       }
     }
   }
@@ -133,11 +133,11 @@ $themes: (
     }
 
     &:disabled {
-      background-color: map-get(map-get($themes, light), border);
+      background-color: map.get(map.get($themes, light), border);
       cursor: not-allowed;
 
       .theme-dark & {
-        background-color: map-get(map-get($themes, dark), border);
+        background-color: map.get(map.get($themes, dark), border);
       }
     }
   }
@@ -151,7 +151,7 @@ $themes: (
     @include theme('background-color', hover);
 
     .theme-dark & { 
-      color: map-get(map-get($themes, dark), error);
+      color: map.get(map.get($themes, dark), error);
     }
   }
 }
