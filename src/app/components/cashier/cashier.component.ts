@@ -1,46 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ErrorPopupComponent } from '../error-popup/error-popup.component';
-
-export interface IOrder {
-  id?: number;
-  nameClient: string;
-  payment: 'Dinheiro' | 'Cartao' | 'Pix' | null;
-  status: 'Aberto' | 'Pendente' | 'Concluido' | 'Cancelado' | 'Pronto';
-  obs: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
-}
-
-export interface IOrderPaginate {
-  per_page: number;
-  total: number;
-  current_page: number;
-  data: IOrder[];
-  last_page: number;
-}
-
-export interface IOrderResponse {
-  Comanda: {
-    id: number;
-    Cliente: string;
-    TipoPagamento: string;
-    StatusDoPedido: string;
-    Observaçoes: string | null;
-    HoraDoPedido: Date;
-    ValorTotalDaComanda: number;
-    Produtos: Array<{
-      Produto: string;
-      Quantidade: number;
-      ValorUnitario: number;
-      ValorTotal: number;
-    }>;
-    Mesa: number;
-  };
-}
+import { CashierService } from '../../services/cashier-service/cashier.service';
+import { Subscription, forkJoin } from 'rxjs';
+import { IOrder } from './domain/IOrder';
+import { IOrderResponse } from './domain/IOrderResponse';
+import { IOrderPaginate } from './domain/IOrderPaginate';
 
 interface PaymentModalData {
   paymentType: 'Dinheiro' | 'Cartao' | 'Pix' | null;
@@ -57,7 +23,6 @@ interface PaymentModalData {
   styleUrl: './cashier.component.scss',
 })
 export class CashierComponent implements OnInit, OnDestroy {
-  constructor(private http: HttpClient) {}
   orders: IOrder[] = [];
   dataSource: IOrderPaginate = {
     per_page: 0,
@@ -68,7 +33,7 @@ export class CashierComponent implements OnInit, OnDestroy {
   };
   currentPage: number = 1;
   private intervalId: any;
-  selectedOrderDetails: IOrderResponse | null = null;
+  private subscriptions: Subscription[] = [];
   searchTerm: string = '';
   showEditModal: boolean = false;
   showCloseModal: boolean = false;
@@ -82,50 +47,48 @@ export class CashierComponent implements OnInit, OnDestroy {
     change: 0,
   };
   errorMessage: string | null = null;
+  orderDetailsMap: { [id: number]: IOrderResponse } = {};
+
+  constructor(private orderService: CashierService) {}
+
   ngOnInit(): void {
     this.loadOrders(this.currentPage);
     this.intervalId = setInterval(() => {
       this.loadOrders(this.currentPage);
     }, 5000);
   }
-  closeErrorPopup() {
-    this.errorMessage = null;
-  }
+
   ngOnDestroy(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    if (this.intervalId) clearInterval(this.intervalId);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   loadOrders(page: number): void {
-    const query = this.searchTerm ? `&nameClient=${this.searchTerm}` : '';
-    this.http
-      .get<IOrderPaginate>(
-        `/v1/api/v1/api/orders/show?page=${page}&status=Pronto${query}&limit=20`,
-        { withCredentials: true }
-      )
+    const sub = this.orderService
+      .getOrders(page, 'Pronto', this.searchTerm)
       .subscribe({
         next: (response) => {
           this.dataSource = response;
           this.currentPage = response.current_page;
           this.orders = response.data;
-          if (this.orders.length > 0) {
-            this.openOrderDetails(this.orders[0].id!);
-          }
+          this.loadOrderDetails();
         },
-        error: (error) => (this.errorMessage = error.error.message),
+        error: (error) => this.showError(error.error.message),
       });
+    this.subscriptions.push(sub);
   }
 
-  openOrderDetails(orderId: number): void {
-    this.http
-      .get<IOrderResponse>(`/v1/api/v1/api/orders/view/${orderId}`, {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (response) => (this.selectedOrderDetails = response),
-        error: (error) => (this.errorMessage = error.error.message),
-      });
+  private loadOrderDetails(): void {
+    this.orderDetailsMap = {};
+    this.orders.forEach((order) => {
+      if (order.id) {
+        const sub = this.orderService.getOrderDetails(order.id).subscribe({
+          next: (details) => (this.orderDetailsMap[order.id] = details),
+          error: (error) => this.showError(error.error.message),
+        });
+        this.subscriptions.push(sub);
+      }
+    });
   }
 
   openEditModal(order: IOrder): void {
@@ -136,16 +99,18 @@ export class CashierComponent implements OnInit, OnDestroy {
 
   submitEdit(): void {
     if (this.selectedOrderForEdit?.id) {
-      this.http
-        .patch(
-          `/v1/api/v1/api/orders/change/info/${this.selectedOrderForEdit.id}`,
-          { nameClient: this.editFormData.nameClient },
-          { withCredentials: true }
-        )
-        .subscribe(() => {
-          this.loadOrders(this.currentPage);
-          this.showEditModal = false;
+      const sub = this.orderService
+        .updateOrderInfo(this.selectedOrderForEdit.id, {
+          nameClient: this.editFormData.nameClient,
+        })
+        .subscribe({
+          next: () => {
+            this.loadOrders(this.currentPage);
+            this.showEditModal = false;
+          },
+          error: (error) => this.showError(error.error.message),
         });
+      this.subscriptions.push(sub);
     }
   }
 
@@ -160,9 +125,13 @@ export class CashierComponent implements OnInit, OnDestroy {
     this.showCloseModal = true;
   }
 
-  calculateChange(total: number): void {
-    if (this.paymentData.receivedValue) {
-      this.paymentData.change = this.paymentData.receivedValue - total;
+  calculateChange(): void {
+    if (this.selectedOrderForPayment?.id) {
+      const total =
+        this.orderDetailsMap[this.selectedOrderForPayment.id]?.Comanda
+          .ValorTotalDaComanda || 0;
+      const received = this.paymentData.receivedValue || 0;
+      this.paymentData.change = received - total;
     }
   }
 
@@ -173,53 +142,34 @@ export class CashierComponent implements OnInit, OnDestroy {
   }
 
   submitCloseOrder(): void {
-    if (this.selectedOrderForPayment?.id && this.selectedOrderDetails) {
-      const payload = {
-        status: 'Concluido',
+    if (!this.selectedOrderForPayment?.id) return;
+
+    const total =
+      this.orderDetailsMap[this.selectedOrderForPayment.id]?.Comanda
+        .ValorTotalDaComanda || 0;
+    const requests = [
+      this.orderService.updateOrderInfo(this.selectedOrderForPayment.id, {
         payment: this.paymentData.paymentType,
-        ...(this.paymentData.isCash && {
-          receivedValue: this.paymentData.receivedValue,
-          change: this.paymentData.change,
-        }),
-      };
-      console.log(payload);
-      this.http
-        .patch(
-          `/v1/api/v1/api/orders/change/info/${this.selectedOrderForPayment.id}`,
-          { payment: payload.payment },
-          {
-            withCredentials: true,
-          }
-        )
-        .subscribe({
-          next: () => {
-            this.loadOrders(this.currentPage);
-            this.showCloseModal = false;
-          },
-          error: (error) => {
-            console.log(error);
-            this.errorMessage = error.error.message;
-          },
-        });
-      this.http
-        .patch(
-          `/v1/api/v1/api/orders/change/${this.selectedOrderForPayment.id}`,
-          { status: payload.status },
-          {
-            withCredentials: true,
-          }
-        )
-        .subscribe({
-          next: () => {
-            this.loadOrders(this.currentPage);
-            this.showCloseModal = false;
-          },
-          error: (error) => {
-            console.log(error);
-            this.errorMessage = error.error.message;
-          },
-        });
-    }
+      }),
+      this.orderService.updateOrderStatus(
+        this.selectedOrderForPayment.id,
+        'Concluido'
+      ),
+    ];
+
+    const sub = forkJoin(requests).subscribe({
+      next: () => {
+        this.loadOrders(this.currentPage);
+        this.showCloseModal = false;
+      },
+      error: (error) => this.showError(error.error.message),
+    });
+    this.subscriptions.push(sub);
+  }
+
+  private showError(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => (this.errorMessage = null), 5000);
   }
 
   // Métodos auxiliares
@@ -233,7 +183,7 @@ export class CashierComponent implements OnInit, OnDestroy {
   prevPage(): void {
     if (this.currentPage > 1) this.loadOrders(this.currentPage - 1);
   }
-  trackByOrderId(index: number, order: IOrder): number | undefined {
+  trackByOrderId(index: number, order: IOrder): number {
     return order.id;
   }
 }
