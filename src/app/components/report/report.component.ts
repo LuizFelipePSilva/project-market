@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ErrorPopupComponent } from '../error-popup/error-popup.component';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ErrorPopupComponent],
   templateUrl: './report.component.html',
   styleUrl: './report.component.scss',
 })
@@ -20,11 +22,13 @@ export class ReportComponent {
 
   reportTypesBr: string[] = Object.keys(this.reportMap);
   selectedType: string = 'Diario';
-  errorMessage: string = '';
-  url_API = `/v1/api/reports/create`;
+  errorMessage: string | null = '';
+  url_API = `/reports/create`;
 
   constructor(private http: HttpClient) {}
-
+  closeErrorPopup() {
+    this.errorMessage = null;
+  }
   generateReport(): void {
     if (!this.selectedType) {
       this.errorMessage = 'Por favor selecione um tipo de relatório';
@@ -32,9 +36,9 @@ export class ReportComponent {
     }
     const selectedTypeEn = this.reportMap[this.selectedType];
     const reportRequest = { type: selectedTypeEn };
-
+    const url = `${environment.apiUrl}/${this.url_API}`;
     this.http
-      .post('/v1/api' + this.url_API, reportRequest, {
+      .post(url, reportRequest, {
         responseType: 'blob',
         withCredentials: true,
       })
