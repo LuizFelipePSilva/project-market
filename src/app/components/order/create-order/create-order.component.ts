@@ -58,7 +58,7 @@ export class CreateOrderComponent {
   loadProducts() {
     const url = `${environment.apiUrl}${this.url_API}?limit=1001`;
 
-    this.http.get<IProductPaginate>(url).subscribe({
+    this.http.get<IProductPaginate>(url, { withCredentials: true }).subscribe({
       next: (response) => {
         this.allProducts = response.data;
         this.productsByCategory = this.groupByCategory(response.data);
@@ -111,7 +111,7 @@ export class CreateOrderComponent {
       products: this.cartItems,
     };
     const url = `${environment.apiUrl}/orders/create`;
-    this.http.post(url, orderPayload).subscribe({
+    this.http.post(url, orderPayload, { withCredentials: true }).subscribe({
       next: () => {
         this.showSuccessPopup = true;
 

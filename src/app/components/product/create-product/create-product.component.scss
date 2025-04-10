@@ -1,4 +1,5 @@
 /* LOGIN-COMPONENT */
+$primary: #2ecc71;
 $roxo-primario: #6a0572;
 $roxo-secundario: #9c27b0;
 $roxo-claro: #d6a2e8;
@@ -91,5 +92,30 @@ button:disabled {
   button {
     padding: 14px;
     font-size: 16px;
+  }
+}
+.success-popup {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2100;
+  transition: all 0.5s ease;
+  width: 90%;
+  max-width: 400px;
+  
+  &.active {
+    top: 20px;
+    animation: slideIn 0.5s, slideOut 0.5s 2.5s;
+  }
+
+  .success-content {
+    background: $primary;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-weight: 500;
   }
 }

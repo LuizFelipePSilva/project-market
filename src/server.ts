@@ -27,12 +27,17 @@ const commonEngine = new CommonEngine();
 /**
  * Serve static files from /browser
  */
-app.get(
-  '**',
+app.use(
   express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html'
-  }),
+    index: false,
+    setHeaders: (res, path) => {
+      if (path.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      } else {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+    },
+  })
 );
 
 /**
@@ -58,7 +63,7 @@ app.get('**', (req, res, next) => {
  * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
  */
 if (isMainModule(import.meta.url)) {
-  const port = process.env['PORT'] || 4000;
+  const port = process.env['PORT'] || 8888;
   app.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });

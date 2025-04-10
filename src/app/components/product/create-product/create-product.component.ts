@@ -20,7 +20,7 @@ import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 export class CreateProductComponent {
   productForm: FormGroup;
   errorMessage: string | null = null;
-
+  showSuccessPopup = false;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -44,7 +44,12 @@ export class CreateProductComponent {
       .createProduct(name, Number(value), category, description)
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/product/create']);
+          this.showSuccessPopup = true;
+
+          setTimeout(() => {
+            this.showSuccessPopup = false;
+          }, 3000);
+          this.productForm.reset();
         },
         error: (err) => {
           this.errorMessage =

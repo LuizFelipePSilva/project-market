@@ -23,7 +23,7 @@ export class ReportComponent {
   reportTypesBr: string[] = Object.keys(this.reportMap);
   selectedType: string = 'Diario';
   errorMessage: string | null = '';
-  url_API = `/reports/create`;
+  url_API = `reports/create`;
 
   constructor(private http: HttpClient) {}
   closeErrorPopup() {

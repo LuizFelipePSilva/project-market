@@ -59,17 +59,19 @@ export class ProductComponent {
 
   loadProducts(page = 1) {
     const url = `${environment.apiUrl}${this.url_API}?limit=1000`;
-    this.http.get<IProductPaginate>(url).subscribe((response) => {
-      this.dataSource = response;
-      this.currentPage = response.current_page;
-      this.init = this.dataSource.data;
-    });
+    this.http
+      .get<IProductPaginate>(url, { withCredentials: true })
+      .subscribe((response) => {
+        this.dataSource = response;
+        this.currentPage = response.current_page;
+        this.init = this.dataSource.data;
+      });
   }
 
   deleteProduct(productId: string) {
     if (confirm('Tem certeza que deseja excluir este produto?')) {
       const url = `${environment.apiUrl}${this.url_API}/delete/${productId}`;
-      this.http.delete(url).subscribe(
+      this.http.delete(url, { withCredentials: true }).subscribe(
         () => {
           this.init = this.init.filter((product) => product.id !== productId);
         },
