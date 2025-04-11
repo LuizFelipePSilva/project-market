@@ -55,12 +55,6 @@
                 Gerenciar
               </a>
             </li>
-            <li>
-              <a href="/order/list">
-                <i class="fa-solid fa-list"></i>
-                Listar Todos
-              </a>
-            </li>
           </ul>
         </li>
 
@@ -90,12 +84,6 @@
               <a href="/table">
                 <i class="fa-solid fa-pen-to-square"></i>
                 Gerenciar
-              </a>
-            </li>
-            <li>
-              <a href="/table/list">
-                <i class="fa-solid fa-list"></i>
-                Listar Todas
               </a>
             </li>
           </ul>
@@ -129,12 +117,6 @@
                 Gerenciar
               </a>
             </li>
-            <li>
-              <a href="/product/list">
-                <i class="fa-solid fa-list"></i>
-                Listar Todos
-              </a>
-            </li>
           </ul>
         </li>
 
@@ -162,13 +144,15 @@
         <!-- Login/Logout -->
         <li *ngIf="state.userRole; else login">
           <button (click)="logout()" class="logout-btn">
-            <i class="fa-solid fa-power-off"></i>
+            <i class="fa-solid fa-right-to-bracket"></i>
             <span>Sair</span>
           </button>
         </li>
         <ng-template #login>
           <li>
-            <a href="/login"><i class="fa-solid fa-key"></i> Login</a>
+            <a href="/login"
+              ><i class="fa-solid fa-right-to-bracket"></i> Login</a
+            >
           </li>
         </ng-template>
       </ul>
