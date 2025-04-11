@@ -7,6 +7,7 @@ import { Subscription, forkJoin } from 'rxjs';
 import { IOrder } from './domain/IOrder';
 import { IOrderResponse } from './domain/IOrderResponse';
 import { IOrderPaginate } from './domain/IOrderPaginate';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface PaymentModalData {
   paymentType: 'Dinheiro' | 'Cartao' | 'Pix' | null;
@@ -49,10 +50,18 @@ export class CashierComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   orderDetailsMap: { [id: number]: IOrderResponse } = {};
 
-  constructor(private orderService: CashierService) {}
+  constructor(
+    private orderService: CashierService,
+    private route: ActivatedRoute,
+    private Router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.loadOrders(this.currentPage);
+    this.route.queryParams.subscribe((params) => {
+      this.searchTerm = params['searchTerm'] || '';
+      this.loadOrders(1);
+    });
+
     this.intervalId = setInterval(() => {
       this.loadOrders(this.currentPage);
     }, 5000);
@@ -160,6 +169,7 @@ export class CashierComponent implements OnInit, OnDestroy {
     const sub = forkJoin(requests).subscribe({
       next: () => {
         this.loadOrders(this.currentPage);
+        this.Router.navigate(['/casher']);
         this.showCloseModal = false;
       },
       error: (error) => this.showError(error.error.message),
