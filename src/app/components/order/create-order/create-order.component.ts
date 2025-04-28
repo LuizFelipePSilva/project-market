@@ -56,7 +56,7 @@ export class CreateOrderComponent {
   }
 
   loadProducts() {
-    const url = `${environment.apiUrl}${this.url_API}?limit=1001`;
+    const url = `${environment.apiUrl}${this.url_API}?limit=1001&status=Disponivel`;
 
     this.http.get<IProductPaginate>(url, { withCredentials: true }).subscribe({
       next: (response) => {

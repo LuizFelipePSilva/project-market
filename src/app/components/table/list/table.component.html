@@ -10,8 +10,7 @@
     class="table-card"
     *ngFor="let table of tables; trackBy: trackByTableId"
     [ngClass]="'status-' + table.status.toLowerCase()"
-    (click)="openTableDetails(table)"
-    [class.clickable]="table.status === 'Pedido'"
+    (click)="openTableDetails(table); findDetailsOfTable(table)"
   >
     <div class="card-content">
       <p class="mesa-number">{{ table.numberTable }}</p>
@@ -105,11 +104,64 @@
         <button (click)="OpenTranfer()" class="transfer-btn">
           Transferir Pedidos
         </button>
+        <button
+          *ngIf="selectedTableDetails.order.StatusDoPedido === 'Pronto'"
+          (click)="navigateToCashier()"
+          class="payment-btn"
+        >
+          Ir para o Caixa
+        </button>
       </div>
     </div>
   </div>
 </div>
+<div class="management-sidebar" [class.show]="showManagementSidebar">
+  <button class="sidebar-close-btn" (click)="closeManagementSidebar()">
+    ×
+  </button>
 
+  <div class="sidebar-content" *ngIf="detailsOfTable">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Mesa {{ detailsOfTable.numberTable }}</h2>
+      <p class="current-status">Essa mesa está {{ detailsOfTable.status }}</p>
+    </div>
+
+    <div class="status-actions">
+      <button
+        *ngIf="
+          detailsOfTable.status !== 'Inutilizavel' &&
+          detailsOfTable.status !== 'Pedido'
+        "
+        (click)="InutilzarMesa(detailsOfTable.id!)"
+        class="status-btn inutilizar"
+      >
+        Inutilizar Mesa
+      </button>
+
+      <button
+        *ngIf="
+          detailsOfTable.status !== 'Reservado' &&
+          detailsOfTable.status !== 'Inutilizavel' &&
+          detailsOfTable.status !== 'Pedido'
+        "
+        (click)="ReservarMesa(detailsOfTable.id!)"
+        class="status-btn reservar"
+      >
+        Reservar Mesa
+      </button>
+      <button
+        *ngIf="
+          detailsOfTable.status !== 'Aberto' &&
+          detailsOfTable.status !== 'Pedido'
+        "
+        (click)="AbrirMesa(detailsOfTable.id!)"
+        class="status-btn abrir"
+      >
+        Abrir Mesa
+      </button>
+    </div>
+  </div>
+</div>
 <div
   *ngIf="transferTable; selectedTableDetails"
   class="popup-transfer-overlay"

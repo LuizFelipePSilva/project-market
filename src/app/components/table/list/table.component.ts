@@ -34,12 +34,14 @@ export class TableComponent implements OnInit {
     data: [],
     last_page: 0,
   };
+  showManagementSidebar: boolean = false;
   currentPage: number = 1;
   private intervalId: any;
   selectedTableDetails: IRequestOrderForTable | null = null;
   showSidebar: boolean = false;
   isProcessing: boolean = false;
   selectedTable: ITable | null = null;
+  detailsOfTable: ITable | null = null;
   transferTable: boolean = false;
   errorMessage: string | null = null;
   urlAPi = '/table';
@@ -108,18 +110,35 @@ export class TableComponent implements OnInit {
             this.selectedTableDetails = response;
             this.showSidebar = true;
           },
-          () => {
-            console.error('Erro ao carregar detalhes do pedido');
+          (error) => {
+            this.errorMessage = 'Erro ao carregar detalhes do pedido';
           }
         );
+    } else {
+      this.findDetailsOfTable(table);
+      this.showManagementSidebar = true;
     }
   }
-
+  findDetailsOfTable(table: ITable): void {
+    const url = `${environment.apiUrl}${this.urlAPi}/find/${table.id}`;
+    this.http.get<ITable>(url, { withCredentials: true }).subscribe({
+      next: (response) => {
+        this.detailsOfTable = response;
+      },
+      error: (err) => {
+        this.errorMessage = err.error.message;
+      },
+    });
+  }
   closeTableDetails(): void {
     this.showSidebar = false;
   }
 
   InutilzarMesa(tableId: string) {
+    if (this.detailsOfTable?.status === 'Pedido') {
+      this.errorMessage = 'Mesa com pedido ativo não pode ser inutilizada';
+      return;
+    }
     const url = `${environment.apiUrl}${this.urlAPi}/change/${tableId}`;
     this.http
       .patch<any>(
@@ -132,14 +151,48 @@ export class TableComponent implements OnInit {
       .subscribe({
         next: () => {
           this.loadTable(this.currentPage);
+          this.closeManagementSidebar();
+          this.detailsOfTable = null;
         },
         error: (error) => {
           console.log(error);
         },
       });
   }
-
+  ReservarMesa(tableId: string) {
+    if (
+      this.detailsOfTable?.status === 'Inutilizavel' ||
+      this.detailsOfTable?.status === 'Pedido'
+    ) {
+      this.errorMessage =
+        'Mesa inutilizável ou com pedido não pode ser reservada';
+      return;
+    }
+    const url = `${environment.apiUrl}${this.urlAPi}/change/${tableId}`;
+    this.http
+      .patch<any>(
+        url,
+        {
+          status: 'Reservado',
+        },
+        { withCredentials: true }
+      )
+      .subscribe({
+        next: () => {
+          this.loadTable(this.currentPage);
+          this.closeManagementSidebar();
+          this.detailsOfTable = null;
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
   AbrirMesa(tableId: string) {
+    if (this.detailsOfTable?.status === 'Pedido') {
+      this.errorMessage = 'Mesa com pedido ativo não pode ser reaberta';
+      return;
+    }
     const url = `${environment.apiUrl}${this.urlAPi}/change/${tableId}`;
     this.http
       .patch<any>(
@@ -152,6 +205,8 @@ export class TableComponent implements OnInit {
       .subscribe({
         next: () => {
           this.loadTable(this.currentPage);
+          this.closeManagementSidebar();
+          this.detailsOfTable = null;
         },
         error: (error) => {
           console.log(error);
@@ -196,5 +251,18 @@ export class TableComponent implements OnInit {
   }
   closeErrorPopup() {
     this.errorMessage = null;
+  }
+  closeManagementSidebar(): void {
+    this.showManagementSidebar = false;
+    this.detailsOfTable = null;
+    this.selectedTable = null;
+  }
+
+  navigateToCashier() {
+    if (this.selectedTableDetails?.order?.id) {
+      this.Router.navigate(['/casher'], {
+        queryParams: { searchTerm: this.selectedTableDetails.order.Cliente },
+      });
+    }
   }
 }
