@@ -1,0 +1,201 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+<div class="search-container">
+  <div class="search-group">
+    <input
+      class="search-input"
+      type="search"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+      placeholder="Buscar cliente..."
+      aria-label="Buscar por nome do cliente"
+    />
+  </div>
+</div>
+
+<div class="status-buttons">
+  <button
+    class="status-button"
+    [class.active]="selectedStatus === 'Aberto'"
+    (click)="changeStatus('Aberto')"
+  >
+    Pedidos a serem aprovados
+  </button>
+  <button
+    class="status-button"
+    [class.active]="selectedStatus === 'Pendente'"
+    (click)="changeStatus('Pendente')"
+  >
+    Pedidos em produção
+  </button>
+</div>
+
+<h2
+  class="section-title"
+  [ngClass]="{
+    'pedidos-abertos': selectedStatus === 'Aberto',
+    producao: selectedStatus === 'Pendente'
+  }"
+>
+  {{
+    selectedStatus === "Aberto"
+      ? "Pedidos a serem aprovados"
+      : "Pedidos em produção"
+  }}
+</h2>
+
+<div class="cards-container">
+  <div
+    class="order-card"
+    [ngClass]="{
+      'status-aberto': selectedStatus === 'Aberto',
+      'status-pendente': selectedStatus === 'Pendente'
+    }"
+    *ngFor="let order of orders; trackBy: trackByOrderId"
+    (click)="openOrderDetails(order.id!)"
+  >
+    <div class="card-content">
+      <h3>Pedido #{{ order.id }}</h3>
+      <p>Cliente: {{ order.nameClient }}</p>
+      <p>Status: {{ order.status }}</p>
+      <p>Obs: {{ order.obs }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+  <span>Página {{ currentPage }} de {{ dataSource.last_page }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage >= dataSource.last_page">
+    Próxima
+  </button>
+</div>
+
+<div class="table-details-sidebar" [class.show]="showSidebar">
+  <button class="sidebar-close-btn" (click)="closeOrderDetails()">×</button>
+
+  <div class="sidebar-header">
+    <h2 class="sidebar-title">Detalhes do Pedido</h2>
+  </div>
+
+  <div class="info-section" *ngIf="selectedOrderDetails">
+    <div class="info-item">
+      <span class="info-label">Número da Mesa:</span>
+      <span class="info-value">{{
+        selectedOrderDetails.Comanda.Mesa || "N/A"
+      }}</span>
+    </div>
+
+    <div class="info-item">
+      <span class="info-label">Cliente:</span>
+      <span class="info-value">{{
+        selectedOrderDetails.Comanda.Cliente || "Não informado"
+      }}</span>
+    </div>
+
+    <div class="info-item">
+      <span class="info-label">Pagamento:</span>
+      <span class="info-value">{{
+        selectedOrderDetails.Comanda.TipoPagamento || "Não especificado"
+      }}</span>
+    </div>
+
+    <div class="info-item">
+      <span class="info-label">Status:</span>
+      <span class="info-value">{{
+        selectedOrderDetails.Comanda.StatusDoPedido || "Desconhecido"
+      }}</span>
+    </div>
+
+    <div class="info-item">
+      <span class="info-label">Observações:</span>
+      <span class="info-value">{{
+        selectedOrderDetails.Comanda["Observaçoes"] || "Nenhuma"
+      }}</span>
+    </div>
+
+    <div class="info-item">
+      <span class="info-label">Hora do Pedido:</span>
+      <span class="info-value">
+        {{
+          (selectedOrderDetails.Comanda.HoraDoPedido
+            | date : "HH:mm - dd/MM/yy") || "Não registrada"
+        }}
+      </span>
+    </div>
+  </div>
+
+  <div class="products-section" *ngIf="selectedOrderDetails">
+    <h3 class="products-title">Produtos</h3>
+    <ul class="products-list">
+      <li
+        class="product-item"
+        *ngFor="let item of selectedOrderDetails.Comanda.Produtos"
+      >
+        <span
+          >{{ item.Produto || "Produto não especificado" }} ({{
+            item.Quantidade || 0
+          }}x)</span
+        >
+        <span>R$ {{ (item.ValorTotal | number : "1.2-2") || "0,00" }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="total-section" *ngIf="selectedOrderDetails">
+    <div class="total-item">
+      <span class="total-label">Valor Total:</span>
+      <span class="total-value">
+        R$
+        {{
+          (selectedOrderDetails.Comanda.ValorTotalDaComanda
+            | number : "1.2-2") || "0,00"
+        }}
+      </span>
+    </div>
+
+    <div class="action-buttons">
+      <div *ngIf="selectedOrderDetails.Comanda.StatusDoPedido === 'Aberto'">
+        <button
+          class="transfer-btn danger"
+          (click)="
+            Cancelar(selectedOrderDetails.Comanda.id); closeOrderDetails()
+          "
+        >
+          Recusar Pedido
+        </button>
+        <button
+          class="transfer-btn"
+          (click)="
+            Aprovar(selectedOrderDetails.Comanda.id); closeOrderDetails()
+          "
+        >
+          Aprovar Pedido
+        </button>
+      </div>
+
+      <div *ngIf="selectedOrderDetails.Comanda.StatusDoPedido === 'Pendente'">
+        <button
+          class="transfer-btn danger"
+          (click)="
+            Cancelar(selectedOrderDetails.Comanda.id); closeOrderDetails()
+          "
+        >
+          Recusar Pedido
+        </button>
+        <button
+          class="transfer-btn success"
+          (click)="
+            Concluir(selectedOrderDetails.Comanda.id); closeOrderDetails()
+          "
+        >
+          Pedido Pronto
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

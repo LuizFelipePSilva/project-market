@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+<form (ngSubmit)="generateReport()" class="report-form">
+  <div class="form-group">
+    <label for="reportType">Tipo de Relatório:</label>
+    <select
+      id="reportType"
+      name="type"
+      [(ngModel)]="selectedType"
+      class="form-control"
+    >
+      <option *ngFor="let type of reportTypesBr" [value]="type">
+        {{ type }}
+      </option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn-generate">Gerar Relatório</button>
+</form>

@@ -1,0 +1,236 @@
+$color-primary: #4A148C;
+$color-secondary: #7B1FA2;
+$color-accent: #FFAB00;
+$color-dark: #2D033B;
+$color-background: #F5F5F5;
+
+.dashboard-container {
+  margin-left: 240px;
+  padding: 2rem;
+  background: $color-background;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
+
+.dashboard-header {
+  background: $color-dark;
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+
+  .welcome-title {
+    font: 500 1.8rem 'Montserrat', sans-serif;
+    margin-bottom: 0.5rem;
+  }
+
+  .company-name {
+    font: 300 1.4rem 'Poppins', sans-serif;
+    opacity: 0.9;
+  }
+}
+
+.new-order-btn {
+  background: $color-accent;
+  color: $color-dark;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  i {
+    margin-right: 0.5rem;
+  }
+}
+
+.quick-stats {
+  margin-bottom: 2rem;
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+    &.income { border-left: 4px solid #4CAF50; }
+    &.orders { border-left: 4px solid $color-primary; }
+    &.pending { border-left: 4px solid #FF5722; }
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    width: 50px;
+  }
+
+  .stat-value {
+    font: 700 1.8rem 'Montserrat', sans-serif;
+    display: block;
+  }
+
+  .stat-label {
+    font: 400 0.9rem 'Poppins', sans-serif;
+    color: #666;
+  }
+}
+
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quick-actions {
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .action-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .action-icon {
+      font-size: 2rem;
+      color: $color-primary;
+      margin-bottom: 0.5rem;
+    }
+
+    span {
+      display: block;
+      font: 500 1rem 'Poppins', sans-serif;
+      color: $color-dark;
+    }
+  }
+}
+
+.recent-orders {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .view-all {
+    color: $color-primary;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .order-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .order-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .order-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background: #09ff00; 
+    color: #000000; 
+  }
+}
+// home.component.scss
+.order-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  
+  &.status-aberto { 
+    background: #FFF3E0; 
+    color: #EF6C00; 
+  }
+  
+  &.status-pendente { 
+    background: #E3F2FD; 
+    color: #1976D2; 
+  }
+  
+  &.status-concluido { 
+    background: #E8F5E9; 
+    color: #388E3C; 
+  }
+  
+  &.status-default { 
+    background: #F5F5F5; 
+    color: #616161; 
+  }
+}
+
+.order-amount {
+  font-weight: 600;
+  color: $color-primary;
+}

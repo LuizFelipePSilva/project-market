@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService, UserRole } from './services/auth-services/auth.service';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+
 import {
-  RouterOutlet,
   Router,
   NavigationStart,
   NavigationEnd,
   NavigationCancel,
   NavigationError,
+  RouterOutlet,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from './estevam/services/auth-services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -17,17 +18,10 @@ import { Observable } from 'rxjs';
   imports: [RouterOutlet, CommonModule],
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   isLoading$!: Observable<boolean>;
-  isMenuOpen = false;
-  userRole$: Observable<UserRole | null>;
-  openSubMenu: string | null = null;
 
   constructor(public authService: AuthService, private router: Router) {
-    this.userRole$ = this.authService.user$;
-  }
-
-  ngOnInit(): void {
     this.isLoading$ = this.authService.isLoading$;
 
     this.router.events.subscribe((event) => {
@@ -40,28 +34,6 @@ export class AppComponent implements OnInit {
       ) {
         this.authService.setLoading(false);
       }
-    });
-  }
-
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
-  toggleSubMenu(menu: string) {
-    this.openSubMenu = this.openSubMenu === menu ? null : menu;
-  }
-
-  logout(): void {
-    this.authService.setLoading(true);
-    this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']).then(() => {
-          this.authService.setLoading(false);
-        });
-      },
-      error: () => {
-        this.authService.setLoading(false);
-      },
     });
   }
 }

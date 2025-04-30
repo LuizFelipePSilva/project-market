@@ -1,0 +1,31 @@
+<!-- connect-whatsapp.component.html -->
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h2>Conectar WhatsApp</h2>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Gerando QR Code...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage" class="error">
+    <p>{{ errorMessage }}</p>
+    <button (click)="regenerateQRCode()">Tentar novamente</button>
+  </div>
+
+  <!-- QR Code Display -->
+  <div *ngIf="qrCodeUrl && !isLoading" class="qr-container">
+    <img [src]="qrCodeUrl" alt="QR Code para conexão" class="qr-image" />
+    <p class="instructions">
+      1. Abra o WhatsApp no seu celular<br />
+      2. Toque em <strong>Configurações</strong> →
+      <strong>Dispositivos vinculados</strong><br />
+      3. Toque em <strong>Vincular um dispositivo</strong><br />
+      4. Aponte a câmera para este QR Code
+    </p>
+    <button (click)="regenerateQRCode()">Gerar novo QR Code</button>
+  </div>
+</div>
