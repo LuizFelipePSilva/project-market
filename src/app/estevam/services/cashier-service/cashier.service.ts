@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IOrderPaginate } from '../../components/estevam/order/list/order.component';
-import { IOrderResponse } from '../../components/estevam/order/list/order.component';
+import { IOrderResponse } from '../../components/estevam/order/domain/OrderData';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 
