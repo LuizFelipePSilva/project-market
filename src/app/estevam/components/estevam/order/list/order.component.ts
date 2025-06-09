@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 import { environment } from '../../../../../../environments/environment.development';
 import { NavbarComponent } from '../../navbar/navbar.component';
+import { IOrderResponse } from '../domain/OrderData';
 
 export interface IOrder {
   id?: number;
@@ -23,25 +24,6 @@ export interface IOrderPaginate {
   current_page: number;
   data: IOrder[];
   last_page: number;
-}
-
-export interface IOrderResponse {
-  Comanda: {
-    id: number;
-    Cliente: string;
-    TipoPagamento: string;
-    StatusDoPedido: string;
-    Observaçoes: string | null;
-    HoraDoPedido: Date;
-    ValorTotalDaComanda: number;
-    Produtos: Array<{
-      Produto: string;
-      Quantidade: number;
-      ValorUnitario: number;
-      ValorTotal: number;
-    }>;
-    Mesa: number;
-  };
 }
 
 @Component({

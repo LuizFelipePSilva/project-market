@@ -86,35 +86,33 @@
     <div class="info-item">
       <span class="info-label">Número da Mesa:</span>
       <span class="info-value">{{
-        selectedOrderDetails.Comanda.Mesa || "N/A"
+        selectedOrderDetails.mesa || "Pedido Online"
       }}</span>
     </div>
 
     <div class="info-item">
       <span class="info-label">Cliente:</span>
       <span class="info-value">{{
-        selectedOrderDetails.Comanda.Cliente || "Não informado"
+        selectedOrderDetails.cliente.nome || "Não informado"
       }}</span>
     </div>
 
     <div class="info-item">
       <span class="info-label">Pagamento:</span>
-      <span class="info-value">{{
-        selectedOrderDetails.Comanda.TipoPagamento || "Não especificado"
-      }}</span>
+      <span class="info-value">{{ selectedOrderDetails.pagamento }}</span>
     </div>
 
     <div class="info-item">
       <span class="info-label">Status:</span>
       <span class="info-value">{{
-        selectedOrderDetails.Comanda.StatusDoPedido || "Desconhecido"
+        selectedOrderDetails.status || "Desconhecido"
       }}</span>
     </div>
 
     <div class="info-item">
       <span class="info-label">Observações:</span>
       <span class="info-value">{{
-        selectedOrderDetails.Comanda["Observaçoes"] || "Nenhuma"
+        selectedOrderDetails.observacoes || "Sem obs"
       }}</span>
     </div>
 
@@ -122,26 +120,29 @@
       <span class="info-label">Hora do Pedido:</span>
       <span class="info-value">
         {{
-          (selectedOrderDetails.Comanda.HoraDoPedido
-            | date : "HH:mm - dd/MM/yy") || "Não registrada"
+          (selectedOrderDetails.dataPedido | date : "HH:mm - dd/MM/yy") ||
+            "Não registrada"
         }}
       </span>
     </div>
   </div>
-
   <div class="products-section" *ngIf="selectedOrderDetails">
     <h3 class="products-title">Produtos</h3>
     <ul class="products-list">
       <li
         class="product-item"
-        *ngFor="let item of selectedOrderDetails.Comanda.Produtos"
+        *ngFor="let item of selectedOrderDetails.produtos"
       >
-        <span
-          >{{ item.Produto || "Produto não especificado" }} ({{
-            item.Quantidade || 0
-          }}x)</span
-        >
-        <span>R$ {{ (item.ValorTotal | number : "1.2-2") || "0,00" }}</span>
+        <span>{{ item.nome }}</span>
+        <span>R$ {{ (item.valorUnitario | number : "1.2-2") || "0,00" }}</span>
+
+        <!-- Fixed adicionais loop -->
+        <div *ngIf="item.adicionais && item.adicionais.length">
+          <div *ngFor="let additional of item.adicionais">
+            Adicional: {{ additional.nome }} (+R$
+            {{ additional.valor | number : "1.2-2" }})
+          </div>
+        </div>
       </li>
     </ul>
   </div>
@@ -151,47 +152,36 @@
       <span class="total-label">Valor Total:</span>
       <span class="total-value">
         R$
-        {{
-          (selectedOrderDetails.Comanda.ValorTotalDaComanda
-            | number : "1.2-2") || "0,00"
-        }}
+        {{ (selectedOrderDetails.valorTotal | number : "1.2-2") || "0,00" }}
       </span>
     </div>
 
     <div class="action-buttons">
-      <div *ngIf="selectedOrderDetails.Comanda.StatusDoPedido === 'Aberto'">
+      <div *ngIf="selectedOrderDetails.status === 'Aberto'">
         <button
           class="transfer-btn danger"
-          (click)="
-            Cancelar(selectedOrderDetails.Comanda.id); closeOrderDetails()
-          "
+          (click)="Cancelar(selectedOrderDetails.id); closeOrderDetails()"
         >
           Recusar Pedido
         </button>
         <button
           class="transfer-btn"
-          (click)="
-            Aprovar(selectedOrderDetails.Comanda.id); closeOrderDetails()
-          "
+          (click)="Aprovar(selectedOrderDetails.id); closeOrderDetails()"
         >
           Aprovar Pedido
         </button>
       </div>
 
-      <div *ngIf="selectedOrderDetails.Comanda.StatusDoPedido === 'Pendente'">
+      <div *ngIf="selectedOrderDetails.status === 'Pendente'">
         <button
           class="transfer-btn danger"
-          (click)="
-            Cancelar(selectedOrderDetails.Comanda.id); closeOrderDetails()
-          "
+          (click)="Cancelar(selectedOrderDetails.id); closeOrderDetails()"
         >
           Recusar Pedido
         </button>
         <button
           class="transfer-btn success"
-          (click)="
-            Concluir(selectedOrderDetails.Comanda.id); closeOrderDetails()
-          "
+          (click)="Concluir(selectedOrderDetails.id); closeOrderDetails()"
         >
           Pedido Pronto
         </button>
