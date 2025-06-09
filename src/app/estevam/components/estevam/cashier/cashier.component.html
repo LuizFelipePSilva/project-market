@@ -29,7 +29,9 @@
       <div class="card-header">
         <div class="order-info">
           <span class="order-number">#{{ order.id }} </span>
-          <span class="order-time">{{ order.createdAt | date : "HH:mm" }}</span>
+          <span class="order-time">{{
+            order.createdAt | date : "dd/MM HH:mm"
+          }}</span>
         </div>
         <button
           class="edit-btn"
@@ -48,13 +50,14 @@
 
       <div class="products-scroll">
         <div
-          *ngFor="let item of orderDetailsMap[order.id!]?.Comanda?.Produtos"
+          *ngFor="let item of orderDetailsMap[order.id!]?.produtos"
           class="product-item"
         >
-          <div class="quantity">{{ item.Quantidade }}x</div>
           <div class="product-details">
-            <span class="name">{{ item.Produto }}</span>
-            <span class="price">{{ item.ValorTotal | currency : "BRL" }}</span>
+            <span class="name">{{ item.nome + " " }}</span>
+            <span class="price">{{
+              item.valorUnitario | currency : "BRL"
+            }}</span>
           </div>
         </div>
       </div>
@@ -62,10 +65,7 @@
       <div class="card-footer">
         <div class="total">
           Total:
-          {{
-            orderDetailsMap[order.id!].Comanda.ValorTotalDaComanda
-              | currency : "BRL"
-          }}
+          {{ orderDetailsMap[order.id!].valorTotal | currency : "BRL" }}
         </div>
         <button class="close-btn" (click)="openCloseModal(order)">
           Fechar Pedido
@@ -75,7 +75,7 @@
   </div>
 
   <!-- Modal Edição -->
-  <div class="modal-overlay" *ngIf="showEditModal">
+  <div class="modal-overlay-edit" *ngIf="showEditModal">
     <div class="modal">
       <h3>Editar Cliente</h3>
       <input

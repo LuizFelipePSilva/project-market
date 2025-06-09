@@ -138,8 +138,7 @@ export class CashierComponent implements OnInit, OnDestroy {
   calculateChange(): void {
     if (this.selectedOrderForPayment?.id) {
       const total =
-        this.orderDetailsMap[this.selectedOrderForPayment.id]?.Comanda
-          .ValorTotalDaComanda || 0;
+        this.orderDetailsMap[this.selectedOrderForPayment.id]?.valorTotal || 0;
       const received = this.paymentData.receivedValue || 0;
       this.paymentData.change = received - total;
     }
@@ -155,8 +154,7 @@ export class CashierComponent implements OnInit, OnDestroy {
     if (!this.selectedOrderForPayment?.id) return;
 
     const total =
-      this.orderDetailsMap[this.selectedOrderForPayment.id]?.Comanda
-        .ValorTotalDaComanda || 0;
+      this.orderDetailsMap[this.selectedOrderForPayment.id]?.valorTotal;
     const requests = [
       this.orderService.updateOrderInfo(this.selectedOrderForPayment.id, {
         payment: this.paymentData.paymentType,
