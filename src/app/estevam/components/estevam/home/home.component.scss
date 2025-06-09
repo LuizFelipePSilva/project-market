@@ -1,7 +1,7 @@
 $color-primary: #4A148C;
 $color-secondary: #7B1FA2;
 $color-accent: #FFAB00;
-$color-dark: #2D033B;
+$color-dark: #6a0572;
 $color-background: #F5F5F5;
 
 .dashboard-container {
@@ -101,7 +101,7 @@ $color-background: #F5F5F5;
   }
 
   .stat-label {
-    font: 400 0.9rem 'Poppins', sans-serif;
+    font: 400 0.9rem 'Montserrat', sans-serif;
     color: #666;
   }
 }
@@ -117,6 +117,7 @@ $color-background: #F5F5F5;
 }
 
 .quick-actions {
+  
   .actions-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -130,6 +131,7 @@ $color-background: #F5F5F5;
     text-align: center;
     transition: transform 0.2s;
     cursor: pointer;
+    text-decoration: none !important;
 
     &:hover {
       transform: translateY(-3px);
@@ -138,13 +140,14 @@ $color-background: #F5F5F5;
 
     .action-icon {
       font-size: 2rem;
-      color: $color-primary;
+      color: $color-secondary;
       margin-bottom: 0.5rem;
     }
 
     span {
-      display: block;
-      font: 500 1rem 'Poppins', sans-serif;
+      display: block; 
+      text-decoration: none !important;
+      font: 700 1rem 'Montserrat', sans-serif;
       color: $color-dark;
     }
   }
@@ -168,7 +171,7 @@ $color-background: #F5F5F5;
     font-weight: 500;
 
     &:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
   }
 
