@@ -8,7 +8,6 @@ import {
 import { AuthService } from '../../../../services/auth-services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { take } from 'rxjs';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 
 @Component({
@@ -46,6 +45,7 @@ export class AuthComponent {
       },
       error: (err) => {
         this.errorMessage = err.error.message;
+        this.loginForm.get('password')?.reset();
       },
     });
   }
