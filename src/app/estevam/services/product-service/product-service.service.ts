@@ -11,6 +11,7 @@ interface IProduct {
   category: string;
   description: string;
   status: 'Disponivel' | 'Indisponivel';
+  image: string; // Adicione esta propriedade
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
@@ -26,18 +27,11 @@ export class ProductServiceService {
     this.authService.verifySession().subscribe();
   }
 
-  createProduct(
-    name: string,
-    value: number,
-    category: string,
-    description: string
-  ): Observable<IProduct> {
+  createProduct(formData: FormData): Observable<IProduct> {
     return this.http
-      .post<IProduct>(
-        `${this.baseUrl}/`,
-        { name, value, category, description },
-        { withCredentials: true }
-      )
+      .post<IProduct>(`${this.baseUrl}/`, formData, {
+        withCredentials: true,
+      })
       .pipe(
         catchError((error) => {
           console.error('Error creating product:', error);
