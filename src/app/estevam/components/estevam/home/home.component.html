@@ -1,0 +1,106 @@
+<app-navbar></app-navbar>
+<div class="dashboard-container">
+  <!-- Header do Painel -->
+  <header class="dashboard-header" role="banner">
+    <div class="header-content">
+      <div class="header-titles">
+        <h1 class="welcome-title">Bem-vindo {{ dataResponse.name }}!!</h1>
+        <p class="company-name">
+          Painel de gerenciamento {{ dataResponse.name }}
+        </p>
+      </div>
+      <div class="header-actions">
+        <button
+          class="new-order-btn"
+          href="estevam/order/create"
+          aria-label="Nova Ordem"
+        >
+          /; <i class="fas fa-plus"></i> Criar Nova Ordem
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Estatísticas Rápidas -->
+  <section class="quick-stats">
+    <div class="stats-grid">
+      <div class="stat-card income">
+        <i class="stat-icon fas fa-solid fa-clock"></i>
+        <div class="stat-content">
+          <span id="stat-value" class="stat-value"></span>
+          <span class="stat-label">Horas atual</span>
+        </div>
+      </div>
+
+      <div class="stat-card orders">
+        <i class="stat-icon fas fa-clipboard-list"></i>
+        <div class="stat-content">
+          <span class="stat-value">{{ dataSource.total }}</span>
+          <span class="stat-label">Pedidos Prontos</span>
+        </div>
+      </div>
+
+      <div class="stat-card pending">
+        <i class="stat-icon fas fa-clock"></i>
+        <div class="stat-content">
+          <span class="stat-value">{{ totalOrder }}</span>
+          <span class="stat-label">Pedidos Totais</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ações Rápidas e Últimos Pedidos -->
+  <main class="dashboard-main">
+    <section class="quick-actions">
+      <h2 class="section-title">Ações Rápidas</h2>
+      <div class="actions-grid">
+        <a class="action-card" href="estevam/product/">
+          <i class="action-icon fas fa-utensils"></i>
+          <span>Gerenciar Produtos</span>
+        </a>
+        <a class="action-card" href="estevam/table">
+          <i class="action-icon fas fa-chair"></i>
+          <span>Gerenciar Mesas</span>
+        </a>
+        <a class="action-card" href="estevam/user">
+          <i class="action-icon fas fa-users-cog"></i>
+          <span>Gerenciar Equipe</span>
+        </a>
+        <a class="action-card" href="estevam/relatorio">
+          <i class="action-icon fas fa-chart-pie"></i>
+          <span>Relatórios</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- home.component.html -->
+    <section class="recent-orders">
+      <div class="orders-header">
+        <h2 class="section-title">Últimos Pedidos</h2>
+        <a href="estevam/casher" class="view-all">Ver Todos →</a>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <div class="orders-list">
+        <div class="order-item" *ngFor="let order of dataSource.data">
+          <div class="order-meta">
+            <span class="order-id">#{{ order.id }}</span>
+            <span class="order-time">{{
+              formatDateTime(order.createdAt)
+            }}</span>
+          </div>
+          <div class="order-details">
+            <span class="order-customer">{{ order.nameClient }}</span>
+            <span class="order-status" [class]="getStatusClass(order.status)">
+              {{ order.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

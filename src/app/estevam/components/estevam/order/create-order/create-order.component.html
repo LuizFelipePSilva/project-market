@@ -1,0 +1,240 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+
+<!-- Botão Flutuante do Carrinho -->
+<div
+  *ngIf="cartItems.length > 0"
+  class="floating-cart-btn"
+  (click)="openCartSidebar()"
+>
+  🛒 {{ cartItems.length }}
+</div>
+
+<!-- Modal de Adicionais -->
+<div class="additional-modal" *ngIf="showAdditionalModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Adicionais para {{ currentProduct?.name }}</h3>
+    </div>
+    <div class="additional-list">
+      <div *ngFor="let ad of currentAdditionals" class="additional-item">
+        <div class="additional-info">
+          <span class="additional-name">{{ ad.name }}</span>
+          <div>
+            <span class="additional-price">{{
+              ad.value | currency : "BRL"
+            }}</span>
+            <span class="additional-limit"> (Máximo: {{ ad.maxAdd }})</span>
+          </div>
+        </div>
+        <div class="additional-controls">
+          <button
+            type="button"
+            (click)="decreaseAdditional(ad)"
+            [disabled]="getAdditionalCountInModal(ad.id!) === 0"
+          >
+            -
+          </button>
+          <span class="additional-count">{{
+            getAdditionalCountInModal(ad.id!)
+          }}</span>
+          <button
+            type="button"
+            (click)="increaseAdditional(ad)"
+            [disabled]="!canAddMoreInModal(ad)"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="total-price">
+        Total: <span>{{ getTotalForCurrentProduct() | currency : "BRL" }}</span>
+      </div>
+      <div class="modal-buttons">
+        <button class="cancel-btn" (click)="cancelAdditionalSelection()">
+          Cancelar
+        </button>
+        <button class="confirm-btn" (click)="confirmAdditionalSelection()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup pós-adicionais -->
+<div class="confirmation-overlay" *ngIf="showPostAdditionalPopup">
+  <div class="confirmation-card">
+    <h3>Produto adicionado ao carrinho!</h3>
+    <div class="confirmation-buttons">
+      <button class="continue-btn" (click)="continueShopping()">
+        Continuar Comprando
+      </button>
+      <button class="review-btn" (click)="goToCart()">
+        Avançar para o Carrinho
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="products-area">
+    <div *ngFor="let category of categories" class="category-section">
+      <h2
+        *ngIf="productsByCategory[category.name].length >= 1"
+        class="category-title"
+      >
+        {{ category.name }}
+      </h2>
+      <div class="products-grid">
+        <div
+          *ngFor="let product of productsByCategory[category.name]"
+          class="product-card"
+        >
+          <img
+            [src]="
+              product.image
+                ? getImageUrl(product.image)
+                : '/imgs/itemNoImage.png'
+            "
+            class="product-image"
+            alt="{{ product.name }}"
+            (error)="handleImageError($event)"
+          />
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            <div class="product-footer">
+              <span class="product-price">
+                {{ product.value | currency : "BRL" : "symbol" : "1.2-2" }}
+              </span>
+              <button (click)="openAdditionalModal(product)" class="add-button">
+                Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar do Carrinho (tela inteira) -->
+  <div class="cart-sidebar" [class.active]="showCartSidebar">
+    <div class="sidebar-header">
+      <h2>Seu Pedido</h2>
+      <button class="close-sidebar" (click)="showCartSidebar = false">
+        &times;
+      </button>
+    </div>
+
+    <div class="order-form">
+      <div class="form-group">
+        <input
+          [(ngModel)]="orderData.nameClient"
+          name="nameClient"
+          placeholder="Nome do Cliente"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <select [(ngModel)]="orderData.payment" name="payment" required>
+          <option value="Pix">Pix</option>
+          <option value="Cartao">Cartão</option>
+          <option value="Dinheiro">Dinheiro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input
+          [(ngModel)]="orderData.phone"
+          name="phone"
+          type="text"
+          placeholder="Telefone"
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          [(ngModel)]="orderData.numberTable"
+          name="numberTable"
+          type="number"
+          placeholder="Número da Mesa"
+          min="1"
+        />
+      </div>
+
+      <div class="form-group">
+        <textarea
+          [(ngModel)]="orderData.obs"
+          name="obs"
+          placeholder="Observações do pedido"
+        ></textarea>
+      </div>
+
+      <div class="cart-items">
+        <div *ngFor="let item of cartItems; let i = index" class="cart-item">
+          <div class="item-info">
+            <span class="item-name">{{ getProductName(item.id) }}</span>
+
+            <div *ngIf="item.additionals.length > 0" class="item-additionals">
+              <div
+                *ngFor="let ad of item.additionals | unique : 'id'"
+                class="additional-item"
+              >
+                <div class="additional-info">
+                  <span
+                    >{{ getAdditionalName(ad.id) }} ({{
+                      getAdditionalCountPerAdditional(ad.id, item.additionals)
+                    }}x)</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="item-controls">
+              <button
+                type="button"
+                (click)="removeItem(i)"
+                class="quantity-btn"
+              >
+                -
+              </button>
+              <button
+                type="button"
+                (click)="duplicateItem(item)"
+                class="quantity-btn"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div class="item-price">
+            {{ calculateItemPrice(item) | currency : "BRL" }}
+          </div>
+        </div>
+      </div>
+      <div class="cart-total">
+        <span>Total:</span>
+        <strong>{{ totalCart | currency : "BRL" : "symbol" : "1.2-2" }}</strong>
+      </div>
+
+      <div class="finalizar-container">
+        <button class="finalizar-btn" (click)="confirmOrder()">
+          Finalizar Compra
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup de Sucesso -->
+<div class="success-popup" *ngIf="showSuccessPopup">
+  Pedido confirmado com sucesso!
+</div>

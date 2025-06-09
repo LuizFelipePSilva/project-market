@@ -1,0 +1,288 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+>
+</app-error-popup>
+<h1 class="section-title">Gerenciamento de Mesas</h1>
+<div class="cards-container">
+  <div
+    class="table-card"
+    *ngFor="let table of tables; trackBy: trackByTableId"
+    [ngClass]="'status-' + table.status.toLowerCase()"
+    (click)="openTableDetails(table); findDetailsOfTable(table)"
+  >
+    <div class="card-content">
+      <p class="mesa-number">{{ table.numberTable }}</p>
+      <p class="status-badge">{{ table.status }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+  <span>Página {{ currentPage }} de {{ dataSource.last_page }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage >= dataSource.last_page">
+    Próxima
+  </button>
+</div>
+
+<div class="table-details-sidebar" [class.show]="showSidebar">
+  <button class="sidebar-close-btn" (click)="closeTableDetails()">×</button>
+
+  <div class="sidebar-content" *ngIf="selectedTableDetails">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Detalhes do Pedido</h2>
+    </div>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span class="info-label">Número da Mesa:</span>
+        <span class="info-value">{{ selectedTableDetails.numberTable }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Número do Pedido:</span>
+        <span class="info-value">{{ selectedTableDetails.order.id }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Cliente:</span>
+        <span class="info-value">{{ selectedTableDetails.order.Cliente }}</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span class="info-label">Pagamento:</span>
+        <span class="info-value">{{
+          selectedTableDetails.order.TipoPagamento
+        }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Status:</span>
+        <span class="status-tag">{{
+          selectedTableDetails.order.StatusDoPedido
+        }}</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span class="info-label">Observações:</span>
+        <span class="info-value">{{
+          selectedTableDetails.order["Observaçoes"]
+        }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Hora do Pedido:</span>
+        <span class="info-value">{{
+          selectedTableDetails.order.HoraDoPedido | date : "HH:mm - dd/MM/yy"
+        }}</span>
+      </div>
+    </div>
+
+    <div class="products-section">
+      <h3 class="products-title">Produtos</h3>
+      <ul class="products-list">
+        <li
+          class="product-item"
+          *ngFor="let item of selectedTableDetails.order.Produtos"
+        >
+          {{ item.Produto }} R$
+          {{ item.Valor | number : "1.2-2" }}
+          <div *ngIf="item.Adicionais && item.Adicionais.length">
+            <div *ngFor="let additional of item.Adicionais">
+              Adicional: {{ additional.Nome }} (+R$
+              {{ additional.Valor | number : "1.2-2" }})
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="total-section">
+      <div class="total-item">
+        <span class="total-label">Valor Total:</span>
+        <span class="total-value"
+          >R$ {{ selectedTableDetails.order.ValorTotalDaComanda }}</span
+        >
+      </div>
+      <div class="transfer-buttons">
+        <button (click)="OpenTranfer()" class="transfer-btn">
+          Transferir Pedidos
+        </button>
+        <button
+          *ngIf="selectedTableDetails.order.StatusDoPedido === 'Pronto'"
+          (click)="navigateToCashier()"
+          class="payment-btn"
+        >
+          Ir para o Caixa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="management-sidebar" [class.show]="showManagementSidebar">
+  <button class="sidebar-close-btn" (click)="closeManagementSidebar()">
+    ×
+  </button>
+
+  <div class="sidebar-content" *ngIf="detailsOfTable">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Mesa {{ detailsOfTable.numberTable }}</h2>
+      <p class="current-status">Essa mesa está {{ detailsOfTable.status }}</p>
+    </div>
+    <div class="reservd-table" *ngIf="dataReserved">
+      <p class="nameClient">{{ dataReserved.NameClientReserve }}</p>
+      <p class="phoneClient">{{ dataReserved.PhoneReserve }}</p>
+    </div>
+    <div class="status-actions">
+      <button
+        *ngIf="
+          detailsOfTable.status !== 'Inutilizavel' &&
+          detailsOfTable.status !== 'Pedido'
+        "
+        (click)="InutilzarMesa(detailsOfTable.id!)"
+        class="status-btn inutilizar"
+      >
+        Inutilizar Mesa
+      </button>
+
+      <button
+        *ngIf="
+          detailsOfTable.status !== 'Reservado' &&
+          detailsOfTable.status !== 'Inutilizavel' &&
+          detailsOfTable.status !== 'Pedido'
+        "
+        (click)="OpenReserved()"
+        class="status-btn reservar"
+      >
+        Reservar Mesa
+      </button>
+      <button
+        *ngIf="
+          detailsOfTable.status !== 'Aberto' &&
+          detailsOfTable.status !== 'Pedido'
+        "
+        (click)="AbrirMesa(detailsOfTable.id!)"
+        class="status-btn abrir"
+      >
+        Abrir Mesa
+      </button>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="transferTable; selectedTableDetails"
+  class="popup-transfer-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="transferTitle"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="CloseTranfer()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <form
+      [formGroup]="tableTransfer"
+      (ngSubmit)="onSubmit()"
+      class="transfer-form"
+    >
+      <h2 id="transferTitle" class="title">Transferir Pedido</h2>
+      <p class="instructions">Para qual mesa deseja transferir o pedido?</p>
+
+      <div class="input-group">
+        <input
+          type="number"
+          id="tableNumber"
+          placeholder="Número da mesa"
+          min="1"
+          formControlName="tableNumberFinal"
+          required
+          aria-required="true"
+          class="table-input"
+          name="tableNumber"
+        />
+        <span class="input-icon">#</span>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn transfer-btn">
+          Confirmar Transferência
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  *ngIf="reservedTable"
+  class="popup-reserved-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="transferTitle"
+>
+  <div class="popup-reserved">
+    <button class="close-btn" (click)="CloseReserved()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <form
+      [formGroup]="reservedTransfer"
+      (ngSubmit)="OnSubmitReserve()"
+      class="transfer-form"
+    >
+      <h2 id="transferTitle" class="title">Reservar Mesa</h2>
+      <span>Digite o nome do cliente</span>
+      <div class="input-group">
+        <input
+          type="text"
+          placeholder="Nome do Cliente..."
+          formControlName="NameClientReserve"
+          required
+        />
+      </div>
+      <span>Digite o telefone do cliente</span>
+      <div class="input-group">
+        <input
+          type="number"
+          placeholder="Exemplo: (XX)12345-6789"
+          formControlName="PhoneReserve"
+          required
+        />
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn transfer-btn">
+          Confirmar Reserva
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

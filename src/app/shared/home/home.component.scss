@@ -1,0 +1,375 @@
+// styles.scss
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+$color-primary: #6a0572;
+$color-secondary: #9c27b0;
+$color-light: #d6a2e8;
+$color-dark: #4a0250;
+$color-background: #f9f9f9;
+$color-white: #ffffff;
+$color-black: #000000;
+$color-gray: #e0e0e0;
+
+@mixin flex-center($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin hover-effect($translateY: -3px) {
+  transition: transform 0.5s ease;
+  &:hover {
+    transform: translateY($translateY);
+  }
+}
+
+// Estilos Globais
+.home-container {
+  @include flex-center(column);
+  background: $color-background;
+  transition: margin 0.3s ease;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// Hero Section
+.hero {
+  background: linear-gradient(135deg, $color-dark 0%, $color-primary 100%);
+  color: $color-white;
+  padding: 6rem 2rem 4rem;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: $color-background;
+    transform: skewY(-3deg);
+  }
+
+  &__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__brand {
+    @include flex-center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  &__icon {
+    color: $color-light;
+    font-size: 4rem;
+    filter: drop-shadow(0 2px 4px rgba($color-black, 0.3));
+    @include hover-effect;
+  }
+
+  &__title {
+    font: 700 4rem/1.2 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, $color-light 0%, $color-white 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba($color-black, 0.2);
+
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+    }
+  }
+
+  &__tagline {
+    font-size: 1.5rem;
+    margin: 1rem 0 3rem;
+    font-weight: 300;
+    letter-spacing: 0.8px;
+  }
+
+  &__cta {
+    @include hover-effect(-3px);
+    background: linear-gradient(45deg, $color-secondary, $color-light);
+    color: $color-white;
+    padding: 1.2rem 3rem;
+    border: none;
+    border-radius: 35px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, $color-secondary, $color-secondary);
+      transition: left 0.5s ease;
+      z-index: -1;
+    }
+
+    &:hover::before {
+      left: 0;
+    }
+  }
+}
+
+// Benefits Section
+.benefits {
+  padding: 6rem 2rem;
+  width: 100%;
+  background: $color-background;
+
+  &__title {
+    text-align: center;
+    color: $color-dark;
+    margin-bottom: 4rem;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 120px;
+      height: 4px;
+      background: $color-secondary;
+      margin: 1.5rem auto;
+      border-radius: 2px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+}
+
+// Benefit Card
+.benefit-card {
+  background: $color-white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  text-align: center;
+  @include hover-effect(-15px);
+  border: 1px solid rgba($color-light, 0.3);
+  
+  &__icon {
+    color: $color-secondary;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  &__title {
+    color: $color-dark;
+    margin: 1rem 0;
+    font-size: 1.4rem;
+  }
+
+  &__description {
+    color: $color-primary;
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  &:hover &__icon {
+    transform: rotate(15deg);
+  }
+}
+
+// Devices Section
+
+// Notebook com moldura realista
+.device-frame--notebook {
+  width: 600px;
+  height: 340px;
+  background: $color-black; // simula a moldura externa
+  border-radius: 8px;
+  padding: 8px; // "bezel" da tela
+  position: relative;
+  box-shadow: 0 5px 15px rgba($color-black, 0.3);
+
+  .device-image {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 4px; // tela levemente arredondada
+    object-fit: cover;
+  }
+
+  .device-detail--keyboard {
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 12px;
+    background: color.adjust($color-gray, $lightness: -15%);
+    border-radius: 0 0 8px 8px;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 500px;
+    height: 280px;
+  }
+}
+
+// Celular com moldura e detalhe de notch/alto-falante
+.device-frame--phone {
+  width: 280px;
+  height: 560px;
+  background: $color-black; // simula a moldura externa
+  border-radius: 40px;
+  padding: 8px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba($color-black, 0.3);
+
+  .device-image {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 30px; // bordas suaves para a tela
+    object-fit: cover;
+  }
+
+  // Faixa que simula o notch ou alto-falante
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 6px;
+    background: rgba($color-white, 0.6);
+    border-radius: 3px;
+  }
+  
+  @media (max-width: 768px) {
+    width: 220px;
+    height: 440px;
+  }
+}
+
+.devices-heading {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  padding: 0 2rem;
+
+  &__title {
+    font-size: 2.5rem;
+    color: $color-dark;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1.2rem;
+    color: $color-primary;
+    line-height: 1.6;
+  }
+}
+
+.devices-section {
+  padding: 6rem 2rem;
+  width: 100%;
+  background: $color-background;
+
+  @media (max-width: 768px) {
+    padding: 4rem 1rem;
+  }
+}
+
+.devices-container {
+  @include flex-center;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+.device-image-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 20px rgba($color-black, 0.05);
+  }
+}
+
+.device-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.device-detail {
+  &--camera {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: $color-black;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba($color-white, 0.3);
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .hero {
+    padding: 4rem 1rem;
+
+    &__title {
+      font-size: 2.5rem;
+    }
+
+    &__tagline {
+      font-size: 1.2rem;
+    }
+  }
+
+  .benefits {
+    padding: 4rem 1rem;
+  }
+
+  .device-frame {
+    &--notebook {
+      height: 250px;
+    }
+    
+    &--phone {
+      height: 400px;
+    }
+  }
+}

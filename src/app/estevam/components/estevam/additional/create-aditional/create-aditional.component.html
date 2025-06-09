@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+
+<div class="additional-container">
+  <h2>Criar adicional para Categoria</h2>
+  <h3>Selecione a categoria abaixo</h3>
+  <form
+    [formGroup]="additionalGroup"
+    (ngSubmit)="onSubmit()"
+    enctype="multipart/form-data"
+  >
+    <div class="container-form">
+      <label>Categoria</label>
+      <select formControlName="categoryId" required>
+        <option *ngFor="let category of categoryGroup" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+      <span
+        *ngIf="
+          additionalGroup.get('category')?.invalid &&
+          additionalGroup.get('category')?.touched
+        "
+      >
+        Categoria é necessária
+      </span>
+    </div>
+
+    <div class="container-form">
+      <label>Nome do adicional</label>
+      <input type="text" formControlName="name" required />
+      <span
+        *ngIf="
+          additionalGroup.get('name')?.invalid &&
+          additionalGroup.get('name')?.touched
+        "
+      >
+        Nome é necessário
+      </span>
+    </div>
+
+    <div class="container-form">
+      <label>Valor do adicional</label>
+      <input type="number" formControlName="value" step="0.01" required />
+      <span
+        *ngIf="
+          additionalGroup.get('value')?.invalid &&
+          additionalGroup.get('value')?.touched
+        "
+      >
+        Valor é necessário
+      </span>
+    </div>
+
+    <div class="container-form">
+      <label>Maximo por pedido</label>
+      <input type="number" formControlName="maxAdd" required />
+      <span
+        *ngIf="
+          additionalGroup.get('maxAdd')?.invalid &&
+          additionalGroup.get('maxAdd')?.touched
+        "
+      >
+        Maximo é necessário
+      </span>
+    </div>
+    <button type="submit" [disabled]="additionalGroup.invalid">Criar</button>
+  </form>
+</div>
+<div class="success-popup" [class.active]="showSuccessPopup">
+  <div class="success-content">✅ Adicional criado com sucesso!</div>
+</div>

@@ -1,0 +1,86 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+
+<div class="category-container">
+  <h2 class="section-title">Gerenciamento de Categorias</h2>
+  <div class="table-category">
+    <table>
+      <thead>
+        <th>Nome</th>
+        <th>Acoes</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categorys" class="category-row">
+          <td data-label="Nome">
+            <div class="category-name">
+              <i></i>
+              {{ category.name }}
+            </div>
+          </td>
+          <td data-label="Acoes">
+            <div class="category-actions">
+              <button (click)="confirmDelete(category.id)" class="delete-btn">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button (click)="updateCategory(category.id)" class="update-btn">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div
+  *ngIf="showDeletePopup"
+  class="popup-delete-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="statusTitle"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="closeDeletePopup()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <div class="transfer-form">
+      <h2 id="statusTitle" class="title">Deletar Categoria</h2>
+      <p class="instructions">Tem certeza que deseja excluir este Categoria?</p>
+
+      <div class="button-group">
+        <button
+          type="button"
+          class="btn cancel-btn"
+          (click)="closeDeletePopup()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn transfer-btn"
+          (click)="deleteCategory()"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

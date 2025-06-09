@@ -1,0 +1,315 @@
+@use "sass:color";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+$roxo-primario: #6a0572;
+$roxo-secundario: #9c27b0;
+$roxo-claro: #d6a2e8;
+$roxo-escuro: #4a0250;
+$cinza-claro: #e0e0e0;
+$branco: #ffffff;
+$preto: #000000;
+$verde-status: #00C851;
+$vermelho-status: #ff4444;
+$primary: #2ecc71;
+
+$breakpoint-xxl: 1440px;
+$breakpoint-xl: 1200px;
+$breakpoint-lg: 992px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 576px;
+$breakpoint-xs: 480px;
+
+.list-additinal-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: $roxo-escuro;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid $roxo-claro;
+  }
+  .container-form {
+    background-color: $branco;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    
+    > label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: $roxo-escuro;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid $cinza-claro;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      background-color: $branco;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s ease;
+      
+      &:focus {
+        outline: none;
+        border-color: $roxo-primario;
+        box-shadow: 0 0 0 2px rgba($roxo-primario, 0.2);
+      }
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      background-color: $roxo-primario;
+      color: $branco;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+      
+      &:hover {
+        background-color: $roxo-secundario;
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: $branco;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      
+      thead {
+        background-color: $roxo-primario;
+        
+        th {
+          padding: 1rem;
+          text-align: left;
+          font-weight: 600;
+          color: $branco;
+          border-bottom: 2px solid $roxo-escuro;
+        }
+      }
+      
+      tbody {
+        tr {
+          border-bottom: 1px solid $cinza-claro;
+          transition: background-color 0.2s ease;
+          
+          &:hover {
+            background-color: rgba($roxo-claro, 0.1);
+          }
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          td {
+            padding: 1rem;
+            color: $roxo-escuro;
+            
+            &:first-child {
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: $breakpoint-md) {
+  .list-additinal-container {
+    padding: 1rem;
+    h2 {
+      font-size: 1.4rem;
+      padding-bottom: 0.4rem;
+    }
+    .container-form {
+      padding: 1rem;
+      
+      table {
+        display: block;
+        overflow-x: auto;
+        
+        thead th {
+          font-size: 0.9rem;
+          padding: 0.75rem;
+        }
+        
+        tbody td {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .list-additinal-container {
+    .container-form {
+      table {
+        min-width: 600px;
+      }
+    }
+  }
+}
+.success-popup {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2100;
+  transition: all 0.5s ease;
+  width: 90%;
+  max-width: 400px;
+  
+  &.active {
+    top: 20px;
+    animation: slideIn 0.5s, slideOut 0.5s 2.5s;
+  }
+
+  .success-content {
+    background: $primary;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-weight: 500;
+  }
+}
+.popup-delete-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($preto, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .popup-transfer {
+    position: relative;
+    background: $branco;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba($preto, 0.2);
+    max-width: 450px;
+    width: 90%;
+
+    @media (min-width: $breakpoint-sm) {
+      padding: 2.5rem;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: $roxo-escuro;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: $roxo-primario;
+        transform: rotate(90deg);
+      }
+    }
+
+    .transfer-form {
+      .title {
+        color: $roxo-escuro;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        text-align: center;
+
+        @media (min-width: $breakpoint-sm) {
+          font-size: 1.5rem;
+        }
+      }
+
+      .instructions {
+        color: $roxo-secundario;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-size: 0.95rem;
+
+        @media (min-width: $breakpoint-sm) {
+          font-size: 1rem;
+        }
+      }
+
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+
+        @media (min-width: $breakpoint-xs) {
+          flex-direction: row;
+          justify-content: center;
+        }
+
+        .btn {
+          padding: 0.9rem;
+          border: none;
+          border-radius: 6px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-width: 120px;
+          text-align: center;
+          font-size: 0.95rem;
+
+          @media (min-width: $breakpoint-sm) {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+          }
+
+          &.transfer-btn {
+            background: $roxo-primario;
+            color: $branco;
+
+            &:hover {
+              background: $roxo-secundario;
+              transform: translateY(-1px);
+            }
+          }
+
+          &.cancel-btn {
+            background: $cinza-claro;
+            color: $roxo-escuro;
+
+            &:hover {
+              background: color.adjust($cinza-claro, $lightness: -10%, $space: hsl);
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
