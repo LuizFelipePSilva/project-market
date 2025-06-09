@@ -9,7 +9,6 @@
 
     <ng-container *ngIf="{ userRole: userRole$ | async } as state">
       <ul class="nav-links" [ngClass]="{ open: isMenuOpen }">
-        <!-- Página Inicial -->
         <li>
           <a href="estevam/home">
             <i class="fa-solid fa-house"></i>
@@ -20,7 +19,7 @@
         <li *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'">
           <a href="estevam/casher">
             <i class="fa-solid fa-wallet"></i>
-            Caixa
+            <span>Caixa</span>
           </a>
         </li>
 
@@ -89,6 +88,59 @@
           </ul>
         </li>
 
+        <!-- Categorias -->
+        <li *ngIf="state.userRole">
+          <button (click)="toggleSubMenu('category')" class="submenu-toggle">
+            <i class="fa-solid fa-tags"></i>
+            <span>Categorias</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul *ngIf="openSubMenu === 'category'" class="submenu">
+            <li
+              *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'"
+            >
+              <a href="estevam/category">
+                <i class="fa-solid fa-plus circle"></i>
+                Criar Categoria
+              </a>
+            </li>
+            <li
+              *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'"
+            >
+              <a href="estevam/category/list">
+                <i class="fa-solid fa-plus-circle"></i>
+                Listar Categorias
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Adicionais -->
+        <li *ngIf="state.userRole">
+          <button (click)="toggleSubMenu('additional')" class="submenu-toggle">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Adicional</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul *ngIf="openSubMenu === 'additional'" class="submenu">
+            <li
+              *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'"
+            >
+              <a href="estevam/additional/create">
+                <i class="fa-solid fa-plus circle"></i>
+                Criar Adicional
+              </a>
+            </li>
+            <li
+              *ngIf="state.userRole === 'admin' || state.userRole === 'clerk'"
+            >
+              <a href="estevam/additional">
+                <i class="fa-solid fa-plus-circle"></i>
+                Listar Adicionais
+              </a>
+            </li>
+          </ul>
+        </li>
         <!-- Produtos -->
         <li *ngIf="state.userRole">
           <button (click)="toggleSubMenu('product')" class="submenu-toggle">
