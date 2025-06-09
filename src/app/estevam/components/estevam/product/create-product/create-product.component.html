@@ -1,3 +1,4 @@
+<!-- create-product.component.html -->
 <app-navbar></app-navbar>
 <app-error-popup
   *ngIf="errorMessage"
@@ -7,7 +8,11 @@
 
 <div class="product-container">
   <h2>Criar Produto</h2>
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="onSubmit()"
+    enctype="multipart/form-data"
+  >
     <div class="container-form">
       <label>Nome do Produto</label>
       <input type="text" formControlName="name" required />
@@ -16,47 +21,79 @@
           productForm.get('name')?.invalid && productForm.get('name')?.touched
         "
       >
-        Nome é nescessário
+        Nome é necessário
       </span>
     </div>
+
     <div class="container-form">
       <label>Valor</label>
-      <input type="number" formControlName="value" required />
+      <input type="number" formControlName="value" required step="0.01" />
       <span
         *ngIf="
           productForm.get('value')?.invalid && productForm.get('value')?.touched
         "
       >
-        Valor é nescessário
+        Valor é necessário
       </span>
     </div>
+
     <div class="container-form">
       <label>Categoria</label>
-      <input type="text" formControlName="category" required />
+      <select formControlName="categoryId" required>
+        <option *ngFor="let category of categoryGroup" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
       <span
         *ngIf="
           productForm.get('category')?.invalid &&
           productForm.get('category')?.touched
         "
       >
-        Categoria é nescessário
+        Categoria é necessária
       </span>
     </div>
+
     <div class="container-form">
       <label>Descrição</label>
-      <input type="text" formControlName="description" required />
+      <textarea formControlName="description" required></textarea>
       <span
         *ngIf="
           productForm.get('description')?.invalid &&
           productForm.get('description')?.touched
         "
       >
-        Descrição tem que ter no minimo 10 caracteres.
+        Descrição deve ter no mínimo 10 caracteres
       </span>
     </div>
+
+    <div class="container-form">
+      <label>Imagem do Produto</label>
+      <div class="file-input-container">
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          required
+        />
+        <div class="image-preview" *ngIf="previewUrl">
+          <img [src]="previewUrl" alt="Pré-visualização da imagem" />
+        </div>
+      </div>
+      <span
+        *ngIf="
+          productForm.get('image')?.invalid && productForm.get('image')?.touched
+        "
+      >
+        Imagem é obrigatória
+      </span>
+    </div>
+
     <button type="submit" [disabled]="productForm.invalid">Criar</button>
   </form>
 </div>
+
 <div class="success-popup" [class.active]="showSuccessPopup">
   <div class="success-content">✅ Produto Criado com Sucesso!</div>
 </div>
