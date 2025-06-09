@@ -50,7 +50,7 @@ export class CreateTableComponent {
     const { numberTable } = this.tableForm.value;
     this.tableService.createTable(numberTable).subscribe({
       next: (value) => {
-        this.router.navigate(['/table']);
+        this.router.navigate(['/estevam/table']);
       },
       error: (err) => {
         this.errorMessage =
@@ -66,7 +66,7 @@ export class CreateTableComponent {
       .createManyTable(numberTableInital, numberTableFinal)
       .subscribe({
         next: (value) => {
-          this.router.navigate(['/table']);
+          this.router.navigate(['/estevam/table']);
         },
         error: (err) => {
           this.errorMessage =
