@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 /* Variáveis de Design */
@@ -23,11 +25,11 @@ $breakpoint-xs: 480px;
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
-  background: lighten($cinza-claro, 8%);
+  background: color.adjust($cinza-claro, $lightness: 8%, $space: hsl);
 }
 
 /* Popup de Confirmação */
-.popup-transfer-overlay {
+.popup-transfer-overlay, .popup-delete-overlay{
   position: fixed;
   top: 0;
   left: 0;
@@ -133,7 +135,7 @@ body {
             color: $roxo-escuro;
 
             &:hover {
-              background: darken($cinza-claro, 10%);
+              background: color.adjust($cinza-claro, $lightness: -10%, $space: hsl);
               transform: translateY(-1px);
             }
           }
@@ -341,13 +343,13 @@ body {
 
             &.disponivel {
               background: rgba($verde-status, 0.15);
-              color: darken($verde-status, 20%);
+              color: color.adjust($verde-status, $lightness: -20%, $space: hsl);
               border: 2px solid $verde-status;
             }
 
             &.indisponivel {
               background: rgba($vermelho-status, 0.15);
-              color: darken($vermelho-status, 20%);
+              color: color.adjust($vermelho-status, $lightness: -20%, $space: hsl);
               border: 2px solid $vermelho-status;
             }
           }
@@ -400,7 +402,7 @@ body {
                 color: $branco;
 
                 &:hover {
-                  background: darken($vermelho-status, 10%);
+                  background: color.adjust($vermelho-status, $lightness: -10%, $space: hsl);
                 }
               }
 

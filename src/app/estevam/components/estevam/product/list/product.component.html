@@ -67,7 +67,7 @@
             </td>
             <td *ngIf="state.userRole === 'admin'" data-label="Ações">
               <div class="action-buttons">
-                <button (click)="deleteProduct(product.id)" class="delete-btn">
+                <button (click)="confirmDelete(product.id)" class="delete-btn">
                   <i class="fas fa-trash"></i>
                 </button>
                 <button
@@ -157,17 +157,65 @@
       <div class="button-group">
         <button
           type="button"
+          class="btn cancel-btn"
+          (click)="closeStatusPopup()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
           class="btn transfer-btn"
           (click)="handleStatusConfirmation()"
         >
           Confirmar
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="showDeletePopup"
+  class="popup-delete-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="statusTitle"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="closeDeletePopup()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <div class="transfer-form">
+      <h2 id="statusTitle" class="title">Deletar Produto</h2>
+      <p class="instructions">Tem certeza que deseja excluir este produto?</p>
+
+      <div class="button-group">
         <button
           type="button"
           class="btn cancel-btn"
-          (click)="closeStatusPopup()"
+          (click)="closeDeletePopup()"
         >
           Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn transfer-btn"
+          (click)="deleteProduct()"
+        >
+          Confirmar
         </button>
       </div>
     </div>
