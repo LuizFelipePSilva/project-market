@@ -25,7 +25,7 @@ export class AuthService {
     return this.userRoleSubject.value;
   }
 
-  setLoading(isLoading: boolean) {
+  setLoading(isLoading: boolean): void {
     this.loadingSubject.next(isLoading);
   }
 
@@ -37,7 +37,6 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.userRoleSubject.next(response.message);
-          console.log(response);
         }),
         catchError((error) => {
           this.userRoleSubject.next(null);
