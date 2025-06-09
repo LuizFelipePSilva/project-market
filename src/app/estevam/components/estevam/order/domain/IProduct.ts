@@ -2,8 +2,9 @@ export interface IProduct {
   id: string;
   name: string;
   value: number;
-  category: string;
+  categoryId: string;
   description: string;
+  image: string;
   status: 'Disponivel' | 'Indisponivel';
   createdAt: Date;
   updatedAt: Date;
