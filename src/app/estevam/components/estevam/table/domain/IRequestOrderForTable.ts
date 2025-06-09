@@ -10,9 +10,13 @@ export interface IRequestOrderForTable {
     ValorTotalDaComanda: number;
     Produtos: Array<{
       Produto: string;
-      Quantidade: number;
-      ValorUnitario: number;
-      ValorTotal: number;
+      Valor: number;
+      CategoryId: string;
+      Adicionais: Array<{
+        Nome: string;
+        Valor: number;
+      }>;
+      ValorTotalItem?: number;
     }>;
   };
 }

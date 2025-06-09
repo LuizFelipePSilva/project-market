@@ -88,8 +88,14 @@
           class="product-item"
           *ngFor="let item of selectedTableDetails.order.Produtos"
         >
-          {{ item.Produto }} ({{ item.Quantidade }}x) - R$
-          {{ item.ValorTotal | number : "1.2-2" }}
+          {{ item.Produto }} R$
+          {{ item.Valor | number : "1.2-2" }}
+          <div *ngIf="item.Adicionais && item.Adicionais.length">
+            <div *ngFor="let additional of item.Adicionais">
+              Adicional: {{ additional.Nome }} (+R$
+              {{ additional.Valor | number : "1.2-2" }})
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -126,7 +132,10 @@
       <h2 class="sidebar-title">Mesa {{ detailsOfTable.numberTable }}</h2>
       <p class="current-status">Essa mesa está {{ detailsOfTable.status }}</p>
     </div>
-
+    <div class="reservd-table" *ngIf="dataReserved">
+      <p class="nameClient">{{ dataReserved.NameClientReserve }}</p>
+      <p class="phoneClient">{{ dataReserved.PhoneReserve }}</p>
+    </div>
     <div class="status-actions">
       <button
         *ngIf="
@@ -145,7 +154,7 @@
           detailsOfTable.status !== 'Inutilizavel' &&
           detailsOfTable.status !== 'Pedido'
         "
-        (click)="ReservarMesa(detailsOfTable.id!)"
+        (click)="OpenReserved()"
         class="status-btn reservar"
       >
         Reservar Mesa
@@ -214,6 +223,64 @@
       <div class="button-group">
         <button type="submit" class="btn transfer-btn">
           Confirmar Transferência
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  *ngIf="reservedTable"
+  class="popup-reserved-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="transferTitle"
+>
+  <div class="popup-reserved">
+    <button class="close-btn" (click)="CloseReserved()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <form
+      [formGroup]="reservedTransfer"
+      (ngSubmit)="OnSubmitReserve()"
+      class="transfer-form"
+    >
+      <h2 id="transferTitle" class="title">Reservar Mesa</h2>
+      <span>Digite o nome do cliente</span>
+      <div class="input-group">
+        <input
+          type="text"
+          placeholder="Nome do Cliente..."
+          formControlName="NameClientReserve"
+          required
+        />
+      </div>
+      <span>Digite o telefone do cliente</span>
+      <div class="input-group">
+        <input
+          type="number"
+          placeholder="Exemplo: (XX)12345-6789"
+          formControlName="PhoneReserve"
+          required
+        />
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn transfer-btn">
+          Confirmar Reserva
         </button>
       </div>
     </form>

@@ -11,12 +11,15 @@ import {
 import { IRequestOrderForTable } from '../domain/IRequestOrderForTable';
 import { ITable } from '../domain/ITable';
 import { ITablePaginate } from '../domain/ITablePaginate';
-import { ISwitchOrderTable } from '../domain/ISwitchOrderTable';
 import { Router } from '@angular/router';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 import { TransferServiceService } from '../../../../services/table-services/transfer-service.service';
 import { environment } from '../../../../../../environments/environment.development';
 import { NavbarComponent } from '../../navbar/navbar.component';
+import {
+  IReserveTable,
+  ReservedService,
+} from '../../../../services/table-services/reserved.service';
 
 @Component({
   selector: 'app-table',
@@ -32,6 +35,7 @@ import { NavbarComponent } from '../../navbar/navbar.component';
 })
 export class TableComponent implements OnInit {
   tableTransfer: FormGroup;
+  reservedTransfer: FormGroup;
   tables: ITable[] = [];
   dataSource: ITablePaginate = {
     per_page: 0,
@@ -49,19 +53,28 @@ export class TableComponent implements OnInit {
   selectedTable: ITable | null = null;
   detailsOfTable: ITable | null = null;
   transferTable: boolean = false;
+  reservedTable: boolean = false;
   errorMessage: string | null = null;
+  dataReserved: IReserveTable | null = null;
   urlAPi = '/table';
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     public appComponent: AppComponent,
     private Router: Router,
-    private transferService: TransferServiceService
+    private transferService: TransferServiceService,
+    private reservedService: ReservedService
   ) {
     this.tableTransfer = this.fb.group({
       tableNumberOrigin: ['', [Validators.required]],
       orderId: ['', [Validators.required]],
       tableNumberFinal: ['', [Validators.required]],
+    });
+    this.reservedTransfer = this.fb.group({
+      numberTable: ['', [Validators.required]],
+      NameClientReserve: ['', [Validators.required]],
+      PhoneReserve: ['', [Validators.required]],
     });
   }
 
@@ -120,6 +133,9 @@ export class TableComponent implements OnInit {
             this.errorMessage = 'Erro ao carregar detalhes do pedido';
           }
         );
+    } else if (table.status === 'Reservado') {
+      this.findReservedOfTable(table);
+      this.showManagementSidebar = true;
     } else {
       this.findDetailsOfTable(table);
       this.showManagementSidebar = true;
@@ -130,6 +146,17 @@ export class TableComponent implements OnInit {
     this.http.get<ITable>(url, { withCredentials: true }).subscribe({
       next: (response) => {
         this.detailsOfTable = response;
+      },
+      error: (err) => {
+        this.errorMessage = err.error.message;
+      },
+    });
+  }
+  findReservedOfTable(table: ITable): void {
+    const url = `${environment.apiUrl}${this.urlAPi}/reserved/view/${table.numberTable}`;
+    this.http.get<IReserveTable>(url, { withCredentials: true }).subscribe({
+      next: (response) => {
+        this.dataReserved = response;
       },
       error: (err) => {
         this.errorMessage = err.error.message;
@@ -151,35 +178,6 @@ export class TableComponent implements OnInit {
         url,
         {
           status: 'Inutilizavel',
-        },
-        { withCredentials: true }
-      )
-      .subscribe({
-        next: () => {
-          this.loadTable(this.currentPage);
-          this.closeManagementSidebar();
-          this.detailsOfTable = null;
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-  }
-  ReservarMesa(tableId: string) {
-    if (
-      this.detailsOfTable?.status === 'Inutilizavel' ||
-      this.detailsOfTable?.status === 'Pedido'
-    ) {
-      this.errorMessage =
-        'Mesa inutilizável ou com pedido não pode ser reservada';
-      return;
-    }
-    const url = `${environment.apiUrl}${this.urlAPi}/change/${tableId}`;
-    this.http
-      .patch<any>(
-        url,
-        {
-          status: 'Reservado',
         },
         { withCredentials: true }
       )
@@ -233,12 +231,13 @@ export class TableComponent implements OnInit {
     this.transferTable = false;
     this.tableTransfer.reset();
   }
+
   onSubmit() {
     if (this.tableTransfer.invalid || !this.selectedTableDetails) return;
     this.errorMessage = null;
     const { tableNumberOrigin, orderId, tableNumberFinal } =
       this.tableTransfer.value;
-
+    console.log(tableNumberOrigin, orderId, tableNumberFinal);
     this.transferService
       .transferSubmit(tableNumberOrigin, orderId, tableNumberFinal)
       .subscribe({
@@ -255,6 +254,43 @@ export class TableComponent implements OnInit {
         },
       });
   }
+  OpenReserved() {
+    if (this.detailsOfTable) {
+      this.reservedTransfer.patchValue({
+        numberTable: this.detailsOfTable?.numberTable,
+        NameClientReserve: '',
+        PhoneReserve: '',
+      });
+    }
+    this.reservedTable = true;
+  }
+  CloseReserved() {
+    this.reservedTable = false;
+    this.reservedTransfer.reset();
+  }
+
+  OnSubmitReserve() {
+    if (this.reservedTransfer.invalid || !this.detailsOfTable) return;
+    this.errorMessage = null;
+    const { numberTable, NameClientReserve, PhoneReserve } =
+      this.reservedTransfer.value;
+    this.reservedService
+      .reservedSubmit(NameClientReserve, PhoneReserve.toString(), numberTable)
+      .subscribe({
+        next: () => {
+          this.reservedTable = false;
+          this.closeManagementSidebar();
+          this.reservedTransfer.reset();
+          this.loadTable(this.currentPage);
+        },
+        error: (err) => {
+          console.log('Erro');
+          this.errorMessage =
+            err.error?.message ||
+            'Ocorreu um erro inesperado. Tente novamente.';
+        },
+      });
+  }
   closeErrorPopup() {
     this.errorMessage = null;
   }
@@ -262,11 +298,12 @@ export class TableComponent implements OnInit {
     this.showManagementSidebar = false;
     this.detailsOfTable = null;
     this.selectedTable = null;
+    this.dataReserved = null;
   }
 
   navigateToCashier() {
     if (this.selectedTableDetails?.order?.id) {
-      this.Router.navigate(['/casher'], {
+      this.Router.navigate(['/estevam/casher'], {
         queryParams: { searchTerm: this.selectedTableDetails.order.Cliente },
       });
     }

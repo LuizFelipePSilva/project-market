@@ -10,6 +10,17 @@ $roxo-escuro: #4a0250;
 $cinza-claro: #e0e0e0;
 $branco: #ffffff;
 $preto: #000000;
+$color-primary: #6366f1;
+$color-primary-hover: #4f46e5;
+$color-text-dark: #1f2937;
+$color-text-medium: #4b5563;
+$color-text-light: #6b7280;
+$color-border: #e5e7eb;
+$color-background: #ffffff;
+$shadow-popup: 0 8px 32px rgba(0, 0, 0, 0.2);
+$radius-popup: 12px;
+$transition-fast: 0.2s ease;
+
 
   .section-title {
     margin-left: 200px;
@@ -48,6 +59,7 @@ $preto: #000000;
     }
 
     &.status-aberto {
+      cursor: pointer;
       background-color: #00C851;
       color: $branco;
       &:hover:not(.status-pedido) {
@@ -56,6 +68,7 @@ $preto: #000000;
     }
 
     &.status-reservado {
+      cursor: pointer;
       background-color: #ffbb33;
       color: $preto;
       &:hover:not(.status-pedido) {
@@ -305,7 +318,7 @@ button {
   }
 }
 
-.popup-transfer-overlay {
+.popup-transfer-overlay, .popup-reserved-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -320,112 +333,160 @@ button {
   -webkit-overflow-scrolling: touch; /* Scroll suave em dispositivos móveis */
 }
 
-.popup-transfer {
+@mixin popup-base-styles {
   position: relative;
-  background: white;
+  background: $color-background;
   padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: $radius-popup;
+  box-shadow: $shadow-popup;
   max-width: 450px;
   width: 90%;
-  margin: 20px 0; 
-  max-height: 90vh; 
-  overflow-y: auto; 
-
+  margin: 20px 0;
+  max-height: 90vh;
+  overflow-y: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform, opacity;
 
-  .close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #6b7280;
-    transition: all 0.2s ease;
+  @media (max-width: 480px) {
+    padding: 1.5rem;
+  }
+}
 
-    &:hover {
-      color: #4b5563;
-      transform: rotate(90deg);
-    }
+.popup-transfer, .popup-reserved {
+  @include popup-base-styles;
+}
 
-    svg {
-      display: block;
-    }
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-text-light;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $color-text-medium;
+    transform: rotate(90deg);
   }
 
+  svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.popup-header {
+  margin-bottom: 1.5rem;
+
   .title {
-    color: #1f2937;
+    color: $color-text-dark;
     font-size: 1.5rem;
     font-weight: 600;
+    line-height: 1.3;
     margin-bottom: 0.5rem;
   }
 
   .instructions {
-    color: #4b5563;
-    margin-bottom: 1.5rem;
+    color: $color-text-medium;
+    font-size: 0.875rem;
   }
+}
 
-  .input-group {
-    position: relative;
-    margin-bottom: 1.5rem;
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
 
-    .table-input {
-      width: 100%;
-      padding: 0.875rem 2rem;
-      border: 2px solid #e5e7eb;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
+  input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid $color-border;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    appearance: none;
 
-      &:focus {
-        border-color: #6366f1;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-      }
-
-      &::placeholder {
-        color: #9ca3af;
-      }
+    &:focus {
+      border-color: $color-primary;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
     }
 
-    .input-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #6b7280;
-      font-weight: 500;
+    &::placeholder {
+      color: #9ca3af;
+    }
+
+    // Remover setas do input number
+    &[type="number"]::-webkit-inner-spin-button,
+    &[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
 
-  .button-group {
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: $color-text-light;
+  }
+}
+
+// Ajustes específicos para o popup de transferência
+.popup-transfer {
+  .input-group input {
+    padding-left: 2.5rem;
+  }
+}
+
+.button-group {
+  margin-top: 1.5rem;
+
+  .transfer-btn {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem;
+    background: $color-primary;
+    color: $color-background;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition-fast;
 
-    .transfer-btn {
-      background: #6366f1;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      width: 100%;
-
-      &:hover {
-        background: #4f46e5;
-        transform: translateY(-1px);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
+    &:hover {
+      background: $color-primary-hover;
+      transform: translateY(-1px);
     }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Melhorias de responsividade
+@media (max-width: 480px) {
+  .popup-header {
+    .title {
+      font-size: 1.25rem;
+    }
+    
+    .instructions {
+      font-size: 0.8rem;
+    }
+  }
+
+  .input-group input {
+    font-size: 0.9rem;
+    padding: 0.75rem;
   }
 }
 
@@ -435,7 +496,7 @@ button {
     width: 100%;
     padding-top: 20px;
   }
-  .popup-transfer {
+  .popup-transfer, .popup-reserved {
     padding: 1.5rem;
     
     .title {
@@ -546,7 +607,73 @@ button {
       
     }
   }
+  .reservd-table {
+    padding: 1.5rem;
+    margin: 1rem 1.5rem;
+    background: rgba($branco, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba($roxo-claro, 0.2);
+    position: relative;
+    transition: all 0.3s ease;
 
+    &::before {
+      content: 'Reserva Ativa';
+      position: absolute;
+      top: -10px;
+      left: 1rem;
+      background: linear-gradient(145deg, #2a2a2a, #1d1d1d);
+      color: $roxo-claro;
+      font-size: 0.75rem;
+      padding: 0 0.5rem;
+      font-weight: 500;
+    }
+
+    .nameClient {
+      font-size: 1.2rem;
+      color: $roxo-claro;
+      margin: 0 0 0.5rem 0;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: '\f007'; // Ícone de usuário (Font Awesome)
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        opacity: 0.6;
+      }
+    }
+
+    .phoneClient {
+      color: rgba($branco, 0.8);
+      margin: 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: '\f095';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        opacity: 0.6;
+      }
+    }
+
+    @media (max-width: 480px) {
+      margin: 1rem;
+      padding: 1rem;
+
+      .nameClient {
+        font-size: 1.1rem;
+      }
+
+      .phoneClient {
+        font-size: 0.9rem;
+      }
+    }
+  }
   @media (min-width: 768px) {
     width: 80%;
     max-width: 1200px;
