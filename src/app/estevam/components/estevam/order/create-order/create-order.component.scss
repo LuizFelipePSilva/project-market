@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Variáveis
 $primary: #2ecc71;
 $secondary: #3498db;
@@ -135,7 +137,7 @@ body {
       }
       
       .product-description {
-        color: lighten($text, 15%);
+        color: color.adjust($text, $lightness: 15%, $space: hsl);
         margin-bottom: 1.5rem;
         line-height: 1.6;
       }
@@ -162,7 +164,7 @@ body {
           transition: background 0.3s ease;
           
           &:hover {
-            background: darken($primary, 10%);
+            background: color.adjust($primary, $lightness: -10%, $space: hsl);
           }
         }
       }
@@ -263,7 +265,7 @@ body {
           .item-additionals {
             margin: 0.5rem 0;
             font-size: 0.9rem;
-            color: lighten($text, 20%);
+            color: color.adjust($text, $lightness: 20%, $space: hsl);
           }
           
           .item-controls {
@@ -328,7 +330,7 @@ body {
         transition: background 0.3s ease;
         
         &:hover {
-          background: darken($success, 10%);
+          background: color.adjust($success, $lightness: -10%, $space: hsl);
         }
       }
     }
@@ -391,7 +393,7 @@ body {
           
           .additional-limit {
             font-size: 0.9rem;
-            color: lighten($text, 30%);
+            color: color.adjust($text, $lightness: 30%, $space: hsl);
           }
         }
         
@@ -513,7 +515,7 @@ body {
           border: none;
           
           &:hover {
-            background: darken($primary, 10%);
+            background: color.adjust($primary, $lightness: -10%, $space: hsl);
           }
         }
       }

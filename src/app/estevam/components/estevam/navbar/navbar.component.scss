@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $roxo-primario: #6a0572;
 $roxo-secundario: #9c27b0;
 $roxo-claro: #d6a2e8;
@@ -15,7 +17,7 @@ header[role="banner"] {
   width: 200px;
   height: 100vh;
   z-index: 1000;
-  background: linear-gradient(to bottom, $roxo-escuro, darken($roxo-escuro, 8%));
+  background: linear-gradient(to bottom, $roxo-escuro, color.adjust($roxo-escuro, $lightness: -8%, $space: hsl));
   box-shadow: $sombra;
   transition: width 0.3s ease;
   overflow-y: auto;
@@ -159,7 +161,7 @@ header[role="banner"] {
         border: 1px solid rgba($branco, 0.1) !important;
         
         &:hover {
-          background: rgba(darken($roxo-primario, 10%), 0.5) !important;
+          background: rgba(color.adjust($roxo-primario, $lightness: -10%, $space: hsl), 0.5) !important;
         }
       }
     }
@@ -259,10 +261,10 @@ header[role="banner"] {
 
 @media (max-width: 768px) {
   header[role="banner"] {
-    position: fixed;
     width: 100%;
     height: auto;
-    min-height: 70px;
+    position: relative;
+    top: auto;
     bottom: auto;
     overflow: visible;
     

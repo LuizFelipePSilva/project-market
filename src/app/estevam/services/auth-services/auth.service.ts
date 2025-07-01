@@ -5,7 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment.development';
 
-export type UserRole = 'admin' | 'clerk' | 'employee' | 'user' | null;
+export type UserRole = 'super' | 'admin' | 'clerk' | 'employee' | 'user' | null;
 
 @Injectable({
   providedIn: 'root',

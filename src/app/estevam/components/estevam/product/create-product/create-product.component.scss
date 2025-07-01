@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* LOGIN-COMPONENT */
 $primary: #2ecc71;
 $roxo-primario: #6a0572;
@@ -67,7 +69,7 @@ $preto: #000000;
           transition: background 0.3s ease;
   
           &:hover {
-            background: darken($roxo-claro, 5%);
+            background: color.adjust($roxo-claro, $lightness: -5%, $space: hsl);
           }
         }
       }
@@ -107,7 +109,7 @@ $preto: #000000;
     transition: background 0.3s ease, transform 0.2s ease;
 
     &:hover:not(:disabled) {
-      background: darken($roxo-primario, 5%);
+      background: color.adjust($roxo-primario, $lightness: -5%, $space: hsl);
       transform: translateY(-1px);
     }
 

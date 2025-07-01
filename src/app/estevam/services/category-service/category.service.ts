@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { AuthService } from '../auth-services/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { IProduct } from '../../components/estevam/order/domain/IProduct';
 import { error } from 'console';
@@ -21,7 +21,12 @@ export class CategoryService {
 
   listCategorys(): Observable<ICategory[]> {
     return this.http
-      .get<ICategory[]>(`${this.baseUrl}/show`, { withCredentials: true })
+      .get<ICategory[]>(`${this.baseUrl}/show`, {
+        withCredentials: true,
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
+      })
       .pipe(
         catchError((error) => {
           return throwError(() => error);
@@ -30,7 +35,11 @@ export class CategoryService {
   }
   getProductByCategory(categoryId: string): Observable<IProduct[]> {
     return this.http
-      .get<IProduct[]>(`${environment.apiUrl}/product/category/${categoryId}`)
+      .get<IProduct[]>(`${environment.apiUrl}/product/category/${categoryId}`, {
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
+      })
       .pipe(
         catchError((error) => {
           return throwError(() => error);
@@ -63,10 +72,16 @@ export class CategoryService {
       );
   }
   findCategory(categoryId: string): Observable<IProduct> {
-    return this.http.get<IProduct>(`${this.baseUrl}/find/${categoryId}`).pipe(
-      catchError((error) => {
-        return throwError(() => error);
+    return this.http
+      .get<IProduct>(`${this.baseUrl}/find/${categoryId}`, {
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
       })
-    );
+      .pipe(
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
   }
 }

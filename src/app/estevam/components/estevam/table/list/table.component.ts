@@ -20,6 +20,11 @@ import {
   IReserveTable,
   ReservedService,
 } from '../../../../services/table-services/reserved.service';
+import {
+  AuthService,
+  UserRole,
+} from '../../../../services/auth-services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-table',
@@ -35,6 +40,7 @@ import {
 })
 export class TableComponent implements OnInit {
   tableTransfer: FormGroup;
+  userRole$: Observable<UserRole | null>;
   reservedTransfer: FormGroup;
   tables: ITable[] = [];
   dataSource: ITablePaginate = {
@@ -57,6 +63,7 @@ export class TableComponent implements OnInit {
   errorMessage: string | null = null;
   dataReserved: IReserveTable | null = null;
   urlAPi = '/table';
+  canManageTables = false;
 
   constructor(
     private fb: FormBuilder,
@@ -64,7 +71,8 @@ export class TableComponent implements OnInit {
     public appComponent: AppComponent,
     private Router: Router,
     private transferService: TransferServiceService,
-    private reservedService: ReservedService
+    private reservedService: ReservedService,
+    private authService: AuthService
   ) {
     this.tableTransfer = this.fb.group({
       tableNumberOrigin: ['', [Validators.required]],
@@ -75,10 +83,15 @@ export class TableComponent implements OnInit {
       numberTable: ['', [Validators.required]],
       NameClientReserve: ['', [Validators.required]],
       PhoneReserve: ['', [Validators.required]],
+      reservedTime: ['', [Validators.required]],
     });
+    this.userRole$ = this.authService.user$;
   }
 
   ngOnInit() {
+    this.userRole$.subscribe((role) => {
+      this.canManageTables = ['admin', 'clerk', 'employee'].includes(role!);
+    });
     this.loadTable(this.currentPage);
     this.intervalId = setInterval(() => {
       this.loadTable(this.currentPage);
@@ -156,6 +169,7 @@ export class TableComponent implements OnInit {
     const url = `${environment.apiUrl}${this.urlAPi}/reserved/view/${table.numberTable}`;
     this.http.get<IReserveTable>(url, { withCredentials: true }).subscribe({
       next: (response) => {
+        console.log(response);
         this.dataReserved = response;
       },
       error: (err) => {
@@ -272,10 +286,15 @@ export class TableComponent implements OnInit {
   OnSubmitReserve() {
     if (this.reservedTransfer.invalid || !this.detailsOfTable) return;
     this.errorMessage = null;
-    const { numberTable, NameClientReserve, PhoneReserve } =
+    const { numberTable, NameClientReserve, PhoneReserve, reservedTime } =
       this.reservedTransfer.value;
     this.reservedService
-      .reservedSubmit(NameClientReserve, PhoneReserve.toString(), numberTable)
+      .reservedSubmit(
+        NameClientReserve,
+        PhoneReserve.toString(),
+        numberTable,
+        reservedTime
+      )
       .subscribe({
         next: () => {
           this.reservedTable = false;
@@ -284,12 +303,25 @@ export class TableComponent implements OnInit {
           this.loadTable(this.currentPage);
         },
         error: (err) => {
-          console.log('Erro');
           this.errorMessage =
             err.error?.message ||
             'Ocorreu um erro inesperado. Tente novamente.';
         },
       });
+  }
+  deleteTable(tableId: string) {
+    const url = `${environment.apiUrl}${this.urlAPi}/delete/${tableId}`;
+    this.http.delete(url, { withCredentials: true }).subscribe({
+      next: () => {
+        this.loadTable(this.currentPage);
+        this.closeManagementSidebar();
+        this.detailsOfTable = null;
+      },
+      error: (err) => {
+        this.errorMessage =
+          err.error.message || 'Ocorreu um erro inesperado. Tente novamente.';
+      },
+    });
   }
   closeErrorPopup() {
     this.errorMessage = null;

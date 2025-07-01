@@ -1,5 +1,8 @@
-<app-navbar></app-navbar>
-<div class="dashboard-container">
+<app-navbar #navbar></app-navbar>
+<div
+  *ngIf="{ userRole: navbar.userRole$ | async } as state"
+  class="dashboard-container"
+>
   <!-- Header do Painel -->
   <header class="dashboard-header" role="banner">
     <div class="header-content">
@@ -55,7 +58,11 @@
     <section class="quick-actions">
       <h2 class="section-title">Ações Rápidas</h2>
       <div class="actions-grid">
-        <a class="action-card" href="estevam/product/">
+        <a
+          *ngIf="state.userRole === 'admin' || state.userRole === 'super'"
+          class="action-card"
+          href="estevam/product/"
+        >
           <i class="action-icon fas fa-utensils"></i>
           <span>Gerenciar Produtos</span>
         </a>
@@ -63,11 +70,19 @@
           <i class="action-icon fas fa-chair"></i>
           <span>Gerenciar Mesas</span>
         </a>
-        <a class="action-card" href="estevam/user">
+        <a
+          *ngIf="state.userRole === 'admin' || state.userRole === 'super'"
+          class="action-card"
+          href="estevam/user"
+        >
           <i class="action-icon fas fa-users-cog"></i>
           <span>Gerenciar Equipe</span>
         </a>
-        <a class="action-card" href="estevam/relatorio">
+        <a
+          *ngIf="state.userRole === 'admin' || state.userRole === 'super'"
+          class="action-card"
+          href="estevam/relatorio"
+        >
           <i class="action-icon fas fa-chart-pie"></i>
           <span>Relatórios</span>
         </a>
