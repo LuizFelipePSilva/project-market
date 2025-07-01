@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 import { environment } from '../../../../../../environments/environment.development';
@@ -70,7 +70,12 @@ export class ProductComponent {
   async loadProducts(page = 1) {
     const url = `${environment.apiUrl}${this.url_API}/show?limit=1000`;
     this.http
-      .get<IProductPaginate>(url, { withCredentials: true })
+      .get<IProductPaginate>(url, {
+        withCredentials: true,
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
+      })
       .subscribe(async (response) => {
         this.dataSource = response;
         this.currentPage = response.current_page;

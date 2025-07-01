@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth-services/auth.service';
 import { environment } from '../../../../environments/environment.development';
@@ -52,6 +52,9 @@ export class AdditionalService {
     return this.http
       .get<IAditional[]>(`${this.baseUrl}/show/category/${categoryId}`, {
         withCredentials: true,
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
       })
       .pipe(
         catchError((error) => {

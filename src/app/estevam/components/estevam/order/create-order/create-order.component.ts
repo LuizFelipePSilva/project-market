@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CartItem } from '../domain/CarItem';
 import { IProduct } from '../domain/IProduct';
 import { OrderData } from '../domain/OrderData';
@@ -369,24 +369,31 @@ export class CreateOrderComponent {
     };
 
     const url = `${environment.apiUrl}/orders/create`;
-    this.http.post(url, payload, { withCredentials: true }).subscribe({
-      next: () => {
-        this.showSuccessPopup = true;
-        setTimeout(() => (this.showSuccessPopup = false), 13000);
-        this.showCartSidebar = false;
-        this.cartItems = [];
-        this.orderData = {
-          nameClient: '',
-          payment: 'Pix',
-          phone: null,
-          obs: null,
-          products: [],
-          numberTable: null,
-        };
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Erro ao confirmar pedido';
-      },
-    });
+    this.http
+      .post(url, payload, {
+        withCredentials: true,
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
+      })
+      .subscribe({
+        next: () => {
+          this.showSuccessPopup = true;
+          setTimeout(() => (this.showSuccessPopup = false), 13000);
+          this.showCartSidebar = false;
+          this.cartItems = [];
+          this.orderData = {
+            nameClient: '',
+            payment: 'Pix',
+            phone: null,
+            obs: null,
+            products: [],
+            numberTable: null,
+          };
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.message || 'Erro ao confirmar pedido';
+        },
+      });
   }
 }
