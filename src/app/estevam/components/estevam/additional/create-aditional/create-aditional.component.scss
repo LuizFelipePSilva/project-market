@@ -87,12 +87,12 @@ $breakpoint-xs: 480px;
     margin-top: 1rem;
 
     &:hover:not(:disabled) {
-      background: darken($roxo-primario, 8%);
+      background: color.adjust($roxo-primario, $lightness: -8%, $space: hsl);
       transform: translateY(-2px);
     }
 
     &:disabled {
-      background: lighten($roxo-primario, 25%);
+      background: color.adjust($roxo-primario, $lightness: 25%, $space: hsl);
       cursor: not-allowed;
     }
   }
