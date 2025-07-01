@@ -1,17 +1,21 @@
-<app-navbar></app-navbar>
+<app-navbar #navbar></app-navbar>
 <app-error-popup
   *ngIf="errorMessage"
   [errorMessage]="errorMessage"
   (close)="closeErrorPopup()"
->
-</app-error-popup>
+></app-error-popup>
+
 <h1 class="section-title">Gerenciamento de Mesas</h1>
+
 <div class="cards-container">
   <div
     class="table-card"
     *ngFor="let table of tables; trackBy: trackByTableId"
     [ngClass]="'status-' + table.status.toLowerCase()"
-    (click)="openTableDetails(table); findDetailsOfTable(table)"
+    (click)="
+      canManageTables && openTableDetails(table);
+      canManageTables && findDetailsOfTable(table)
+    "
   >
     <div class="card-content">
       <p class="mesa-number">{{ table.numberTable }}</p>
@@ -28,7 +32,11 @@
   </button>
 </div>
 
-<div class="table-details-sidebar" [class.show]="showSidebar">
+<div
+  class="table-details-sidebar"
+  [class.show]="showSidebar"
+  *ngIf="canManageTables"
+>
   <button class="sidebar-close-btn" (click)="closeTableDetails()">×</button>
 
   <div class="sidebar-content" *ngIf="selectedTableDetails">
@@ -75,9 +83,11 @@
       </div>
       <div class="info-item">
         <span class="info-label">Hora do Pedido:</span>
-        <span class="info-value">{{
-          selectedTableDetails.order.HoraDoPedido | date : "HH:mm - dd/MM/yy"
-        }}</span>
+        <span class="info-value">
+          {{
+            selectedTableDetails.order.HoraDoPedido | date : "HH:mm - dd/MM/yy"
+          }}
+        </span>
       </div>
     </div>
 
@@ -88,9 +98,8 @@
           class="product-item"
           *ngFor="let item of selectedTableDetails.order.Produtos"
         >
-          {{ item.Produto }} R$
-          {{ item.Valor | number : "1.2-2" }}
-          <div *ngIf="item.Adicionais && item.Adicionais.length">
+          {{ item.Produto }} R$ {{ item.Valor | number : "1.2-2" }}
+          <div *ngIf="item.Adicionais?.length">
             <div *ngFor="let additional of item.Adicionais">
               Adicional: {{ additional.Nome }} (+R$
               {{ additional.Valor | number : "1.2-2" }})
@@ -103,9 +112,9 @@
     <div class="total-section">
       <div class="total-item">
         <span class="total-label">Valor Total:</span>
-        <span class="total-value"
-          >R$ {{ selectedTableDetails.order.ValorTotalDaComanda }}</span
-        >
+        <span class="total-value">
+          R$ {{ selectedTableDetails.order.ValorTotalDaComanda }}
+        </span>
       </div>
       <div class="transfer-buttons">
         <button (click)="OpenTranfer()" class="transfer-btn">
@@ -122,26 +131,40 @@
     </div>
   </div>
 </div>
-<div class="management-sidebar" [class.show]="showManagementSidebar">
+
+<div
+  class="management-sidebar"
+  [class.show]="showManagementSidebar"
+  *ngIf="canManageTables"
+>
   <button class="sidebar-close-btn" (click)="closeManagementSidebar()">
     ×
   </button>
 
-  <div class="sidebar-content" *ngIf="detailsOfTable">
+  <div
+    class="sidebar-content"
+    *ngIf="detailsOfTable && { userRole: navbar.userRole$ | async } as state"
+  >
     <div class="sidebar-header">
       <h2 class="sidebar-title">Mesa {{ detailsOfTable.numberTable }}</h2>
       <p class="current-status">Essa mesa está {{ detailsOfTable.status }}</p>
     </div>
-    <div class="reservd-table" *ngIf="dataReserved">
+
+    <div
+      class="reservd-table"
+      *ngIf="dataReserved && detailsOfTable.status === 'Reservado'"
+    >
       <p class="nameClient">{{ dataReserved.NameClientReserve }}</p>
       <p class="phoneClient">{{ dataReserved.PhoneReserve }}</p>
+      <p class="reservedDate">
+        Reservado para:
+        {{ dataReserved.reservedTime | date : "HH:mm - dd/MM/yy" }}
+      </p>
     </div>
+
     <div class="status-actions">
       <button
-        *ngIf="
-          detailsOfTable.status !== 'Inutilizavel' &&
-          detailsOfTable.status !== 'Pedido'
-        "
+        *ngIf="['Aberto', 'Reservado'].includes(detailsOfTable.status)"
         (click)="InutilzarMesa(detailsOfTable.id!)"
         class="status-btn inutilizar"
       >
@@ -149,31 +172,37 @@
       </button>
 
       <button
-        *ngIf="
-          detailsOfTable.status !== 'Reservado' &&
-          detailsOfTable.status !== 'Inutilizavel' &&
-          detailsOfTable.status !== 'Pedido'
-        "
+        *ngIf="detailsOfTable.status === 'Aberto'"
         (click)="OpenReserved()"
         class="status-btn reservar"
       >
         Reservar Mesa
       </button>
+
       <button
-        *ngIf="
-          detailsOfTable.status !== 'Aberto' &&
-          detailsOfTable.status !== 'Pedido'
-        "
+        *ngIf="['Reservado', 'Inutilizavel'].includes(detailsOfTable.status)"
         (click)="AbrirMesa(detailsOfTable.id!)"
         class="status-btn abrir"
       >
         Abrir Mesa
       </button>
+      <button
+        *ngIf="
+          ['Aberto', 'Reservado', 'Inutilizavel'].includes(
+            detailsOfTable.status
+          ) && state.userRole == 'admin'
+        "
+        (click)="deleteTable(detailsOfTable.id!)"
+        class="status-btn remover"
+      >
+        Remover mesa
+      </button>
     </div>
   </div>
 </div>
+
 <div
-  *ngIf="transferTable; selectedTableDetails"
+  *ngIf="transferTable && selectedTableDetails && canManageTables"
   class="popup-transfer-overlay"
   role="dialog"
   aria-modal="true"
@@ -230,7 +259,7 @@
 </div>
 
 <div
-  *ngIf="reservedTable"
+  *ngIf="reservedTable && canManageTables"
   class="popup-reserved-overlay"
   role="dialog"
   aria-modal="true"
@@ -275,6 +304,15 @@
           type="number"
           placeholder="Exemplo: (XX)12345-6789"
           formControlName="PhoneReserve"
+          required
+        />
+      </div>
+      <span>Digite a hora da reserva</span>
+      <div class="input-group">
+        <input
+          type="datetime-local"
+          placeholder="Exemplo: (XX)12345-6789"
+          formControlName="reservedTime"
           required
         />
       </div>

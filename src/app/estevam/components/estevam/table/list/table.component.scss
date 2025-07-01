@@ -582,7 +582,7 @@ button {
       min-height: 60px;
 
       &.inutilizar {
-        background: #dc3545;
+        background:  #616161;
         color: $branco;
         &:hover {
           background: color.adjust(#dc3545, $lightness: -10%, $space: hsl);
@@ -599,6 +599,13 @@ button {
 
       &.abrir {
         background: #28a745;
+        color: $branco;
+        &:hover {
+          background: color.adjust(#28a745, $lightness: -10%, $space: hsl);
+        }
+      }
+      &.remover {
+        background: #dc3545;
         color: $branco;
         &:hover {
           background: color.adjust(#28a745, $lightness: -10%, $space: hsl);
