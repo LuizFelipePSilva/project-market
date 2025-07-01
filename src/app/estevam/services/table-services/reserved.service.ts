@@ -7,6 +7,7 @@ export interface IReserveTable {
   NameClientReserve: string;
   PhoneReserve: string;
   numberTable: number;
+  reservedTime: Date;
 }
 
 @Injectable({
@@ -22,7 +23,8 @@ export class ReservedService {
   reservedSubmit(
     NameClientReserve: string,
     PhoneReserve: string,
-    numberTable: number
+    numberTable: number,
+    reservedTime: string
   ) {
     return this.http
       .post<IReserveTable>(
@@ -30,6 +32,7 @@ export class ReservedService {
         {
           NameClientReserve,
           PhoneReserve,
+          reservedTime,
         },
         { withCredentials: true }
       )
