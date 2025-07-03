@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { environment } from '../../../../../environments/environment.development';
 import { IOrder } from '../order/list/order.component';
+import { RouterModule } from '@angular/router';
 
 interface IOrderPaginate {
   current_page: number;
@@ -22,7 +23,7 @@ interface ResponseInfo {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavbarComponent, CommonModule],
+  imports: [RouterModule, NavbarComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

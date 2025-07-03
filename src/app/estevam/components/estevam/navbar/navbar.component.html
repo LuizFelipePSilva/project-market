@@ -1,6 +1,6 @@
 <header role="banner">
   <nav class="sidebar">
-    <h1 href="/home">SaborSync</h1>
+    <h1 routerLink="/home">SaborSync</h1>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -16,15 +16,13 @@
           </a>
         </li>
 
-        <!-- Caixa -->
         <li *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)">
-          <a href="estevam/casher">
+          <a [routerLink]="['/estevam/casher']">
             <i class="fa-solid fa-wallet"></i>
             <span>Caixa</span>
           </a>
         </li>
 
-        <!-- Pedidos -->
         <li *ngIf="state.userRole">
           <button (click)="toggleSubMenu('order')" class="submenu-toggle">
             <i class="fa-solid fa-clipboard-list"></i>
@@ -33,7 +31,7 @@
           </button>
           <ul *ngIf="openSubMenu === 'order'" class="submenu">
             <li>
-              <a href="estevam/order/create">
+              <a [routerLink]="['/estevam/order/create']">
                 <i class="fa-solid fa-plus-circle"></i>
                 Novo Pedido
               </a>
@@ -43,7 +41,7 @@
                 ['super', 'admin', 'clerk', 'employee'].includes(state.userRole)
               "
             >
-              <a href="estevam/order">
+              <a [routerLink]="['/estevam/order']">
                 <i class="fa-solid fa-pen-to-square"></i>
                 Gerenciar
               </a>
@@ -51,7 +49,6 @@
           </ul>
         </li>
 
-        <!-- Mesas -->
         <li *ngIf="state.userRole">
           <button (click)="toggleSubMenu('table')" class="submenu-toggle">
             <i class="fa-solid fa-table-cells"></i>
@@ -60,13 +57,13 @@
           </button>
           <ul *ngIf="openSubMenu === 'table'" class="submenu">
             <li *ngIf="['super', 'admin'].includes(state.userRole)">
-              <a href="estevam/table/create">
+              <a [routerLink]="['/estevam/table/create']">
                 <i class="fa-solid fa-plus-circle"></i>
                 Nova Mesa
               </a>
             </li>
             <li>
-              <a href="estevam/table">
+              <a [routerLink]="['/estevam/table']">
                 <i class="fa-solid fa-pen-to-square"></i>
                 Gerenciar
               </a>
@@ -74,7 +71,6 @@
           </ul>
         </li>
 
-        <!-- Categorias -->
         <li *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)">
           <button (click)="toggleSubMenu('category')" class="submenu-toggle">
             <i class="fa-solid fa-tags"></i>
@@ -83,13 +79,13 @@
           </button>
           <ul *ngIf="openSubMenu === 'category'" class="submenu">
             <li>
-              <a href="estevam/category">
+              <a [routerLink]="['/estevam/category']">
                 <i class="fa-solid fa-plus-circle"></i>
                 Criar Categoria
               </a>
             </li>
             <li>
-              <a href="estevam/category/list">
+              <a [routerLink]="['/estevam/category/list']">
                 <i class="fa-solid fa-list"></i>
                 Listar Categorias
               </a>
@@ -97,7 +93,6 @@
           </ul>
         </li>
 
-        <!-- Adicionais -->
         <li *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)">
           <button (click)="toggleSubMenu('additional')" class="submenu-toggle">
             <i class="fa-solid fa-layer-group"></i>
@@ -106,13 +101,13 @@
           </button>
           <ul *ngIf="openSubMenu === 'additional'" class="submenu">
             <li>
-              <a href="estevam/additional/create">
+              <a [routerLink]="['/estevam/additional/create']">
                 <i class="fa-solid fa-plus-circle"></i>
                 Criar Adicional
               </a>
             </li>
             <li>
-              <a href="estevam/additional">
+              <a [routerLink]="['/estevam/additional']">
                 <i class="fa-solid fa-list"></i>
                 Listar Adicionais
               </a>
@@ -120,7 +115,6 @@
           </ul>
         </li>
 
-        <!-- Produtos -->
         <li
           *ngIf="
             ['super', 'admin', 'clerk', 'employee'].includes(state.userRole!)
@@ -133,13 +127,13 @@
           </button>
           <ul *ngIf="openSubMenu === 'product'" class="submenu">
             <li *ngIf="['super', 'admin'].includes(state.userRole!)">
-              <a href="estevam/product/create">
+              <a [routerLink]="['/estevam/product/create']">
                 <i class="fa-solid fa-plus-circle"></i>
                 Novo Produto
               </a>
             </li>
             <li>
-              <a href="estevam/product">
+              <a [routerLink]="['/estevam/product']">
                 <i class="fa-solid fa-list"></i>
                 Gerenciar
               </a>
@@ -147,7 +141,6 @@
           </ul>
         </li>
 
-        <!-- Administração -->
         <li *ngIf="['super', 'admin'].includes(state.userRole!)">
           <button (click)="toggleSubMenu('admin')" class="submenu-toggle">
             <i class="fa-solid fa-lock"></i>
@@ -156,17 +149,18 @@
           </button>
           <ul *ngIf="openSubMenu === 'admin'" class="submenu">
             <li>
-              <a href="estevam/relatorio">
+              <a [routerLink]="['/estevam/relatorio']">
                 <i class="fa-solid fa-chart-pie"></i> Relatórios
               </a>
             </li>
             <li>
-              <a href="estevam/user">
+              <a [routerLink]="['/estevam/user']">
                 <i class="fa-solid fa-users-gear"></i> Usuários
               </a>
             </li>
           </ul>
         </li>
+
         <li *ngIf="state.userRole">
           <button (click)="logout()" class="logout-btn">
             <i class="fa-solid fa-right-to-bracket"></i>
