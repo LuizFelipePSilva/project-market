@@ -63,9 +63,8 @@
       </div>
 
       <div class="card-footer">
-        <div class="total">
-          Total:
-          {{ orderDetailsMap[order.id!].valorTotal | currency : "BRL" }}
+        <div class="total" *ngIf="orderDetailsMap[order.id!]">
+          Total: {{ orderDetailsMap[order.id!].valorTotal | currency : "BRL" }}
         </div>
         <button class="close-btn" (click)="openCloseModal(order)">
           Fechar Pedido
