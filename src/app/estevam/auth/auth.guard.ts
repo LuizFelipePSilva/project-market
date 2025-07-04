@@ -2,7 +2,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { AuthService, UserRole } from '../services/auth-services/auth.service';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route) => {
@@ -15,10 +15,11 @@ export const authGuard: CanActivateFn = (route) => {
         const userRole = response.message;
         const allowedRoles = route.data['roles'] as UserRole[];
 
-        if (!allowedRoles || allowedRoles.includes(userRole)) return true;
-
-        return router.createUrlTree(['/estevam/login']);
-      })
+        return !allowedRoles || allowedRoles.includes(userRole)
+          ? true
+          : router.createUrlTree(['/estevam/login']);
+      }),
+      catchError(() => [router.createUrlTree(['/estevam/login'])])
     )
   );
 };
