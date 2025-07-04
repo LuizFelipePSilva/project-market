@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+<div class="enterprise-painel">
+  <div class="status-enterprise">
+    <h1>Empresa está {{ statusEnterprise }}</h1>
+    <div *ngIf="statusEnterprise == 'Aberto'" class="open-enterprise">
+      <h3>Fechar empresa para pedidos?</h3>
+      <button (click)="closeEnterprise()">Fechar empresa</button>
+    </div>
+    <div *ngIf="statusEnterprise == 'Fechado'" class="open-enterprise">
+      <h3>Abrir empresa para pedidos?</h3>
+      <button (click)="openEnteprise()">Abrir empresa</button>
+    </div>
+  </div>
+</div>
