@@ -58,6 +58,18 @@
             <span class="price">{{
               item.valorUnitario | currency : "BRL"
             }}</span>
+            <div *ngIf="item.adicionais" class="additionals">
+              <span>Adicionais</span>
+              <div
+                *ngFor="let additional of item.adicionais"
+                class="additional-details"
+              >
+                <span class="additional-name">{{ additional.nome }} </span>
+                <span class="additional-value">{{
+                  additional.valor | currency : "BRL"
+                }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
