@@ -37,9 +37,9 @@ export class EnterpriseService {
         })
       );
   }
-  verifyStatus(): Observable<{ message: string }> {
+  verifyStatus(): Observable<{ status: string }> {
     return this.http
-      .get<{ message: string }>(`${this.baseUrl}/verifyStatus`, {
+      .get<{ status: string }>(`${this.baseUrl}/verifyStatus`, {
         headers: new HttpHeaders({
           'x-tenant-id': `${environment.adminApiKey}`,
         }),
