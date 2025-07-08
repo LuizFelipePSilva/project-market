@@ -19,7 +19,7 @@
           <th>Nome</th>
           <th>Cargo</th>
           <th>Status</th>
-          <th *ngIf="state.userRole === 'admin'">Ações</th>
+          <th *ngIf="['super', 'admin'].includes(state.userRole!)">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -48,7 +48,10 @@
               {{ user.deletedAt ? "Inativo" : "Ativo" }}
             </span>
           </td>
-          <td *ngIf="state.userRole === 'admin'" data-label="Ações">
+          <td
+            *ngIf="['super', 'admin'].includes(state.userRole!)"
+            data-label="Ações"
+          >
             <div class="actions-container">
               <button
                 class="edit-btn"
