@@ -20,7 +20,7 @@ export class OpenEnterpriseComponent implements OnInit {
   verifyStatusEnterprise() {
     this.entepriseService.verifyStatus().subscribe({
       next: (response) => {
-        this.statusEnterprise = response.message;
+        this.statusEnterprise = response.status;
       },
       error: (error) => {
         this.errorMessage = error.message;
@@ -30,7 +30,9 @@ export class OpenEnterpriseComponent implements OnInit {
   openEnteprise() {
     this.entepriseService.openEnterprise().subscribe({
       next: () => {
-        this.verifyStatusEnterprise();
+        setTimeout(() => {
+          this.verifyStatusEnterprise();
+        }, 1000);
       },
       error: (error) => {
         this.errorMessage = error.message;
@@ -40,7 +42,9 @@ export class OpenEnterpriseComponent implements OnInit {
   closeEnterprise() {
     this.entepriseService.closeEnterprise().subscribe({
       next: () => {
-        this.verifyStatusEnterprise();
+        setTimeout(() => {
+          this.verifyStatusEnterprise();
+        }, 100);
       },
       error: (error) => {
         this.errorMessage = error.message;
