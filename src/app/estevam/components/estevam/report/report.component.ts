@@ -45,12 +45,10 @@ export class ReportComponent {
       })
       .subscribe({
         next: (response: Blob) => {
-          console.log(response);
           this.saveFile(response);
           this.errorMessage = '';
         },
         error: (error) => {
-          console.error('Erro ao gerar relatório:', error);
           this.errorMessage = 'Falha ao gerar relatório. Tente novamente.';
         },
       });

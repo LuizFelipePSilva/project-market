@@ -15,10 +15,10 @@
       <div class="header-actions">
         <button
           class="new-order-btn"
-          href="estevam/order/create"
+          [routerLink]="['/estevam/order/create']"
           aria-label="Nova Ordem"
         >
-          /; <i class="fas fa-plus"></i> Criar Nova Ordem
+          <i class="fas fa-plus"></i> Criar Nova Ordem
         </button>
       </div>
     </div>
@@ -61,19 +61,19 @@
         <a
           *ngIf="state.userRole === 'admin' || state.userRole === 'super'"
           class="action-card"
-          href="estevam/product/"
+          [routerLink]="['/estevam/product']"
         >
           <i class="action-icon fas fa-utensils"></i>
           <span>Gerenciar Produtos</span>
         </a>
-        <a class="action-card" href="estevam/table">
+        <a class="action-card" [routerLink]="['/estevam/table']">
           <i class="action-icon fas fa-chair"></i>
           <span>Gerenciar Mesas</span>
         </a>
         <a
           *ngIf="state.userRole === 'admin' || state.userRole === 'super'"
           class="action-card"
-          href="estevam/user"
+          [routerLink]="['/estevam/user']"
         >
           <i class="action-icon fas fa-users-cog"></i>
           <span>Gerenciar Equipe</span>
@@ -81,7 +81,7 @@
         <a
           *ngIf="state.userRole === 'admin' || state.userRole === 'super'"
           class="action-card"
-          href="estevam/relatorio"
+          [routerLink]="['/estevam/relatorio']"
         >
           <i class="action-icon fas fa-chart-pie"></i>
           <span>Relatórios</span>
@@ -89,11 +89,10 @@
       </div>
     </section>
 
-    <!-- home.component.html -->
     <section class="recent-orders">
       <div class="orders-header">
         <h2 class="section-title">Últimos Pedidos</h2>
-        <a href="estevam/casher" class="view-all">Ver Todos →</a>
+        <a [routerLink]="['/estevam/casher']" class="view-all">Ver Todos →</a>
       </div>
 
       <div *ngIf="errorMessage" class="error-message">

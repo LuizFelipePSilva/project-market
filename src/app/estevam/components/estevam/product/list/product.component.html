@@ -29,7 +29,7 @@
             <th>Preço</th>
             <th>Status</th>
             <th>Descrição</th>
-            <th *ngIf="state.userRole === 'admin'">Ações</th>
+            <th *ngIf="['super', 'admin'].includes(state.userRole!)">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +65,10 @@
                 ></div>
               </div>
             </td>
-            <td *ngIf="state.userRole === 'admin'" data-label="Ações">
+            <td
+              *ngIf="['super', 'admin'].includes(state.userRole!)"
+              data-label="Ações"
+            >
               <div class="action-buttons">
                 <button (click)="confirmDelete(product.id)" class="delete-btn">
                   <i class="fas fa-trash"></i>

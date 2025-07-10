@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   apiUrl: '/v1/api/v1/api',
-  adminApiKey: '24b4463c-2266-4dc9-9c61-b8ef72b2f036',
+  adminApiKey: 'c53c4bc1-f1b1-479f-af1e-7b34cad8ce52',
 };

@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment.development';
 
-export type UserRole = 'super' | 'admin' | 'clerk' | 'employee' | 'user' | null;
+export type UserRole =
+  | 'super'
+  | 'admin'
+  | 'clerk'
+  | 'employee'
+  | 'user'
+  | undefined
+  | null;
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +20,7 @@ export type UserRole = 'super' | 'admin' | 'clerk' | 'employee' | 'user' | null;
 export class AuthService {
   private readonly apiUrl = environment.apiUrl;
 
-  private userRoleSubject = new BehaviorSubject<UserRole>(null);
+  private userRoleSubject = new BehaviorSubject<UserRole>(undefined);
   user$ = this.userRoleSubject.asObservable();
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -37,10 +44,6 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.userRoleSubject.next(response.message);
-        }),
-        catchError((error) => {
-          this.userRoleSubject.next(null);
-          return throwError(() => error);
         })
       );
   }
@@ -54,7 +57,7 @@ export class AuthService {
       )
       .pipe(
         tap(() => {
-          this.verifySession().subscribe();
+          switchMap(() => this.verifySession());
         })
       );
   }

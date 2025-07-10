@@ -1,0 +1,135 @@
+@use "sass:color";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Variáveis de Design */
+$roxo-primario: #6a0572;
+$roxo-secundario: #9c27b0;
+$roxo-claro: #d6a2e8;
+$roxo-escuro: #4a0250;
+$cinza-claro: #e0e0e0;
+$branco: #ffffff;
+$preto: #000000;
+$verde-status: #00C851;
+$vermelho-status: #ff4444;
+
+/* Breakpoints */
+$breakpoint-xxl: 1440px;
+$breakpoint-xl: 1200px;
+$breakpoint-lg: 992px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 576px;
+$breakpoint-xs: 480px;
+
+.enterprise-painel {
+  margin: 2rem auto;
+  max-width: 800px;
+  background: $branco;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba($preto, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  padding: 2rem;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  .status-enterprise {
+    text-align: center;
+    padding: 1.5rem;
+
+    h1 {
+      color: $roxo-escuro;
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: $roxo-secundario;
+      }
+    }
+
+    .open-enterprise {
+      margin-top: 1.5rem;
+
+      h3 {
+        color: $roxo-secundario;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      button {
+        padding: 0.8rem 1.8rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: $roxo-primario;
+        color: $branco;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba($roxo-escuro, 0.2);
+
+        &:hover {
+          background: $roxo-secundario;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba($roxo-escuro, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+}
+
+/* Adaptação para mobile */
+@media (max-width: $breakpoint-sm) {
+  .enterprise-painel {
+    margin: 1.5rem;
+    padding: 1.5rem;
+
+    .status-enterprise {
+      padding: 1rem;
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .open-enterprise {
+        h3 {
+          font-size: 1rem;
+        }
+        
+        button {
+          padding: 0.7rem 1.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .enterprise-painel {
+    margin: 1rem;
+    padding: 1rem;
+    
+    .status-enterprise {
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}

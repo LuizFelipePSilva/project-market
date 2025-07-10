@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { environment } from '../../../../../environments/environment.development';
 import { IOrder } from '../order/list/order.component';
+import { RouterModule } from '@angular/router';
 
 interface IOrderPaginate {
   current_page: number;
@@ -22,7 +23,7 @@ interface ResponseInfo {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavbarComponent, CommonModule],
+  imports: [RouterModule, NavbarComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -146,6 +147,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   updateTime() {
     const timeElement = document.getElementById('stat-value');
+    if (!timeElement) return;
+
     const data = new Date();
     const mes = String(data.getMonth() + 1).padStart(2, '0');
     const dia = String(data.getDate()).padStart(2, '0');
@@ -153,6 +156,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     const minutos = String(data.getMinutes()).padStart(2, '0');
     const segundos = String(data.getSeconds()).padStart(2, '0');
     const timeStrng = `${dia}/${mes} ${horas}:${minutos}:${segundos}`;
-    timeElement!.textContent = timeStrng;
+    timeElement.textContent = timeStrng;
   }
 }

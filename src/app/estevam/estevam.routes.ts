@@ -18,6 +18,7 @@ import { CreateCategoryComponent } from './components/estevam/category/create-ca
 import { ListCategoryComponent } from './components/estevam/category/list-category/list-category.component';
 import { AdditionalComponent } from './components/estevam/additional/list-additional/additional.component';
 import { CreateAditionalComponent } from './components/estevam/additional/create-aditional/create-aditional.component';
+import { OpenEnterpriseComponent } from './components/estevam/admin/open-enterprise/open-enterprise.component';
 
 export const estevamRoutes: Routes = [
   {
@@ -110,6 +111,12 @@ export const estevamRoutes: Routes = [
       {
         path: 'wpp',
         component: ConnectWhatsappComponent,
+        canActivate: [authGuard],
+        data: { roles: ['super', 'admin'] },
+      },
+      {
+        path: 'config',
+        component: OpenEnterpriseComponent,
         canActivate: [authGuard],
         data: { roles: ['super', 'admin'] },
       },
