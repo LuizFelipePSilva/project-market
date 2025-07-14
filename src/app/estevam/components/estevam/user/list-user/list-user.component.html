@@ -10,7 +10,7 @@
   class="users-container"
   *ngIf="{ userRole: navbar.userRole$ | async } as state"
 >
-  <h2 class="section-title">Gerenciamento de Usuários</h2>
+  <h2 class="section-title">Gerenciamento da Equipe</h2>
 
   <div class="table-wrapper">
     <table class="innovative-table">
@@ -18,7 +18,6 @@
         <tr class="table-header">
           <th>Nome</th>
           <th>Cargo</th>
-          <th>Status</th>
           <th *ngIf="['super', 'admin'].includes(state.userRole!)">Ações</th>
         </tr>
       </thead>
@@ -27,7 +26,7 @@
           *ngFor="let user of init; trackBy: trackByUserId"
           class="user-row"
           [ngClass]="{ 'active-row': selectedUser === user.id }"
-          (click)="toggleUserDetails(user.id)"
+          (click)="toggleUserDetails(user.id!)"
         >
           <td data-label="Nome">
             <div class="user-name">
@@ -37,15 +36,7 @@
           </td>
           <td data-label="Cargo">
             <span class="role-tag {{ user.role }}">
-              {{ user.role | titlecase }}
-            </span>
-          </td>
-          <td data-label="Status">
-            <span
-              class="status-badge"
-              [ngClass]="user.deletedAt ? 'inativo' : 'ativo'"
-            >
-              {{ user.deletedAt ? "Inativo" : "Ativo" }}
+              {{ user.role | roleTranslate }}
             </span>
           </td>
           <td
@@ -55,13 +46,13 @@
             <div class="actions-container">
               <button
                 class="edit-btn"
-                (click)="editUser(user.id); $event.stopPropagation()"
+                (click)="editUser(user.id!); $event.stopPropagation()"
               >
                 <i class="fas fa-edit"></i>
               </button>
               <button
                 class="delete-btn"
-                (click)="deleteUser(user.id); $event.stopPropagation()"
+                (click)="deleteUser(user.id!); $event.stopPropagation()"
               >
                 <i class="fas fa-trash"></i>
               </button>
@@ -70,6 +61,10 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="create-user">
+    <button (click)="openCreateSidebar()">Cadastrar Funcionário</button>
   </div>
 
   <div class="pagination">
@@ -92,3 +87,150 @@
     </button>
   </div>
 </div>
+
+<div class="sidebar" [class.active]="showCreateSidebar">
+  <div class="sidebar-content">
+    <button class="close-btn" (click)="closeCreateSidebar()">&times;</button>
+
+    <h3>Cadastrar Novo Usuário</h3>
+
+    <form #userForm="ngForm" (ngSubmit)="handleCreateUser(userForm)">
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          ngModel
+          required
+          placeholder="Nome completo"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          ngModel
+          required
+          placeholder="email@exemplo.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          placeholder="••••••••"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Senha</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          ngModel
+          required
+          placeholder="••••••••"
+        />
+      </div>
+
+      <div class="form-footer">
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="userForm.invalid || loading"
+        >
+          {{ loading ? "Criando..." : "Criar Usuário" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Adicione isto no seu list-user.component.html -->
+<div
+  class="sidebar update-sidebar"
+  *ngIf="{ userRole: navbar.userRole$ | async } as state"
+  [class.active]="showUpdateSidebar"
+>
+  <div class="sidebar-content">
+    <button class="close-btn" (click)="closeUpdateSideBar()">&times;</button>
+
+    <h3>Atualizar Cargo</h3>
+
+    <div *ngIf="selectedUserForUpdate" class="user-info-card">
+      <div class="user-header">
+        <i class="fas fa-user-circle"></i>
+        <div class="user-details">
+          <h4>{{ selectedUserForUpdate.name }}</h4>
+          <p class="user-email">{{ selectedUserForUpdate.email }}</p>
+        </div>
+      </div>
+
+      <div class="current-info">
+        <div class="info-item">
+          <span class="info-label">Cargo Atual:</span>
+          <span class="role-tag {{ selectedUserForUpdate.role }}">
+            {{ selectedUserForUpdate.role | roleTranslate }}
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Status:</span>
+          <span
+            class="status-badge"
+            [ngClass]="selectedUserForUpdate.deletedAt ? 'inativo' : 'ativo'"
+          >
+            {{ selectedUserForUpdate.deletedAt ? "Inativo" : "Ativo" }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <form #updateRoleForm="ngForm" (ngSubmit)="updateRole()">
+      <div class="form-group">
+        <label for="role">Novo Cargo</label>
+        <select
+          id="role"
+          name="role"
+          [(ngModel)]="newRole"
+          required
+          class="form-select"
+        >
+          <option value="" disabled>Selecione um cargo</option>
+          <option *ngIf="state.userRole == 'super'" value="admin">
+            Administrador
+          </option>
+          <option value="clerk">Atendente</option>
+          <option value="employee">Funcionário</option>
+          <option value="user">Garçom</option>
+        </select>
+      </div>
+
+      <div class="form-footer">
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="updateRoleForm.invalid || loadingUpdate"
+        >
+          {{ loadingUpdate ? "Atualizando..." : "Atualizar Cargo" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Overlay para fundo -->
+<div
+  class="sidebar-overlay"
+  [class.active]="showUpdateSidebar"
+  (click)="closeUpdateSideBar()"
+></div>

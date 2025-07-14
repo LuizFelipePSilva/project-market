@@ -8,6 +8,131 @@ $cinza-claro: #e0e0e0;
 $branco: #ffffff;
 $preto: #000000;
 
+/* Sidebar styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100%;
+  background: $branco;
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  
+  &.active {
+    right: 0;
+  }
+  
+  .sidebar-content {
+    padding: 25px;
+    position: relative;
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #777;
+      transition: color 0.3s;
+      
+      &:hover {
+        color: $roxo-primario;
+      }
+    }
+    
+    h3 {
+      color: $roxo-escuro;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid $roxo-claro;
+    }
+  }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 20px;
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: $roxo-escuro;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid $cinza-claro;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    
+    &:focus {
+      border-color: $roxo-primario;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($roxo-primario, 0.2);
+    }
+  }
+}
+
+.form-footer {
+  margin-top: 30px;
+  
+  .submit-btn {
+    background-color: $roxo-primario;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    
+    &:hover {
+      background-color: $roxo-secundario;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &:disabled {
+      background-color: color.adjust($roxo-primario, $lightness: 30%);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
 .users-container {
   padding: 20px;
   margin-left: 200px;
@@ -26,6 +151,33 @@ $preto: #000000;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     overflow: hidden;
+  }
+
+  .create-user {
+    margin-top: 1.5rem;
+    text-align: center;
+    
+    button {
+      background: linear-gradient(45deg, $roxo-escuro, $roxo-primario);
+      color: $branco;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba($roxo-escuro, 0.2);
+      
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba($roxo-escuro, 0.3);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
   }
 
   .innovative-table {
@@ -54,6 +206,8 @@ $preto: #000000;
 
       &:hover {
         background: rgba($roxo-claro, 0.05);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba($roxo-primario, 0.05);
       }
 
       &.active-row {
@@ -118,46 +272,45 @@ $preto: #000000;
 
         .actions-container {
           display: flex;
-          gap: 0.5rem;
+          gap: 0.8rem;
           justify-content: flex-end;
-        }
-
-        .delete-btn {
-          background: #ff4444;
-          color: #ffffff;
-          padding: 8px 12px;
-          border: none;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          cursor: pointer;
-          transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+          padding-right: 1rem;
           
-          i {
-            font-size: 1rem;
+          button {
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            
+            i {
+              font-size: 1rem;
+            }
           }
-        
-          &:hover {
-            background: #cc0000;
-            transform: scale(1.05);
-            box-shadow: 0 3px 8px rgba(255, 68, 68, 0.3);
-          }
-        
-          &:active {
-            transform: scale(0.95);
-          }
-        }
-
-        .edit-btn {
-          @extend .delete-btn;
-          background: $roxo-secundario;
           
-          &:hover {
-            background: color.adjust($roxo-secundario, $lightness: -10%);
-            box-shadow: 0 3px 8px rgba($roxo-secundario, 0.3);
+          .edit-btn {
+            background: $roxo-secundario;
+            color: $branco;
+            border: none;
+            
+            &:hover {
+              background: color.adjust($roxo-secundario, $lightness: -10%);
+              transform: scale(1.1);
+            }
+          }
+          
+          .delete-btn {
+            background: #ff4444;
+            color: $branco;
+            border: none;
+            
+            &:hover {
+              background: #cc0000;
+              transform: scale(1.1);
+            }
           }
         }
       }
@@ -252,47 +405,105 @@ $preto: #000000;
 
         .actions-container {
           justify-content: flex-start;
+          padding-right: 0;
+          margin-top: 1rem;
+          
+          button {
+            transform: scale(0.9);
+          }
         }
       }
     }
-  }
-}
-/* Adicione estas classes no SCSS */
-.actions-container {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: flex-end;
-  padding-right: 1rem;
-  
-  button {
-    padding: 0.5rem;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
     
-    i {
-      font-size: 1rem;
+    /* Sidebar mobile */
+    .sidebar {
+      width: 100%;
+      right: -100%;
+      
+      &.active {
+        right: 0;
+      }
     }
   }
 }
 
-@media (max-width: 768px) {
-  
-  .user-row {
-    position: relative;
+/* Estilos específicos para o sidebar de atualização */
+.update-sidebar {
+  .user-info-card {
+    background: rgba($roxo-claro, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba($roxo-primario, 0.2);
     
-    .actions-container {
-      padding-right: 0;
-      justify-content: flex-start;
-      margin-top: 1rem;
+    .user-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
       
-      button {
-        transform: scale(0.9);
+      .fa-user-circle {
+        font-size: 3rem;
+        color: $roxo-secundario;
+      }
+      
+      .user-details {
+        h4 {
+          margin: 0;
+          color: $roxo-escuro;
+          font-size: 1.3rem;
+        }
+        
+        .user-email {
+          color: color.adjust($preto, $lightness: 30%);
+          margin: 5px 0 0;
+        }
+      }
+    }
+    
+    .current-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      
+      .info-item {
+        .info-label {
+          display: block;
+          font-size: 0.9rem;
+          color: $roxo-escuro;
+          margin-bottom: 5px;
+          font-weight: 500;
+        }
+        
+        .role-tag, .status-badge {
+          display: inline-block;
+          width: 100%;
+          text-align: center;
+          padding: 8px;
+        }
       }
     }
   }
+  
+  .form-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid $cinza-claro;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background-color: $branco;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a0572' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    
+    &:focus {
+      border-color: $roxo-primario;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($roxo-primario, 0.2);
+    }
+  }
+
 }
