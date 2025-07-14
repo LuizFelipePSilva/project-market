@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../auth-services/auth.service';
 import { environment } from '../../../../environments/environment.development';
 import { catchError, Observable, throwError } from 'rxjs';
+import { ICategory } from '../category-service/category.service';
 
 interface formCreate {
   name: string;
@@ -73,5 +74,35 @@ export class AdditionalService {
           return throwError(() => error);
         })
       );
+  }
+
+  updateValue(id: string, value: number): Observable<IAditional> {
+    return this.http
+      .patch<IAditional>(
+        `${this.baseUrl}/changeValue/${id}`,
+        {
+          value: value,
+        },
+        { withCredentials: true }
+      )
+      .pipe(
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
+  }
+
+  updateNameMaxAdd(
+    id: string,
+    name?: string,
+    maxAdd?: number
+  ): Observable<IAditional> {
+    return this.http
+      .patch<IAditional>(
+        `${this.baseUrl}/update/${id}`,
+        { ...(name && { name }), ...(maxAdd !== undefined && { maxAdd }) },
+        { withCredentials: true }
+      )
+      .pipe(catchError((error) => throwError(() => error)));
   }
 }
