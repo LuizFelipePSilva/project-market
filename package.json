@@ -2,6 +2,7 @@
   "name": "frontend-cafeteria",
   "version": "0.0.0",
   "scripts": {
+    "ng": "ng",
     "clean": "rm -rf .angular/cache",
     "dev": "npm run clean && ng serve --configuration development",
     "build": "npm run clean && ng build --configuration production",
