@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+'<app-navbar></app-navbar>
 <app-error-popup
   *ngIf="errorMessage"
   [errorMessage]="errorMessage"
@@ -26,7 +26,10 @@
               <button (click)="confirmDelete(category.id)" class="delete-btn">
                 <i class="fas fa-trash"></i>
               </button>
-              <button (click)="updateCategory(category.id)" class="update-btn">
+              <button
+                (click)="updateCategory(category.id, category.name)"
+                class="update-btn"
+              >
                 <i class="fas fa-edit"></i>
               </button>
             </div>
@@ -77,6 +80,74 @@
           type="button"
           class="btn transfer-btn"
           (click)="deleteCategory()"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+    <div
+      *ngIf="showRenameName"
+      class="popup-delete-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="statusEditTitle"
+    >
+      <div class="popup-transfer">
+        <button
+          class="close-btn"
+          (click)="closeRenamePopup()"
+          aria-label="Fechar"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 1L1 13M1 1L13 13"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showRenameName"
+  class="popup-delete-overlay"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="closeRenamePopup()" aria-label="Fechar">
+      <svg width="14" height="14" viewBox="0 0 14 14">
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+    <div class="transfer-form">
+      <h2 class="title">Editar Categoria</h2>
+      <p class="instructions">Digite um novo nome para a categoria.</p>
+      <div class="button-group">
+        <input
+          type="text"
+          [(ngModel)]="editFormData.nameClient"
+          placeholder="Novo nome da categoria"
+        />
+        <button
+          type="button"
+          class="btn transfer-btn"
+          (click)="confirmRenameCategory()"
         >
           Confirmar
         </button>
