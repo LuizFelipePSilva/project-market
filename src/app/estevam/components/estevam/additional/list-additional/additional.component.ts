@@ -26,11 +26,13 @@ export class AdditionalComponent {
   selectedCategoryId!: string;
   showList: boolean = false;
   showSuccessPopup: boolean = false;
-
-  // Novas variáveis para controle do popup
+  showRenamePopup: boolean = false;
   showDeletePopup: boolean = false;
   additionalIdToDelete: string | null = null;
-
+  editId: string | null = null;
+  editName: string = '';
+  editValue: string = '';
+  editMaxAdd: string = '';
   constructor(
     private categoryService: CategoryService,
     private additionalService: AdditionalService
@@ -73,6 +75,47 @@ export class AdditionalComponent {
   closeDeletePopup(): void {
     this.showDeletePopup = false;
     this.additionalIdToDelete = null;
+  }
+  openRenameName(additional: IAditional): void {
+    this.editId = additional.id!;
+    this.editName = additional.name;
+    this.editValue = additional.value.toString();
+    this.editMaxAdd = additional.maxAdd.toString();
+    this.showRenamePopup = true;
+  }
+  closeRenameName(): void {
+    this.showRenamePopup = false;
+  }
+  update(id: string, name?: string, value?: string, maxAdd?: string): void {
+    if (name || maxAdd) {
+      const payloadName = name ? name : undefined;
+      const payloadMaxAdd = maxAdd ? Number(maxAdd) : undefined;
+
+      this.additionalService
+        .updateNameMaxAdd(id, payloadName, payloadMaxAdd)
+        .subscribe({
+          next: () => {
+            if (this.selectedCategoryId)
+              this.listAdditionalByCategory(this.selectedCategoryId);
+            this.showRenamePopup = false;
+          },
+          error: (error) =>
+            (this.errorMessage =
+              error.error?.message || 'Erro ao atualizar adicional'),
+        });
+    }
+
+    if (value) {
+      this.additionalService.updateValue(id, Number(value)).subscribe({
+        next: () => {
+          if (this.selectedCategoryId)
+            this.listAdditionalByCategory(this.selectedCategoryId);
+        },
+        error: (error) =>
+          (this.errorMessage =
+            error.error?.message || 'Erro ao atualizar valor'),
+      });
+    }
   }
 
   confirmDelete(): void {

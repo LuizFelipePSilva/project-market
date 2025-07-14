@@ -198,7 +198,7 @@ $breakpoint-xs: 480px;
     font-weight: 500;
   }
 }
-.popup-delete-overlay{
+.popup-delete-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -263,6 +263,30 @@ $breakpoint-xs: 480px;
         }
       }
 
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: $roxo-escuro;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid $cinza-claro;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $roxo-primario;
+          box-shadow: 0 0 0 2px rgba($roxo-primario, 0.2);
+        }
+      }
+
       .button-group {
         display: flex;
         gap: 1rem;
@@ -309,6 +333,40 @@ $breakpoint-xs: 480px;
             }
           }
         }
+      }
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: $roxo-escuro;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $roxo-primario;
+    }
+
+    &.delete-btn {
+      color: $vermelho-status;
+
+      &:hover {
+        color: darken($vermelho-status, 10%);
+      }
+    }
+
+    &.edit-btn {
+      color: $roxo-primario;
+
+      &:hover {
+        color: lighten($roxo-primario, 10%);
       }
     }
   }

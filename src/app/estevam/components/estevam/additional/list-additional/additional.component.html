@@ -85,13 +85,19 @@
             <td>{{ additional.name }}</td>
             <td>{{ additional.value }} R$</td>
             <td>{{ additional.maxAdd }}</td>
-            <td *ngIf="state.userRole === 'admin'" data-label="Ações">
+            <td
+              *ngIf="['super', 'admin'].includes(state.userRole!)"
+              data-label="Ações"
+            >
               <div class="action-buttons">
                 <button
                   (click)="openDeletePopup(additional.id!)"
                   class="delete-btn"
                 >
                   <i class="fas fa-trash"></i>
+                </button>
+                <button (click)="openRenameName(additional)" class="edit-btn">
+                  <i class="fas fa-edit"></i>
                 </button>
               </div>
             </td>
@@ -104,4 +110,59 @@
 
 <div class="success-popup" [class.active]="showSuccessPopup">
   <div class="success-content">✅ Adicional excluído com sucesso!</div>
+</div>
+<div
+  *ngIf="showRenamePopup"
+  class="popup-delete-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="editTitle"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="closeRenameName()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <div class="transfer-form">
+      <h2 id="editTitle" class="title">Editar Adicional</h2>
+      <label>Nome</label>
+      <input type="text" [(ngModel)]="editName" />
+
+      <label>Valor (R$)</label>
+      <input type="number" [(ngModel)]="editValue" />
+
+      <label>Máximo por Pedido</label>
+      <input type="number" [(ngModel)]="editMaxAdd" />
+
+      <div class="button-group">
+        <button
+          type="button"
+          class="btn cancel-btn"
+          (click)="closeRenameName()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn transfer-btn"
+          (click)="update(editId!, editName, editValue, editMaxAdd)"
+        >
+          Salvar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
