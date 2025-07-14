@@ -18,7 +18,24 @@ export class CategoryService {
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.verifySession().subscribe();
   }
-
+  updateNameCategory(id: string, name: string): Observable<ICategory> {
+    return this.http
+      .patch<ICategory>(
+        `${this.baseUrl}/updateName`,
+        {
+          id,
+          name,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
+  }
   listCategorys(): Observable<ICategory[]> {
     return this.http
       .get<ICategory[]>(`${this.baseUrl}/show`, {
