@@ -109,8 +109,11 @@ export class CreateOrderComponent {
       next: (results) => {
         results.forEach((products, index) => {
           const catName = this.categories[index].name;
-          this.productsByCategory[catName] = products;
-          this.allProducts.push(...products);
+          const availableProducts = products.filter(
+            (p: IProduct) => p.status === 'Disponivel'
+          );
+          this.productsByCategory[catName] = availableProducts;
+          this.allProducts.push(...availableProducts);
         });
       },
       error: (err) => {
