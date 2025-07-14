@@ -90,9 +90,13 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     this.userRole$.subscribe((role) => {
-      this.canManageTables = ['super', 'admin', 'clerk', 'employee'].includes(
-        role!
-      );
+      this.canManageTables = [
+        'super',
+        'admin',
+        'clerk',
+        'employee',
+        'user',
+      ].includes(role!);
     });
     this.loadTable(this.currentPage);
     this.intervalId = setInterval(() => {
