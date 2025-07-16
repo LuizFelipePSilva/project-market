@@ -11,12 +11,11 @@ interface IProduct {
   category: string;
   description: string;
   status: 'Disponivel' | 'Indisponivel';
-  image: string; // Adicione esta propriedade
+  image: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
 }
-
 @Injectable({
   providedIn: 'root',
 })
@@ -34,7 +33,28 @@ export class ProductServiceService {
       })
       .pipe(
         catchError((error) => {
-          console.error('Error creating product:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+  updateProduct(
+    id: string,
+    name: string,
+    value: number,
+    description: string
+  ): Observable<IProduct> {
+    return this.http
+      .patch<IProduct>(
+        `${this.baseUrl}/update/partial/${id}`,
+        {
+          ...(name && { name }),
+          ...(value !== undefined && { value }),
+          ...(description && { description }),
+        },
+        { withCredentials: true }
+      )
+      .pipe(
+        catchError((error) => {
           return throwError(() => error);
         })
       );
