@@ -87,6 +87,12 @@
                 >
                   <i class="fa-solid fa-ban"></i>
                 </button>
+                <button
+                  class="edit-btn"
+                  (click)="openEditSidebar(product); $event.stopPropagation()"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
               </div>
             </td>
           </tr>
@@ -222,5 +228,46 @@
         </button>
       </div>
     </div>
+  </div>
+</div>
+<div class="sidebar" [class.active]="showEditSidebar">
+  <div class="sidebar-content">
+    <button class="close-btn" (click)="closeEditSidebar()">&times;</button>
+    <h3>Editar Produto</h3>
+
+    <form #editForm="ngForm" (ngSubmit)="handleProductUpdate()">
+      <div class="form-group">
+        <label>Nome</label>
+        <input
+          type="text"
+          [(ngModel)]="editProduct.name"
+          name="name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Preço</label>
+        <input
+          type="number"
+          [(ngModel)]="editProduct.value"
+          name="value"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea
+          [(ngModel)]="editProduct.description"
+          name="description"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="editForm.invalid">
+        Atualizar
+      </button>
+    </form>
   </div>
 </div>
