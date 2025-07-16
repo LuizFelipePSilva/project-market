@@ -358,7 +358,7 @@ $breakpoint-xs: 480px;
       color: $vermelho-status;
 
       &:hover {
-        color: darken($vermelho-status, 10%);
+        color: color.adjust($vermelho-status, $lightness: -10%);
       }
     }
 
@@ -366,7 +366,7 @@ $breakpoint-xs: 480px;
       color: $roxo-primario;
 
       &:hover {
-        color: lighten($roxo-primario, 10%);
+      color: color.adjust($roxo-primario, $lightness: 10%);
       }
     }
   }
