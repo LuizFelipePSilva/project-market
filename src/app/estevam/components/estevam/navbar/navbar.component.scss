@@ -213,15 +213,14 @@ header[role="banner"] {
           }
           
           .submenu {
-            position: absolute;
-            left: 100%;
-            top: 0;
-            min-width: 200px;
-            z-index: 100;
-            box-shadow: $sombra;
-            margin: 0;
+            position: static;
+            left: auto;
+            top: auto;
+            min-width: 100%;
+            box-shadow: none;
+            margin: 0.5rem 0 0 0;
             border-left: none;
-            border-radius: 0 8px 8px 0;
+            border-radius: 0;
             
             li a {
               span {

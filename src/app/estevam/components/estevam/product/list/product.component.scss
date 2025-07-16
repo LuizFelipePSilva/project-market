@@ -561,3 +561,174 @@ body {
     }
   }
 }
+/* Estilos para a Sidebar de Edição */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -450px; /* Escondida por padrão */
+  width: 100%;
+  max-width: 450px;
+  height: 100vh;
+  background: $branco;
+  box-shadow: -5px 0 25px rgba($preto, 0.15);
+  z-index: 1050;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  
+  &.active {
+    right: 0; /* Mostrar quando ativa */
+  }
+
+  .sidebar-content {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: $roxo-escuro;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      
+      &:hover {
+        color: $roxo-primario;
+        background: rgba($roxo-claro, 0.1);
+        transform: rotate(90deg);
+      }
+    }
+
+    h3 {
+      color: $roxo-escuro;
+      font-size: 1.6rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid $roxo-claro;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      flex: 1;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          color: $roxo-escuro;
+          font-weight: 600;
+          font-size: 0.95rem;
+        }
+
+        input, textarea {
+          padding: 0.9rem 1.2rem;
+          border: 2px solid rgba($roxo-claro, 0.5);
+          border-radius: 8px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          background: rgba($roxo-claro, 0.05);
+          
+          &:focus {
+            outline: none;
+            border-color: $roxo-primario;
+            box-shadow: 0 0 0 3px rgba($roxo-primario, 0.2);
+          }
+        }
+
+        textarea {
+          min-height: 120px;
+          resize: vertical;
+        }
+      }
+
+      .submit-btn {
+        margin-top: auto;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(45deg, $roxo-escuro, $roxo-primario);
+        color: $branco;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba($roxo-primario, 0.3);
+        }
+
+        &:disabled {
+          background: $cinza-claro;
+          color: rgba($roxo-escuro, 0.5);
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+/* Overlay quando a sidebar está aberta */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($preto, 0.5);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Adaptações para dispositivos móveis */
+@media (max-width: $breakpoint-sm) {
+  .sidebar {
+    max-width: 100%;
+    right: -100%;
+    
+    &.active {
+      right: 0;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .sidebar {
+    .sidebar-content {
+      padding: 1.5rem;
+      
+      h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+}

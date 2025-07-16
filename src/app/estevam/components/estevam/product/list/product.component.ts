@@ -6,6 +6,8 @@ import { environment } from '../../../../../../environments/environment.developm
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { CategoryService } from '../../../../services/category-service/category.service';
 import { firstValueFrom } from 'rxjs';
+import { ProductServiceService } from '../../../../services/product-service/product-service.service';
+import { FormsModule } from '@angular/forms';
 
 interface IProduct {
   id: string;
@@ -36,14 +38,15 @@ interface IGroupedProducts {
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, ErrorPopupComponent, NavbarComponent],
+  imports: [FormsModule, CommonModule, ErrorPopupComponent, NavbarComponent],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })
 export class ProductComponent {
   constructor(
     private http: HttpClient,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private productService: ProductServiceService
   ) {}
 
   url_API = '/product';
@@ -56,6 +59,8 @@ export class ProductComponent {
   selectedProductDelete: string | null = null;
   selectedProductId: string | null = null;
   desiredAction: 'Disponivel' | 'Indisponivel' | null = null;
+  showEditSidebar = false;
+  editProduct: Partial<IProduct> = {};
   dataSource: IProductPaginate = {
     per_page: 0,
     total: 0,
@@ -167,6 +172,41 @@ export class ProductComponent {
         );
     }
   }
+  handleProductUpdate() {
+    if (!this.editProduct.id) {
+      this.errorMessage = 'ID do produto não encontrado.';
+      return;
+    }
+
+    const { id, name, value, description } = this.editProduct;
+
+    if (
+      name === undefined ||
+      value === undefined ||
+      description === undefined
+    ) {
+      this.errorMessage = 'Dados do produto incompletos.';
+      return;
+    }
+
+    this.productService.updateProduct(id, name, value, description).subscribe(
+      async () => {
+        this.init = this.init.map((p) =>
+          p.id === id
+            ? { ...p, name: name!, value: value!, description: description! }
+            : p
+        );
+
+        const categoriesMap = await this.buildCategoriesMap();
+        this.groupedProducts = this.groupProducts(categoriesMap);
+        this.closeEditSidebar();
+      },
+      (error) => {
+        this.errorMessage =
+          error.error.message || 'Erro ao atualizar o produto.';
+      }
+    );
+  }
 
   closeStatusPopup() {
     this.showStatusPopup = false;
@@ -187,6 +227,16 @@ export class ProductComponent {
   toggleProductDetails(productId: string) {
     this.selectedProduct =
       this.selectedProduct === productId ? null : productId;
+  }
+  openEditSidebar(product: IProduct) {
+    this.editProduct = { ...product };
+    this.showEditSidebar = true;
+  }
+
+  closeEditSidebar() {
+    this.showEditSidebar = false;
+    this.desiredAction = null;
+    this.editProduct = {};
   }
 
   nextPage() {

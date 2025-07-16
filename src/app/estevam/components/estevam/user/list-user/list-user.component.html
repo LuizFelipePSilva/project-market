@@ -121,6 +121,7 @@
 
       <div class="form-group">
         <label for="password">Senha</label>
+        <p>Minimo 8 digitos</p>
         <input
           type="password"
           id="password"
@@ -156,7 +157,6 @@
   </div>
 </div>
 
-<!-- Adicione isto no seu list-user.component.html -->
 <div
   class="sidebar update-sidebar"
   *ngIf="{ userRole: navbar.userRole$ | async } as state"
