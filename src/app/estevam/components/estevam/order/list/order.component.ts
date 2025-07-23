@@ -6,17 +6,8 @@ import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 import { environment } from '../../../../../../environments/environment.development';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { IOrderResponse } from '../domain/OrderData';
-
-export interface IOrder {
-  id?: number;
-  nameClient: string;
-  payment: 'Dinheiro' | 'Cartao' | 'Pix' | null;
-  status: 'Aberto' | 'Pendente' | 'Concluido' | 'Cancelado';
-  obs: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
-}
+import { IOrder } from '../../cashier/domain/IOrder';
+import { EditOrderComponent } from '../edit-order/edit-order.component';
 
 export interface IOrderPaginate {
   per_page: number;
@@ -29,7 +20,13 @@ export interface IOrderPaginate {
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, ErrorPopupComponent, NavbarComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ErrorPopupComponent,
+    NavbarComponent,
+    EditOrderComponent,
+  ],
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss'],
 })
@@ -52,6 +49,8 @@ export class OrderComponent implements OnInit {
   searchTerm: string = '';
   selectedStatus: string = 'Aberto';
   errorMessage: string | null = null;
+  selectedOrderId: number | null = null;
+  selectedTenantId: string = ''; // se tiver tenantId disponível
   closeErrorPopup() {
     this.errorMessage = null;
   }
@@ -176,5 +175,9 @@ export class OrderComponent implements OnInit {
   }
   closeOrderDetails(): void {
     this.showSidebar = false;
+  }
+  onEditOrderClick(id: number, event: MouseEvent): void {
+    event.stopPropagation();
+    this.selectedOrderId = id;
   }
 }

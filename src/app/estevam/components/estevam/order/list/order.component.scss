@@ -274,6 +274,23 @@ $breakpoint-small-mobile: 480px;
         line-height: 1.5;
         text-shadow: none;
       }
+      button {
+        align-self: flex-end;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: inherit;
+        font-size: 1.2rem;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: darken($preto, 10%);
+        }
+
+        i {
+          pointer-events: none;
+        }
+    }
     }
   }
 }
