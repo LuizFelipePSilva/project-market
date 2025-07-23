@@ -1,11 +1,11 @@
 // home.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { environment } from '../../../../../environments/environment.development';
-import { IOrder } from '../order/list/order.component';
 import { RouterModule } from '@angular/router';
+import { IOrder } from '../cashier/domain/IOrder';
 
 interface IOrderPaginate {
   current_page: number;
@@ -15,10 +15,7 @@ interface IOrderPaginate {
   total: number;
 }
 interface ResponseInfo {
-  id: string;
   name: string;
-  role: string;
-  enterprise: string;
 }
 @Component({
   selector: 'app-home',
@@ -36,18 +33,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     last_page: 0,
   };
   dataResponse: ResponseInfo = {
-    id: '',
     name: '',
-    enterprise: '',
-    role: '',
   };
 
   private intervalId: any;
   errorMessage: string | null = null;
   totalOrder: number | null = null;
+  enterpriseName: string | null = null;
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.getInfoEnterprise();
     this.getInfos();
     this.loadRecentOrders();
     this.setupAutoRefresh();
@@ -78,8 +74,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   private getInfos(): void {
     const url = `${environment.apiUrl}/user/info`;
     this.http.get<ResponseInfo>(url, { withCredentials: true }).subscribe({
-      next: (response) => (this.dataResponse = response),
+      next: (response) => (
+        console.log(response), (this.dataResponse = response)
+      ),
     });
+  }
+  private getInfoEnterprise() {
+    const url = `${environment.apiUrl}/enterprise/getName`;
+    this.http
+      .get<{ name: string }>(url, {
+        withCredentials: true,
+        headers: new HttpHeaders({
+          'x-tenant-id': `${environment.adminApiKey}`,
+        }),
+      })
+      .subscribe({
+        next: (res) => {
+          this.enterpriseName = res.name;
+        },
+      });
   }
   private getTotalOrders(): void {
     const data = new Date();
