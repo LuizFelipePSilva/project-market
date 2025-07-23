@@ -1,0 +1,153 @@
+$color-primary: #4A148C;
+$color-secondary: #7B1FA2;
+$color-accent: #FFAB00;
+$color-dark: #6a0572;
+$color-background: #F5F5F5;
+
+@use 'sass:color';
+
+:host {
+  display: block;
+  background: color.adjust($color-background, $lightness: 5%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 1rem auto;
+  font-family: 'Montserrat', sans-serif;
+  color: $color-dark;
+}
+
+h2 {
+  color: color.adjust($color-primary, $lightness: -15%);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+p {
+  margin: 0.3rem 0 1.5rem 0;
+  font-size: 1rem;
+  font-weight: 400;
+
+  &:first-of-type {
+    font-weight: 600;
+  }
+}
+
+.product-item {
+  border: 1px solid color.adjust($color-primary, $lightness: 40%);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: white;
+
+  .product-header {
+    label {
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
+      color: color.adjust($color-secondary, $lightness: -10%);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .adicionais-container {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+
+    .additional-item {
+      label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-weight: 500;
+        color: $color-dark;
+        cursor: pointer;
+        user-select: none;
+
+        input[type='checkbox'] {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+        }
+
+        &[disabled] {
+          cursor: not-allowed;
+          color: color.adjust($color-dark, $lightness: 40%);
+        }
+      }
+    }
+  }
+}
+
+.btn-save {
+  background: $color-primary;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: color.adjust($color-secondary, $lightness: -10%);
+  }
+
+  &:disabled {
+    background: color.adjust($color-primary, $lightness: 40%);
+    cursor: not-allowed;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  position: relative;
+  background: $color-background;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 10000;
+}
+
+.btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: $color-dark;
+  cursor: pointer;
+  z-index: 10001;
+
+  &:hover {
+    color: color.adjust($color-dark, $lightness: -15%);
+  }
+}

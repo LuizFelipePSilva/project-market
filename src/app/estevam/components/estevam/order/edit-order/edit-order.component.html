@@ -1,0 +1,45 @@
+<div *ngIf="data" class="modal-overlay">
+  <div class="modal-content">
+    <button class="btn-close" (click)="closeModal()">×</button>
+
+    <h2>Editar Pedido #{{ data.id }}</h2>
+    <p>Cliente: {{ data.cliente.nome }} | Status: {{ data.status }}</p>
+    <p>Total: R$ {{ data.valorTotal | number : "1.2-2" }}</p>
+
+    <div class="product-item" *ngFor="let produto of selectableProducts">
+      <div class="product-header">
+        <label>
+          <input type="checkbox" [(ngModel)]="produto._selected" />
+          <strong>{{ produto.nome }}</strong> - R$
+          {{ produto.valorUnitario | number : "1.2-2" }}
+        </label>
+      </div>
+
+      <div class="adicionais-container" *ngIf="produto.adicionais.length > 0">
+        <div
+          class="additional-item"
+          *ngFor="let adicional of produto.adicionais"
+        >
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="adicional._selected"
+              [disabled]="produto._selected"
+            />
+            + {{ adicional.nome }} (R$ {{ adicional.valor | number : "1.2-2" }})
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-save" (click)="sendEditOrder()">
+      Salvar Alterações
+    </button>
+  </div>
+</div>
+
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
