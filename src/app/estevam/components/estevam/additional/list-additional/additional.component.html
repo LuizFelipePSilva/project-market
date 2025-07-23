@@ -86,7 +86,7 @@
             <td>{{ additional.value }} R$</td>
             <td>{{ additional.maxAdd }}</td>
             <td
-              *ngIf="['super', 'admin'].includes(state.userRole!)"
+              *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)"
               data-label="Ações"
             >
               <div class="action-buttons">
