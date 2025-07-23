@@ -13,10 +13,12 @@ export interface IOrderResponse {
     id: string | undefined; // Ou `string`
     nome: string;
     valorUnitario: number;
+    orderId: string;
     adicionais: Array<{
       id: string | undefined; // Ou `string`
       nome: string;
       valor: number;
+      orderAdditionalId: string;
     }> | null;
   }>;
   mesa: number | null;
