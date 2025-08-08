@@ -88,9 +88,9 @@ export class CategoryService {
         })
       );
   }
-  findCategory(categoryId: string): Observable<IProduct> {
+  findCategory(categoryId: string): Observable<ICategory> {
     return this.http
-      .get<IProduct>(`${this.baseUrl}/find/${categoryId}`, {
+      .get<ICategory>(`${this.baseUrl}/find/${categoryId}`, {
         headers: new HttpHeaders({
           'x-tenant-id': `${environment.adminApiKey}`,
         }),
