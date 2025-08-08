@@ -2,16 +2,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-/* Variáveis de Design */
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
-$verde-status: #00C851;
-$vermelho-status: #ff4444;
+/* Color Palette */
+$color-primary: #53B5DB;       // Vibrant blue for interactions and highlights
+$color-secondary: #154A60;     // Professional dark blue for titles and dark backgrounds
+$color-dark: #0077aa;          // Teal (used as a support and hover color)
+$color-white: #FFFFFF;         // White
+$color-background: #F8F9FA;    // General background
+$color-success: #4CAF50;       // Green for "open" status
+$color-error: #D32F2F;         // Red for "ordered" or "remove" status
+$color-disabled: #9E9E9E;      // Gray for "unusable" status
+$color-border: #EAEAEA;        // Border color
+$color-text-light: #6c757d;    // Gray for secondary text
+$color-black: #000000;         // Black for shadows
 
 /* Breakpoints */
 $breakpoint-xxl: 1440px;
@@ -21,21 +23,21 @@ $breakpoint-md: 768px;
 $breakpoint-sm: 576px;
 $breakpoint-xs: 480px;
 
-/* Estilos Globais */
+/* Global Styles */
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
-  background: color.adjust($cinza-claro, $lightness: 8%, $space: hsl);
+  background: $color-background;
 }
 
-/* Popup de Confirmação */
-.popup-transfer-overlay, .popup-delete-overlay{
+/* Confirmation Popup */
+.popup-transfer-overlay, .popup-delete-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba($preto, 0.6);
+  background: rgba($color-black, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,10 +45,10 @@ body {
 
   .popup-transfer {
     position: relative;
-    background: $branco;
+    background: $color-white;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba($preto, 0.2);
+    box-shadow: 0 8px 32px rgba($color-black, 0.2);
     max-width: 450px;
     width: 90%;
 
@@ -62,18 +64,18 @@ body {
       background: none;
       border: none;
       cursor: pointer;
-      color: $roxo-escuro;
+      color: $color-secondary;
       transition: all 0.2s ease;
 
       &:hover {
-        color: $roxo-primario;
+        color: $color-primary;
         transform: rotate(90deg);
       }
     }
 
     .transfer-form {
       .title {
-        color: $roxo-escuro;
+        color: $color-secondary;
         font-size: 1.3rem;
         margin-bottom: 1rem;
         text-align: center;
@@ -84,7 +86,7 @@ body {
       }
 
       .instructions {
-        color: $roxo-secundario;
+        color: $color-text-light;
         margin-bottom: 2rem;
         text-align: center;
         font-size: 0.95rem;
@@ -121,21 +123,21 @@ body {
           }
 
           &.transfer-btn {
-            background: $roxo-primario;
-            color: $branco;
+            background: $color-primary;
+            color: $color-white;
 
             &:hover {
-              background: $roxo-secundario;
+              background: $color-dark;
               transform: translateY(-1px);
             }
           }
 
           &.cancel-btn {
-            background: $cinza-claro;
-            color: $roxo-escuro;
+            background: $color-border;
+            color: $color-secondary;
 
             &:hover {
-              background: color.adjust($cinza-claro, $lightness: -10%, $space: hsl);
+              background: color.adjust($color-border, $lightness: -10%);
               transform: translateY(-1px);
             }
           }
@@ -145,7 +147,7 @@ body {
   }
 }
 
-/* Container Principal */
+/* Main Container */
 .products-container {
   padding: 1.5rem;
   margin-left: 0;
@@ -159,11 +161,11 @@ body {
   }
 
   .section-title {
-    color: $roxo-escuro;
+    color: $color-secondary;
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
     padding-left: 1rem;
-    border-left: 4px solid $roxo-primario;
+    border-left: 4px solid $color-primary;
     position: relative;
 
     @media (min-width: $breakpoint-md) {
@@ -179,7 +181,7 @@ body {
       left: 1rem;
       width: 40px;
       height: 3px;
-      background: $roxo-secundario;
+      background: $color-dark;
 
       @media (min-width: $breakpoint-md) {
         left: 1.5rem;
@@ -188,12 +190,12 @@ body {
     }
   }
 
-  /* Categorias */
+  /* Categories */
   .category-container {
     margin-bottom: 1.5rem;
-    background: $branco;
+    background: $color-white;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba($preto, 0.08);
+    box-shadow: 0 4px 12px rgba($color-black, 0.08);
     overflow: hidden;
     transition: transform 0.3s ease;
 
@@ -208,8 +210,8 @@ body {
 
     .category-header {
       padding: 1rem;
-      background: linear-gradient(45deg, $roxo-escuro, $roxo-primario);
-      color: $branco;
+      background: linear-gradient(45deg, $color-secondary, $color-primary);
+      color: $color-white;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -233,7 +235,7 @@ body {
       }
 
       .product-count {
-        background: rgba($branco, 0.15);
+        background: rgba($color-white, 0.15);
         padding: 0.4rem 1rem;
         border-radius: 20px;
         font-size: 0.85rem;
@@ -247,7 +249,7 @@ body {
     }
   }
 
-  /* Tabela Responsiva */
+  /* Responsive Table */
   .table-wrapper {
     overflow-x: auto;
     padding: 0 0.5rem;
@@ -267,11 +269,11 @@ body {
       }
 
       .table-header {
-        background: rgba($roxo-claro, 0.1);
+        background: rgba($color-primary, 0.1);
 
         th {
           padding: 1rem;
-          color: $roxo-escuro;
+          color: $color-secondary;
           font-weight: 600;
           text-align: left;
           white-space: nowrap;
@@ -285,20 +287,20 @@ body {
       }
 
       .product-row {
-        border-bottom: 1px solid rgba($cinza-claro, 0.3);
+        border-bottom: 1px solid rgba($color-border, 0.7);
         transition: all 0.2s ease;
 
         &:hover {
-          background: rgba($roxo-claro, 0.05);
+          background: rgba($color-primary, 0.05);
         }
 
         &.active-row {
-          background: rgba($roxo-claro, 0.1);
+          background: rgba($color-primary, 0.1);
         }
 
         td {
           padding: 1rem;
-          color: $roxo-escuro;
+          color: $color-secondary;
           vertical-align: top;
           font-size: 0.95rem;
 
@@ -318,7 +320,7 @@ body {
             }
 
             .fa-cube {
-              color: $roxo-secundario;
+              color: $color-primary;
               font-size: 1rem;
 
               @media (min-width: $breakpoint-sm) {
@@ -342,15 +344,15 @@ body {
             }
 
             &.disponivel {
-              background: rgba($verde-status, 0.15);
-              color: color.adjust($verde-status, $lightness: -20%, $space: hsl);
-              border: 2px solid $verde-status;
+              background: rgba($color-success, 0.15);
+              color: color.adjust($color-success, $lightness: -20%);
+              border: 2px solid $color-success;
             }
 
             &.indisponivel {
-              background: rgba($vermelho-status, 0.15);
-              color: color.adjust($vermelho-status, $lightness: -20%, $space: hsl);
-              border: 2px solid $vermelho-status;
+              background: rgba($color-error, 0.15);
+              color: color.adjust($color-error, $lightness: -20%);
+              border: 2px solid $color-error;
             }
           }
 
@@ -367,7 +369,6 @@ body {
               left: 0;
               right: 0;
               height: 1.5em;
-        
             }
           }
 
@@ -398,20 +399,20 @@ body {
               }
 
               &.delete-btn {
-                background: $vermelho-status;
-                color: $branco;
+                background: $color-error;
+                color: $color-white;
 
                 &:hover {
-                  background: color.adjust($vermelho-status, $lightness: -10%, $space: hsl);
+                  background: color.adjust($color-error, $lightness: -10%);
                 }
               }
 
               &.status-btn {
-                background: $roxo-secundario;
-                color: $branco;
+                background: $color-dark;
+                color: $color-white;
 
                 &:hover {
-                  background: $roxo-primario;
+                  background: $color-primary;
                 }
               }
             }
@@ -420,14 +421,14 @@ body {
 
         .price-cell {
           font-weight: 600;
-          color: $roxo-secundario;
+          color: $color-primary;
           white-space: nowrap;
         }
       }
     }
   }
 
-  /* Paginação Adaptativa */
+  /* Adaptive Pagination */
   .pagination {
     margin-top: 2rem;
     display: flex;
@@ -444,8 +445,8 @@ body {
     .pagination-btn {
       padding: 0.7rem 1.2rem;
       border-radius: 8px;
-      background: $roxo-primario;
-      color: $branco;
+      background: $color-primary;
+      color: $color-white;
       border: none;
       display: flex;
       align-items: center;
@@ -460,20 +461,20 @@ body {
       }
 
       &:hover:not(:disabled) {
-        background: $roxo-secundario;
+        background: $color-dark;
         transform: translateY(-2px);
-        box-shadow: 0 3px 6px rgba($preto, 0.1);
+        box-shadow: 0 3px 6px rgba($color-black, 0.1);
       }
 
       &:disabled {
-        background: $cinza-claro;
-        color: rgba($preto, 0.5);
+        background: $color-disabled;
+        color: rgba($color-black, 0.5);
         cursor: not-allowed;
       }
     }
 
     .page-indicator {
-      color: $roxo-escuro;
+      color: $color-secondary;
       font-weight: 500;
       min-width: 120px;
       text-align: center;
@@ -486,7 +487,7 @@ body {
   }
 }
 
-/* Media Queries Específicas */
+/* Specific Media Queries */
 @media (max-width: $breakpoint-md) {
   .products-container {
     .table-wrapper {
@@ -506,7 +507,7 @@ body {
               content: attr(data-label);
               display: block;
               font-weight: 600;
-              color: $roxo-escuro;
+              color: $color-secondary;
               margin-bottom: 0.25rem;
               font-size: 0.9rem;
             }
@@ -518,7 +519,7 @@ body {
           }
 
           &:not(:last-child) {
-            border-bottom: 2px solid rgba($cinza-claro, 0.5);
+            border-bottom: 2px solid rgba($color-border, 0.9);
           }
         }
 
@@ -561,16 +562,17 @@ body {
     }
   }
 }
-/* Estilos para a Sidebar de Edição */
+
+/* Edit Sidebar Styles */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -450px; /* Escondida por padrão */
+  right: -450px; /* Hidden by default */
   width: 100%;
   max-width: 450px;
   height: 100vh;
-  background: $branco;
-  box-shadow: -5px 0 25px rgba($preto, 0.15);
+  background: $color-white;
+  box-shadow: -5px 0 25px rgba($color-black, 0.15);
   z-index: 1050;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   overflow-y: auto;
@@ -578,7 +580,7 @@ body {
   flex-direction: column;
   
   &.active {
-    right: 0; /* Mostrar quando ativa */
+    right: 0; /* Show when active */
   }
 
   .sidebar-content {
@@ -594,7 +596,7 @@ body {
       background: none;
       border: none;
       font-size: 1.8rem;
-      color: $roxo-escuro;
+      color: $color-secondary;
       cursor: pointer;
       transition: all 0.3s ease;
       width: 40px;
@@ -605,18 +607,18 @@ body {
       border-radius: 50%;
       
       &:hover {
-        color: $roxo-primario;
-        background: rgba($roxo-claro, 0.1);
+        color: $color-primary;
+        background: rgba($color-primary, 0.1);
         transform: rotate(90deg);
       }
     }
 
     h3 {
-      color: $roxo-escuro;
+      color: $color-secondary;
       font-size: 1.6rem;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
-      border-bottom: 2px solid $roxo-claro;
+      border-bottom: 2px solid $color-border;
     }
 
     form {
@@ -631,24 +633,24 @@ body {
         gap: 0.5rem;
 
         label {
-          color: $roxo-escuro;
+          color: $color-secondary;
           font-weight: 600;
           font-size: 0.95rem;
         }
 
         input, textarea {
           padding: 0.9rem 1.2rem;
-          border: 2px solid rgba($roxo-claro, 0.5);
+          border: 2px solid $color-border;
           border-radius: 8px;
           font-family: 'Poppins', sans-serif;
           font-size: 1rem;
           transition: all 0.3s ease;
-          background: rgba($roxo-claro, 0.05);
+          background: rgba($color-primary, 0.05);
           
           &:focus {
             outline: none;
-            border-color: $roxo-primario;
-            box-shadow: 0 0 0 3px rgba($roxo-primario, 0.2);
+            border-color: $color-primary;
+            box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
           }
         }
 
@@ -661,8 +663,8 @@ body {
       .submit-btn {
         margin-top: auto;
         padding: 1rem 1.5rem;
-        background: linear-gradient(45deg, $roxo-escuro, $roxo-primario);
-        color: $branco;
+        background: linear-gradient(45deg, $color-secondary, $color-primary);
+        color: $color-white;
         border: none;
         border-radius: 8px;
         font-weight: 600;
@@ -676,12 +678,12 @@ body {
         
         &:hover:not(:disabled) {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba($roxo-primario, 0.3);
+          box-shadow: 0 4px 12px rgba($color-primary, 0.3);
         }
 
         &:disabled {
-          background: $cinza-claro;
-          color: rgba($roxo-escuro, 0.5);
+          background: $color-disabled;
+          color: rgba($color-secondary, 0.5);
           cursor: not-allowed;
         }
       }
@@ -689,14 +691,14 @@ body {
   }
 }
 
-/* Overlay quando a sidebar está aberta */
+/* Overlay when sidebar is open */
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba($preto, 0.5);
+  background: rgba($color-black, 0.5);
   z-index: 1040;
   opacity: 0;
   visibility: hidden;
@@ -708,7 +710,7 @@ body {
   }
 }
 
-/* Adaptações para dispositivos móveis */
+/* Mobile Device Adaptations */
 @media (max-width: $breakpoint-sm) {
   .sidebar {
     max-width: 100%;

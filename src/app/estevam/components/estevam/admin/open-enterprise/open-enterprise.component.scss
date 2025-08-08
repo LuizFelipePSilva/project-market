@@ -1,22 +1,13 @@
 @use "sass:color";
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-/* Variáveis de Design */
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
-$verde-status: #00C851;
-$vermelho-status: #ff4444;
+// --- SUA PALETA (AZUL E NEUTROS) ---
+$color-primary: #53B5DB;
+$color-secondary: #154A60;
+$color-dark: #0077aa;
+$color-white: #FFFFFF;
 
-/* Breakpoints */
-$breakpoint-xxl: 1440px;
-$breakpoint-xl: 1200px;
-$breakpoint-lg: 992px;
+// Breakpoints
 $breakpoint-md: 768px;
 $breakpoint-sm: 576px;
 $breakpoint-xs: 480px;
@@ -24,9 +15,9 @@ $breakpoint-xs: 480px;
 .enterprise-painel {
   margin: 2rem auto;
   max-width: 800px;
-  background: $branco;
+  background: $color-white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba($preto, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: transform 0.3s ease;
   padding: 2rem;
@@ -40,7 +31,7 @@ $breakpoint-xs: 480px;
     padding: 1.5rem;
 
     h1 {
-      color: $roxo-escuro;
+      color: $color-secondary; // AJUSTE
       font-size: 1.75rem;
       margin-bottom: 1.5rem;
       position: relative;
@@ -55,7 +46,7 @@ $breakpoint-xs: 480px;
         transform: translateX(-50%);
         width: 60px;
         height: 3px;
-        background: $roxo-secundario;
+        background: $color-primary; // AJUSTE
       }
     }
 
@@ -63,7 +54,7 @@ $breakpoint-xs: 480px;
       margin-top: 1.5rem;
 
       h3 {
-        color: $roxo-secundario;
+        color: $color-dark; // AJUSTE
         font-size: 1.1rem;
         margin-bottom: 1rem;
       }
@@ -75,15 +66,15 @@ $breakpoint-xs: 480px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-        background: $roxo-primario;
-        color: $branco;
+        background: $color-primary; // AJUSTE
+        color: $color-white;
         font-size: 1rem;
-        box-shadow: 0 2px 8px rgba($roxo-escuro, 0.2);
+        box-shadow: 0 2px 8px rgba($color-secondary, 0.2); // AJUSTE
 
         &:hover {
-          background: $roxo-secundario;
+          background: $color-dark; // AJUSTE
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba($roxo-escuro, 0.3);
+          box-shadow: 0 4px 12px rgba($color-secondary, 0.3); // AJUSTE
         }
 
         &:active {

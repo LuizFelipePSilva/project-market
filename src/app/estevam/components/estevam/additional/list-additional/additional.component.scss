@@ -1,17 +1,18 @@
 @use "sass:color";
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
-$verde-status: #00C851;
-$vermelho-status: #ff4444;
-$primary: #2ecc71;
 
+// --- SUA PALETA (AZUL E NEUTROS) ---
+$color-primary: #53B5DB;
+$color-secondary: #154A60;
+$color-dark: #0077aa;
+$color-success: #4CAF50;
+$color-error: #D32F2F;
+$color-background: #F8F9FA;
+$color-white: #FFFFFF;
+$color-border: #EAEAEA;
+$color-text-light: #6c757d;
+
+// Variáveis de Layout
 $breakpoint-xxl: 1440px;
 $breakpoint-xl: 1200px;
 $breakpoint-lg: 992px;
@@ -29,13 +30,14 @@ $breakpoint-xs: 480px;
     text-align: center;
     font-size: 1.8rem;
     font-weight: 600;
-    color: $roxo-escuro;
+    color: $color-secondary; // AJUSTE
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid $roxo-claro;
+    border-bottom: 2px solid $color-border; // AJUSTE
   }
+
   .container-form {
-    background-color: $branco;
+    background-color: $color-white;
     border-radius: 0.75rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
@@ -44,23 +46,23 @@ $breakpoint-xs: 480px;
       display: block;
       font-weight: 600;
       margin-bottom: 0.5rem;
-      color: $roxo-escuro;
+      color: $color-secondary; // AJUSTE
     }
 
     select {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid $cinza-claro;
+      border: 1px solid $color-border; // AJUSTE
       border-radius: 0.5rem;
       margin-bottom: 1rem;
-      background-color: $branco;
+      background-color: $color-white;
       font-family: 'Poppins', sans-serif;
       transition: border-color 0.3s ease;
       
       &:focus {
         outline: none;
-        border-color: $roxo-primario;
-        box-shadow: 0 0 0 2px rgba($roxo-primario, 0.2);
+        border-color: $color-primary; // AJUSTE
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.2); // AJUSTE
       }
     }
 
@@ -68,8 +70,8 @@ $breakpoint-xs: 480px;
       display: block;
       width: 100%;
       padding: 0.9rem;
-      background-color: $roxo-primario;
-      color: $branco;
+      background-color: $color-primary; // AJUSTE
+      color: $color-white;
       border: none;
       border-radius: 0.5rem;
       font-weight: 600;
@@ -79,7 +81,7 @@ $breakpoint-xs: 480px;
       margin-bottom: 1.5rem;
       
       &:hover {
-        background-color: $roxo-secundario;
+        background-color: $color-dark; // AJUSTE
         transform: translateY(-2px);
       }
       
@@ -91,30 +93,30 @@ $breakpoint-xs: 480px;
     table {
       width: 100%;
       border-collapse: collapse;
-      background-color: $branco;
+      background-color: $color-white;
       border-radius: 0.75rem;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       
       thead {
-        background-color: $roxo-primario;
+        background-color: $color-secondary; // AJUSTE: Cabeçalho com cor escura, mais profissional
         
         th {
           padding: 1rem;
           text-align: left;
           font-weight: 600;
-          color: $branco;
-          border-bottom: 2px solid $roxo-escuro;
+          color: $color-white;
+          border-bottom: 2px solid darken($color-secondary, 5%); // AJUSTE
         }
       }
       
       tbody {
         tr {
-          border-bottom: 1px solid $cinza-claro;
+          border-bottom: 1px solid $color-border; // AJUSTE
           transition: background-color 0.2s ease;
           
           &:hover {
-            background-color: rgba($roxo-claro, 0.1);
+            background-color: rgba($color-primary, 0.1); // AJUSTE
           }
           
           &:last-child {
@@ -123,7 +125,7 @@ $breakpoint-xs: 480px;
           
           td {
             padding: 1rem;
-            color: $roxo-escuro;
+            color: $color-secondary; // AJUSTE
             
             &:first-child {
               font-weight: 500;
@@ -135,30 +137,18 @@ $breakpoint-xs: 480px;
   }
 }
 
-// Responsividade
+// Responsividade (mantida)
 @media (max-width: $breakpoint-md) {
   .list-additinal-container {
     padding: 1rem;
-    h2 {
-      font-size: 1.4rem;
-      padding-bottom: 0.4rem;
-    }
+    h2 { font-size: 1.4rem; padding-bottom: 0.4rem; }
     .container-form {
       padding: 1rem;
-      
       table {
         display: block;
         overflow-x: auto;
-        
-        thead th {
-          font-size: 0.9rem;
-          padding: 0.75rem;
-        }
-        
-        tbody td {
-          padding: 0.75rem;
-          font-size: 0.9rem;
-        }
+        thead th { font-size: 0.9rem; padding: 0.75rem; }
+        tbody td { padding: 0.75rem; font-size: 0.9rem; }
       }
     }
   }
@@ -167,12 +157,11 @@ $breakpoint-xs: 480px;
 @media (max-width: $breakpoint-sm) {
   .list-additinal-container {
     .container-form {
-      table {
-        min-width: 600px;
-      }
+      table { min-width: 600px; }
     }
   }
 }
+
 .success-popup {
   position: fixed;
   top: -100px;
@@ -185,12 +174,12 @@ $breakpoint-xs: 480px;
   
   &.active {
     top: 20px;
-    animation: slideIn 0.5s, slideOut 0.5s 2.5s;
+    // Animação pode ser adicionada aqui se necessário
   }
 
   .success-content {
-    background: $primary;
-    color: white;
+    background: $color-success; // AJUSTE
+    color: $color-white;
     padding: 1rem 2rem;
     border-radius: 30px;
     text-align: center;
@@ -198,30 +187,29 @@ $breakpoint-xs: 480px;
     font-weight: 500;
   }
 }
+
 .popup-delete-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba($preto, 0.6);
+  background: rgba(0,0,0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 
-  .popup-transfer {
+  .popup-transfer, .switch-form { // Aplicando estilos a ambas as classes de formulário
     position: relative;
-    background: $branco;
+    background: $color-white;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba($preto, 0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0, 0.2);
     max-width: 450px;
     width: 90%;
 
-    @media (min-width: $breakpoint-sm) {
-      padding: 2.5rem;
-    }
+    @media (min-width: $breakpoint-sm) { padding: 2.5rem; }
 
     .close-btn {
       position: absolute;
@@ -231,107 +219,81 @@ $breakpoint-xs: 480px;
       background: none;
       border: none;
       cursor: pointer;
-      color: $roxo-escuro;
+      color: $color-secondary; // AJUSTE
       transition: all 0.2s ease;
 
-      &:hover {
-        color: $roxo-primario;
-        transform: rotate(90deg);
+      &:hover { color: $color-primary; transform: rotate(90deg); } // AJUSTE
+    }
+
+    .title {
+      color: $color-secondary; // AJUSTE
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      @media (min-width: $breakpoint-sm) { font-size: 1.5rem; }
+    }
+
+    .instructions, a {
+      color: $color-dark; // AJUSTE
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 0.95rem;
+      @media (min-width: $breakpoint-sm) { font-size: 1rem; }
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: $color-secondary; // AJUSTE
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid $color-border; // AJUSTE
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary; // AJUSTE
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.2); // AJUSTE
       }
     }
 
-    .transfer-form {
-      .title {
-        color: $roxo-escuro;
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-        text-align: center;
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+      @media (min-width: $breakpoint-xs) { flex-direction: row; justify-content: center; }
 
-        @media (min-width: $breakpoint-sm) {
-          font-size: 1.5rem;
-        }
-      }
-
-      .instructions {
-        color: $roxo-secundario;
-        margin-bottom: 2rem;
+      .btn {
+        padding: 0.9rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 120px;
         text-align: center;
         font-size: 0.95rem;
 
-        @media (min-width: $breakpoint-sm) {
-          font-size: 1rem;
-        }
-      }
+        @media (min-width: $breakpoint-sm) { padding: 0.75rem 1.5rem; font-size: 1rem; }
 
-      label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-        color: $roxo-escuro;
-      }
-
-      input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid $cinza-claro;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
-        font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-
-        &:focus {
-          outline: none;
-          border-color: $roxo-primario;
-          box-shadow: 0 0 0 2px rgba($roxo-primario, 0.2);
-        }
-      }
-
-      .button-group {
-        display: flex;
-        gap: 1rem;
-        flex-direction: column;
-
-        @media (min-width: $breakpoint-xs) {
-          flex-direction: row;
-          justify-content: center;
+        &.transfer-btn {
+          background: $color-primary; // AJUSTE
+          color: $color-white;
+          &:hover { background: $color-dark; transform: translateY(-1px); } // AJUSTE
         }
 
-        .btn {
-          padding: 0.9rem;
-          border: none;
-          border-radius: 6px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          min-width: 120px;
-          text-align: center;
-          font-size: 0.95rem;
-
-          @media (min-width: $breakpoint-sm) {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-          }
-
-          &.transfer-btn {
-            background: $roxo-primario;
-            color: $branco;
-
-            &:hover {
-              background: $roxo-secundario;
-              transform: translateY(-1px);
-            }
-          }
-
-          &.cancel-btn {
-            background: $cinza-claro;
-            color: $roxo-escuro;
-
-            &:hover {
-              background: color.adjust($cinza-claro, $lightness: -10%, $space: hsl);
-              transform: translateY(-1px);
-            }
-          }
+        &.cancel-btn {
+          background: $color-border; // AJUSTE
+          color: $color-secondary; // AJUSTE
+          &:hover { background: darken($color-border, 10%); transform: translateY(-1px); }
         }
       }
     }
@@ -347,26 +309,120 @@ $breakpoint-xs: 480px;
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
-    color: $roxo-escuro;
+    color: $color-secondary; // AJUSTE
     transition: color 0.2s ease;
 
     &:hover {
-      color: $roxo-primario;
+      color: $color-primary; // AJUSTE
     }
 
     &.delete-btn {
-      color: $vermelho-status;
-
-      &:hover {
-        color: color.adjust($vermelho-status, $lightness: -10%);
-      }
+      color: $color-error; // AJUSTE
+      &:hover { color: color.adjust($color-error, $lightness: -10%); }
     }
 
     &.edit-btn {
-      color: $roxo-primario;
+      color: $color-primary; // AJUSTE
+      &:hover { color: color.adjust($color-primary, $lightness: 10%); }
+    }
+  }
+}
+@media (max-width: $breakpoint-md) {
+  .list-additinal-container {
+    padding: 1rem;
 
-      &:hover {
-      color: color.adjust($roxo-primario, $lightness: 10%);
+    h2 {
+      font-size: 1.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .container-form {
+      padding: 1rem;
+
+      select, input, button {
+        font-size: 0.95rem;
+        padding: 0.65rem;
+      }
+
+      table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+
+        thead {
+          display: none;
+        }
+
+        tbody {
+          display: block;
+
+          tr {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+            background: $color-white;
+            border: 1px solid $color-border;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 0.75rem;
+
+            td {
+              display: flex;
+              justify-content: space-between;
+              padding: 0.5rem 0;
+
+              &::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: $color-text-light;
+                margin-right: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .list-additinal-container {
+    .container-form {
+      table {
+        min-width: 100%;
+      }
+
+      .button-group {
+        flex-direction: column;
+        align-items: stretch;
+
+        .btn {
+          width: 100%;
+          font-size: 0.95rem;
+        }
+      }
+    }
+
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .popup-delete-overlay {
+    .popup-transfer, .switch-form {
+      padding: 1.25rem;
+
+      .title {
+        font-size: 1.2rem;
+      }
+
+      .instructions {
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        font-size: 0.9rem;
+        padding: 0.6rem;
       }
     }
   }

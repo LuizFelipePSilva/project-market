@@ -1,0 +1,308 @@
+@use 'sass:color';
+$color-primary: #53B5DB;       // Azul vibrante para interações e destaques
+$color-secondary: #154A60;     // Azul escuro profissional para títulos e textos principais
+$color-dark: #0077aa;          // Azul petróleo (usado como cor de apoio)
+
+$color-success: #4CAF50;       // Verde para sucesso
+$color-error: #D32F2F;         // Vermelho para erro
+
+$color-background: #F8F9FA;    // Fundo geral
+$color-white: #FFFFFF;         // Branco para cartões
+$color-border: #EAEAEA;        // Cor de borda neutra
+$color-text-light: #6c757d;    // Cinza para texto secundário
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+}
+
+.modal-content {
+  background: $color-white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: $color-secondary;
+}
+
+.products-area {
+  margin-top: 20px;
+}
+
+.category-section {
+  margin-bottom: 30px;
+}
+
+.category-title {
+  border-bottom: 2px solid $color-border;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  color: $color-secondary;
+  font-weight: 600;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: $color-white;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+}
+
+.product-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-description {
+  color: $color-text-light;
+  font-size: 14px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.product-price {
+  font-weight: bold;
+  color: $color-secondary;
+}
+
+.add-button {
+  background-color: $color-primary; // Ação principal com a cor primária
+  color: $color-white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: color.adjust($color-primary, $lightness: -5%);
+  }
+}
+
+/* Additional Modal */
+.additional-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1201;
+}
+
+.additional-modal .modal-content {
+  width: 90%;
+  max-width: 500px;
+}
+
+.additional-list {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.additional-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid $color-border;
+}
+
+.additional-name {
+  font-weight: bold;
+}
+
+.additional-price {
+  color: $color-primary; // Preço dos adicionais com a cor de destaque
+  margin-right: 10px;
+}
+
+.additional-limit {
+  color: $color-text-light;
+  font-size: 12px;
+}
+
+.additional-controls {
+  display: flex;
+  align-items: center;
+  button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid $color-border;
+    background: $color-white;
+    color: $color-dark; // Cor de apoio para os controles
+    font-size: 16px;
+    cursor: pointer;
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  span {
+    margin: 0 10px;
+    font-weight: 500;
+  }
+}
+
+.modal-footer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-bottom: 20px;
+  color: $color-secondary;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .cancel-btn {
+    background-color: $color-border;
+    color: $color-secondary;
+    &:hover {
+      background-color: darken($color-border, 5%);
+    }
+  }
+  .confirm-btn {
+    background-color: $color-success; // Ação de confirmação
+    color: $color-white;
+    &:hover {
+      background-color: color.adjust($color-success, $lightness: -5%);
+    }
+  }
+}
+
+/* Confirmation Popup */
+.confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1202;
+}
+
+.confirmation-card {
+  background: $color-white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .continue-btn {
+    background-color: $color-border;
+    color: $color-secondary;
+    &:hover {
+      background-color: darken($color-border, 5%);
+    }
+  }
+  .finish-btn {
+    background-color: $color-success; // Ação final
+    color: $color-white;
+    &:hover {
+      background-color: color.adjust($color-success, $lightness: -5%);
+    }
+  }
+}
+
+.modal-overlay, 
+.additional-modal, 
+.confirmation-overlay {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.modal-content {
+  transition: transform 0.3s ease;
+  transform: translateY(20px);
+  
+  .active & {
+    transform: translateY(0);
+  }
+}

@@ -1,12 +1,16 @@
-// Variáveis
 @use "sass:color";
-$primary: #2c3e50;
-$secondary: #3498db;
-$success: #27ae60;
-$error: #e74c3c;
-$background: #f8f9fa;
-$text: #2c3e50;
-$border: #dee2e6;
+
+// --- SUA PALETA (AZUL E NEUTROS) ---
+$color-primary: #53B5DB;
+$color-secondary: #154A60;
+$color-success: #4CAF50;
+$color-error: #D32F2F;
+$color-background: #F8F9FA;
+$color-text: #2c3e50; // Mantido para texto secundário, pode ser trocado por $color-secondary
+$color-border: #dee2e6;
+$color-white: #ffffff;
+
+// Variáveis de Layout
 $breakpoint-mobile: 576px;
 $breakpoint-tablet: 992px;
 $breakpoint-large: 1440px;
@@ -18,24 +22,9 @@ $sidebar-width: 200px;
   align-items: center;
   justify-content: $justify;
 }
-
-@mixin mobile {
-  @media (max-width: $breakpoint-mobile) {
-    @content;
-  }
-}
-
-@mixin tablet {
-  @media (min-width: ($breakpoint-mobile + 1)) and (max-width: $breakpoint-tablet) {
-    @content;
-  }
-}
-
-@mixin desktop {
-  @media (min-width: ($breakpoint-tablet + 1)) {
-    @content;
-  }
-}
+@mixin mobile { @media (max-width: $breakpoint-mobile) { @content; } }
+@mixin tablet { @media (min-width: ($breakpoint-mobile + 1)) and (max-width: $breakpoint-tablet) { @content; } }
+@mixin desktop { @media (min-width: ($breakpoint-tablet + 1)) { @content; } }
 
 // Layout Principal
 .cashier-container {
@@ -44,23 +33,12 @@ $sidebar-width: 200px;
   min-height: 100vh;
   max-width: 1400px;
   margin: 0 auto 0 $sidebar-width;
-  background: $background;
+  background: $color-background;
   transition: margin 0.3s ease;
 
-  @include tablet {
-    margin-left: 60px;
-    padding: 1.5rem 2rem;
-  }
-
-  @include mobile {
-    margin: 56px 0 0;
-    padding: 1rem;
-    max-width: 100%;
-  }
-
-  @media (min-width: $breakpoint-large) {
-    padding: 2rem 3rem;
-  }
+  @include tablet { margin-left: 60px; padding: 1.5rem 2rem; }
+  @include mobile { margin: 56px 0 0; padding: 1rem; max-width: 100%; }
+  @media (min-width: $breakpoint-large) { padding: 2rem 3rem; }
 }
 
 // Cabeçalho
@@ -73,25 +51,15 @@ $sidebar-width: 200px;
   flex-wrap: wrap;
 
   h1 {
-    color: $primary;
+    color: $color-secondary; // AJUSTE: Cor principal escura para o título
     font-size: clamp(1.5rem, 2vw, 2rem);
     white-space: nowrap;
     margin: 0;
-
-    &::before { 
-      margin-right: 0.75rem;
-    }
-
-    @include mobile {
-      font-size: 1.25rem;
-    }
+    &::before { margin-right: 0.75rem; }
+    @include mobile { font-size: 1.25rem; }
   }
 
-  @include mobile {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
+  @include mobile { flex-direction: column; align-items: stretch; gap: 1rem; }
 }
 
 .search-box {
@@ -102,20 +70,16 @@ $sidebar-width: 200px;
   input {
     width: 100%;
     padding: 0.75rem 3rem 0.75rem 1rem;
-    border: 2px solid $border;
+    border: 2px solid $color-border;
     border-radius: 2rem;
     font-size: 1rem;
     transition: border-color 0.2s ease;
 
     &:focus {
-      border-color: $secondary;
+      border-color: $color-primary; // AJUSTE: Cor de destaque para interação
       outline: none;
     }
-
-    @include mobile {
-      padding: 0.5rem 2.5rem 0.5rem 1rem;
-      font-size: 0.9rem;
-    }
+    @include mobile { padding: 0.5rem 2.5rem 0.5rem 1rem; font-size: 0.9rem; }
   }
 
   .badge {
@@ -123,15 +87,12 @@ $sidebar-width: 200px;
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba($primary, 0.1);
+    background: rgba($color-secondary, 0.1); // AJUSTE
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
     font-size: 0.9rem;
-
-    @include mobile {
-      right: 0.5rem;
-      padding: 0.2rem 0.6rem;
-    }
+    color: $color-secondary;
+    @include mobile { right: 0.5rem; padding: 0.2rem 0.6rem; }
   }
 }
 
@@ -142,22 +103,13 @@ $sidebar-width: 200px;
   gap: 1.5rem;
   margin-bottom: 2rem;
 
-  @include tablet {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-
-  @include mobile {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  @media (min-width: $breakpoint-large) {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  }
+  @include tablet { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  @include mobile { grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: $breakpoint-large) { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 }
 
 .order-card {
-  background: white;
+  background: $color-white;
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -166,25 +118,11 @@ $sidebar-width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   min-height: 480px;
 
-  &:hover {
-    transform: translateY(-3px);
-  }
+  &:hover { transform: translateY(-3px); }
 
-  @include tablet {
-    padding: 1.25rem;
-    min-height: 450px;
-  }
-
-  @include mobile {
-    min-height: auto;
-    padding: 1rem;
-    margin: 0.5rem 0;
-  }
-
-  @media (min-width: $breakpoint-large) {
-    min-height: 520px;
-    padding: 2rem;
-  }
+  @include tablet { padding: 1.25rem; min-height: 450px; }
+  @include mobile { min-height: auto; padding: 1rem; margin: 0.5rem 0; }
+  @media (min-width: $breakpoint-large) { min-height: 520px; padding: 2rem; }
 }
 
 .card-header {
@@ -195,21 +133,13 @@ $sidebar-width: 200px;
 
   .order-info {
     flex: 1 1 60%;
-
-    .order-number {
-      font-weight: 700;
-      color: $primary;
-    }
-
-    .order-time {
-      color: rgba($text, 0.6);
-      font-size: 0.85rem;
-    }
+    .order-number { font-weight: 700; color: $color-secondary; } // AJUSTE
+    .order-time { color: rgba($color-text, 0.6); font-size: 0.85rem; }
   }
 
   .edit-btn {
-    background: rgba($secondary, 0.1);
-    color: $secondary;
+    background: rgba($color-primary, 0.1); // AJUSTE
+    color: $color-primary; // AJUSTE
     padding: 0.4rem 1rem;
     border-radius: 2rem;
     border: none;
@@ -218,36 +148,19 @@ $sidebar-width: 200px;
     flex: 1 1 35%;
     min-width: 90px;
     text-align: center;
-
-    @include mobile {
-      width: 100%;
-      flex: none;
-    }
-
-    &:hover {
-      background: rgba($secondary, 0.2);
-    }
+    @include mobile { width: 100%; flex: none; }
+    &:hover { background: rgba($color-primary, 0.2); } // AJUSTE
   }
 }
 
 .customer-info {
   margin: 1rem 0;
   padding: 1rem;
-  background: rgba($primary, 0.03);
+  background: rgba($color-secondary, 0.03); // AJUSTE
   border-radius: 8px;
 
-  h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .payment-method {
-    color: rgba($text, 0.7);
-    font-size: 0.85rem;
-  }
+  h3 { margin: 0 0 0.25rem; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .payment-method { color: rgba($color-text, 0.7); font-size: 0.85rem; }
 }
 
 .products-scroll {
@@ -256,31 +169,18 @@ $sidebar-width: 200px;
   padding-right: 0.5rem;
   margin: 1rem 0;
   max-height: 40vh;
-
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 
-  @include mobile {
-    max-height: 50vh;
-    padding-right: 0;
-  }
+  @include mobile { max-height: 50vh; padding-right: 0; }
+  @media (min-width: $breakpoint-large) { max-height: 50vh; }
 
-  @media (min-width: $breakpoint-large) {
-    max-height: 50vh;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba($primary, 0.2);
-    border-radius: 3px;
-  }
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-thumb { background: rgba($color-secondary, 0.2); border-radius: 3px; } // AJUSTE
 
   .product-item {
-    background: #fff;
+    background: $color-white;
     border-radius: 8px;
     padding: 0.75rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -289,40 +189,8 @@ $sidebar-width: 200px;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-
-      .name {
-        font-weight: 500;
-      }
-
-      .price {
-        font-weight: 600;
-        color: $primary;
-      }
-
-      .additionals {
-        margin-top: 0.5rem;
-
-        span:first-child {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #666;
-        }
-
-        .additional-details {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.85rem;
-          margin-top: 0.25rem;
-
-          .additional-name {
-            color: #444;
-          }
-
-          .additional-value {
-            color: #888;
-          }
-        }
-      }
+      .name { font-weight: 500; }
+      .price { font-weight: 600; color: $color-primary; } // AJUSTE: Preço com a cor de destaque
     }
   }
 }
@@ -331,29 +199,22 @@ $sidebar-width: 200px;
   @include flex-center(flex-start);
   gap: 1rem;
   padding: 1rem;
-  background: rgba($primary, 0.03);
+  background: rgba($color-secondary, 0.03); // AJUSTE
   border-radius: 8px;
   margin-bottom: 0.5rem;
 
-  @media (min-width: $breakpoint-large) {
-    padding: 1.25rem;
-    gap: 1.25rem;
-  }
+  @media (min-width: $breakpoint-large) { padding: 1.25rem; gap: 1.25rem; }
 
   .quantity {
     @include flex-center;
     width: 28px;
     height: 28px;
-    background: $secondary;
-    color: white;
+    background: $color-primary; // AJUSTE
+    color: $color-white;
     border-radius: 50%;
     font-weight: 600;
     flex-shrink: 0;
-
-    @media (min-width: $breakpoint-large) {
-      width: 32px;
-      height: 32px;
-    }
+    @media (min-width: $breakpoint-large) { width: 32px; height: 32px; }
   }
 
   .product-details {
@@ -363,18 +224,11 @@ $sidebar-width: 200px;
       -webkit-box-orient: vertical;
       overflow: hidden;
       max-width: 200px;
-      
-      @media (min-width: $breakpoint-tablet) {
-        max-width: 240px;
-      }
-      
-      @media (min-width: $breakpoint-large) {
-        max-width: 280px;
-      }
+      @media (min-width: $breakpoint-tablet) { max-width: 240px; }
+      @media (min-width: $breakpoint-large) { max-width: 280px; }
     }
-
     .price {
-      color: $success;
+      color: $color-primary; // AJUSTE: Preço com a cor de destaque
       font-weight: 600;
       font-size: 0.95rem;
     }
@@ -385,41 +239,30 @@ $sidebar-width: 200px;
   @include flex-center(space-between);
   margin-top: auto;
   padding-top: 1.5rem;
-  border-top: 2px solid $border;
+  border-top: 2px solid $color-border;
   flex-direction: column;
   gap: 0.75rem;
 
-  @include mobile {
-    flex-direction: column;
-  }
-
-  @media (min-width: $breakpoint-tablet) {
-    flex-direction: row;
-  }
+  @include mobile { flex-direction: column; }
+  @media (min-width: $breakpoint-tablet) { flex-direction: row; }
 
   .total {
     font-weight: 700;
-    color: $primary;
+    color: $color-secondary; // AJUSTE
     font-size: clamp(1rem, 1.2vw, 1.25rem);
   }
 
   .close-btn {
-    background: $success;
-    color: white;
+    background: $color-success; // AJUSTE
+    color: $color-white;
     padding: 0.6rem 1.5rem;
     border-radius: 2rem;
     border: none;
     cursor: pointer;
     transition: background 0.2s ease;
     width: 100%;
-
-    @media (min-width: $breakpoint-tablet) {
-      width: auto;
-    }
-
-    &:hover {
-      background: color.adjust($success, $lightness: -5%, $space: hsl);
-    }
+    @media (min-width: $breakpoint-tablet) { width: auto; }
+    &:hover { background: color.adjust($color-success, $lightness: -5%); }
   }
 }
 
@@ -438,7 +281,7 @@ $sidebar-width: 200px;
   padding-top: 2rem;
 
   .modal {
-    background: white;
+    background: $color-white;
     border-radius: 12px;
     width: 95%;
     max-width: 100%;
@@ -447,41 +290,29 @@ $sidebar-width: 200px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     position: relative;
 
-    &.large {
-      padding: 1.5rem;
-    }
+    &.large { padding: 1.5rem; }
 
     @media (min-width: $breakpoint-large) {
       max-width: 600px;
       padding: 2.5rem;
-      
-      &.large {
-        max-width: 700px;
-      }
+      &.large { max-width: 700px; }
     }
 
     h2, h3 {
       margin-top: 0;
-      color: $primary;
+      color: $color-secondary; // AJUSTE
       font-size: 1.1rem;
-
-      @media (min-width: $breakpoint-tablet) {
-        font-size: 1.25rem;
-      }
+      @media (min-width: $breakpoint-tablet) { font-size: 1.25rem; }
     }
 
     input, select {
       width: 100%;
       padding: 0.8rem;
-      border: 2px solid $border;
+      border: 2px solid $color-border;
       border-radius: 8px;
       margin: 0.5rem 0 1rem;
       font-size: 1rem;
-
-      &:focus {
-        border-color: $secondary;
-        outline: none;
-      }
+      &:focus { border-color: $color-primary; outline: none; } // AJUSTE
     }
   }
 }
@@ -500,40 +331,27 @@ $sidebar-width: 200px;
     transition: all 0.2s ease;
 
     &.cancel {
-      background: rgba($primary, 0.1);
-      color: $primary;
-
-      &:hover {
-        background: rgba($primary, 0.2);
-      }
+      background: rgba($color-secondary, 0.1); // AJUSTE
+      color: $color-secondary; // AJUSTE
+      &:hover { background: rgba($color-secondary, 0.2); }
     }
 
     &.confirm {
-      background: $success;
-      color: white;
-
-      &:hover:not(:disabled) {
-        background: color.adjust($success, $lightness: -7%, $space: hsl);
-      }
-
-      &:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-      }
+      background: $color-success; // AJUSTE
+      color: $color-white;
+      &:hover:not(:disabled) { background: color.adjust($color-success, $lightness: -7%); }
+      &:disabled { background: #ccc; cursor: not-allowed; }
     }
   }
 }
 
 .section {
   padding: 1rem;
-  background: rgba($primary, 0.03);
+  background: rgba($color-secondary, 0.03); // AJUSTE
   border-radius: 8px;
   margin: 1.5rem 0;
 
-  h4 {
-    margin: 0 0 1rem;
-    color: $primary;
-  }
+  h4 { margin: 0 0 1rem; color: $color-secondary; } // AJUSTE
 }
 
 .change-display {
@@ -544,8 +362,8 @@ $sidebar-width: 200px;
   font-weight: 600;
 
   &.negative {
-    background: rgba($error, 0.1);
-    color: $error;
+    background: rgba($color-error, 0.1); // AJUSTE
+    color: $color-error; // AJUSTE
   }
 }
 
@@ -559,61 +377,19 @@ $sidebar-width: 200px;
   button {
     padding: 0.6rem 1.2rem;
     border-radius: 2rem;
-    border: 2px solid rgba($primary, 0.2);
-    background: rgba($primary, 0.1);
-    color: $primary;
+    border: 2px solid rgba($color-secondary, 0.2); // AJUSTE
+    background: rgba($color-secondary, 0.1); // AJUSTE
+    color: $color-secondary; // AJUSTE
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: clamp(0.85rem, 1.1vw, 1rem);
 
-    &[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &:hover:not([disabled]) {
-      background: rgba($primary, 0.2);
-    }
+    &[disabled] { opacity: 0.5; cursor: not-allowed; }
+    &:hover:not([disabled]) { background: rgba($color-secondary, 0.2); } // AJUSTE
   }
 
   span {
     font-size: 0.9rem;
-    color: rgba($primary, 0.8);
-  }
-}
-
-// Ajustes específicos para telas muito pequenas
-@media (max-width: 400px) {
-  .order-card {
-    padding: 0.75rem;
-  }
-
-  .product-item {
-    grid-template-columns: 20px 1fr;
-    gap: 0.5rem;
-    padding: 0.75rem;
-  }
-
-  .modal-overlay {
-    padding-top: 1rem;
-    
-    .modal {
-      padding: 1rem;
-      
-      h2 {
-        font-size: 1.1rem;
-      }
-    }
-  }
-}
-
-// Ajustes para telas muito grandes
-@media (min-width: 1600px) {
-  .cashier-container {
-    max-width: 1600px;
-  }
-  
-  .orders-grid {
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    color: rgba($color-secondary, 0.8); // AJUSTE
   }
 }

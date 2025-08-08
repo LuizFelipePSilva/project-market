@@ -1,17 +1,17 @@
 @use "sass:color";
 
-// Variáveis
-$primary: #2ecc71;
-$secondary: #3498db;
-$accent: #9b59b6;
-$error: #e74c3c;
-$success: #27ae60;
-$background: #f8f9fa;
-$text: #2c3e50;
-$border: #dee2e6;
-$dark: #1a1a1a;
-$light: #ffffff;
+// --- SUA PALETA (AZUL E NEUTROS) ---
+$color-primary: #53B5DB;
+$color-secondary: #154A60;
+$color-dark: #0077aa;
+$color-success: #4CAF50;
+$color-error: #D32F2F;
+$color-background: #F8F9FA;
+$color-text: #2C3E50;
+$color-border: #DEE2E6;
+$color-white: #FFFFFF;
 
+// Variáveis de Layout
 $mobile: 576px;
 $tablet: 768px;
 $desktop: 992px;
@@ -48,8 +48,8 @@ $desktop: 992px;
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background: $background;
-  color: $text;
+  background: $color-background;
+  color: $color-text;
   line-height: 1.6;
 }
 
@@ -66,8 +66,8 @@ body {
 .floating-cart-btn {
   position: fixed;
   z-index: 1000;
-  background: $primary;
-  color: $light;
+  background: $color-primary; // AJUSTE
+  color: $color-white;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -75,13 +75,13 @@ body {
   font-size: 1.5rem;
   bottom: 1.8rem;
   right: 1.8rem;
-  box-shadow: 0 6px 15px rgba($primary, 0.3);
+  box-shadow: 0 6px 15px rgba($color-primary, 0.3); // AJUSTE
   cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba($primary, 0.4);
+    box-shadow: 0 8px 20px rgba($color-primary, 0.4); // AJUSTE
   }
 }
 
@@ -94,8 +94,8 @@ body {
       padding-bottom: 0.8rem;
       margin-bottom: 1.5rem;
       font-size: 1.8rem;
-      color: $dark;
-      border-bottom: 2px solid $primary;
+      color: $color-secondary;
+      border-bottom: 2px solid $color-primary; // AJUSTE
     }
   }
   
@@ -111,7 +111,7 @@ body {
   }
   
   .product-card {
-    background: $light;
+    background: $color-white;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
@@ -133,11 +133,11 @@ body {
       h3 {
         font-size: 1.3rem;
         margin-bottom: 0.8rem;
-        color: $dark;
+        color: $color-secondary;
       }
       
       .product-description {
-        color: color.adjust($text, $lightness: 15%, $space: hsl);
+        color: color.adjust($color-text, $lightness: 15%);
         margin-bottom: 1.5rem;
         line-height: 1.6;
       }
@@ -150,12 +150,12 @@ body {
         .product-price {
           font-weight: 800;
           font-size: 1.4rem;
-          color: $primary;
+          color: $color-primary; // AJUSTE
         }
         
         .add-button {
-          background: $primary;
-          color: $light;
+          background: $color-primary; // AJUSTE
+          color: $color-white;
           border: none;
           border-radius: 8px;
           padding: 10px 18px;
@@ -164,7 +164,7 @@ body {
           transition: background 0.3s ease;
           
           &:hover {
-            background: color.adjust($primary, $lightness: -10%, $space: hsl);
+            background: color.adjust($color-primary, $lightness: -8%);
           }
         }
       }
@@ -179,7 +179,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: $light;
+  background: $color-white;
   z-index: 2000;
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -193,20 +193,18 @@ body {
   
   .sidebar-header {
     padding: 1.5rem;
-    background: $dark;
-    color: $light;
+    background: $color-secondary; // AJUSTE
+    color: $color-white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     
-    h2 {
-      font-size: 1.8rem;
-    }
+    h2 { font-size: 1.8rem; }
     
     .close-sidebar {
       background: transparent;
-      color: $light;
-      border: 2px solid $light;
+      color: $color-white;
+      border: 2px solid $color-white;
       border-radius: 50%;
       width: 40px;
       height: 40px;
@@ -214,9 +212,7 @@ body {
       cursor: pointer;
       @include flex-center;
       
-      &:hover {
-        background: rgba($light, 0.15);
-      }
+      &:hover { background: rgba($color-white, 0.15); }
     }
   }
   
@@ -231,21 +227,18 @@ body {
       input, select, textarea {
         width: 100%;
         padding: 0.8rem 1rem;
-        border: 2px solid $border;
+        border: 2px solid $color-border;
         border-radius: 8px;
         font-size: 1rem;
         
         &:focus {
-          border-color: $primary;
+          border-color: $color-primary; // AJUSTE
           outline: none;
-          box-shadow: 0 0 0 3px rgba($primary, 0.15);
+          box-shadow: 0 0 0 3px rgba($color-primary, 0.15); // AJUSTE
         }
       }
       
-      textarea {
-        min-height: 100px;
-        resize: vertical;
-      }
+      textarea { min-height: 100px; resize: vertical; }
     }
     
     .cart-items {
@@ -253,21 +246,11 @@ body {
       
       .cart-item {
         padding: 1.2rem 0;
-        border-bottom: 1px solid $border;
+        border-bottom: 1px solid $color-border;
         
         .item-info {
-          .item-name {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            display: block;
-          }
-          
-          .item-additionals {
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-            color: color.adjust($text, $lightness: 20%, $space: hsl);
-          }
-          
+          .item-name { font-weight: 700; margin-bottom: 0.5rem; display: block; }
+          .item-additionals { margin: 0.5rem 0; font-size: 0.9rem; color: color.adjust($color-text, $lightness: 20%); }
           .item-controls {
             display: flex;
             gap: 0.5rem;
@@ -275,24 +258,22 @@ body {
             
             button {
               background: transparent;
-              border: 2px solid $primary;
-              color: $primary;
+              border: 2px solid $color-primary; // AJUSTE
+              color: $color-primary; // AJUSTE
               border-radius: 8px;
               width: 36px;
               height: 36px;
               font-weight: 700;
               cursor: pointer;
               
-              &:hover {
-                background: rgba($primary, 0.1);
-              }
+              &:hover { background: rgba($color-primary, 0.1); } // AJUSTE
             }
           }
         }
         
         .item-price {
           font-weight: 700;
-          color: $primary;
+          color: $color-primary; // AJUSTE
           font-size: 1.2rem;
           margin-top: 0.5rem;
           text-align: right;
@@ -301,8 +282,8 @@ body {
     }
     
     .cart-total {
-      background: $dark;
-      color: $light;
+      background: $color-secondary; // AJUSTE
+      color: $color-white;
       padding: 1.2rem;
       border-radius: 8px;
       display: flex;
@@ -311,15 +292,13 @@ body {
       font-weight: 700;
       margin: 1rem 0;
       
-      strong {
-        color: $primary;
-      }
+      strong { color: $color-primary; } // AJUSTE
     }
     
     .finalizar-container {
       .finalizar-btn {
-        background: $success;
-        color: $light;
+        background: $color-success; // AJUSTE
+        color: $color-white;
         width: 100%;
         border: none;
         border-radius: 8px;
@@ -329,9 +308,7 @@ body {
         cursor: pointer;
         transition: background 0.3s ease;
         
-        &:hover {
-          background: color.adjust($success, $lightness: -10%, $space: hsl);
-        }
+        &:hover { background: color.adjust($color-success, $lightness: -10%); }
       }
     }
   }
@@ -344,7 +321,7 @@ body {
   background: rgba(0,0,0,0.7);
   
   .modal-content {
-    background: $light;
+    background: $color-white;
     border-radius: 16px;
     width: 90%;
     max-width: 500px;
@@ -352,13 +329,11 @@ body {
     
     .modal-header {
       padding: 1.5rem;
-      background: $primary;
-      color: $light;
+      background: $color-primary; // AJUSTE
+      color: $color-white;
       text-align: center;
       
-      h3 {
-        font-size: 1.5rem;
-      }
+      h3 { font-size: 1.5rem; }
     }
     
     .additional-list {
@@ -369,32 +344,17 @@ body {
       .additional-item {
         margin-bottom: 1.5rem;
         padding-bottom: 1.5rem;
-        border-bottom: 1px solid $border;
+        border-bottom: 1px solid $color-border;
         
-        &:last-child {
-          border-bottom: none;
-          margin-bottom: 0;
-          padding-bottom: 0;
-        }
+        &:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         
         .additional-info {
           display: flex;
           justify-content: space-between;
           margin-bottom: 1rem;
-          
-          .additional-name {
-            font-weight: 600;
-          }
-          
-          .additional-price {
-            font-weight: 700;
-            color: $primary;
-          }
-          
-          .additional-limit {
-            font-size: 0.9rem;
-            color: color.adjust($text, $lightness: 30%, $space: hsl);
-          }
+          .additional-name { font-weight: 600; }
+          .additional-price { font-weight: 700; color: $color-primary; } // AJUSTE
+          .additional-limit { font-size: 0.9rem; color: color.adjust($color-text, $lightness: 30%); }
         }
         
         .additional-controls {
@@ -404,18 +364,15 @@ body {
           
           button {
             background: transparent;
-            border: 2px solid $accent;
-            color: $accent;
+            border: 2px solid $color-dark; // AJUSTE
+            color: $color-dark; // AJUSTE
             width: 40px;
             height: 40px;
             border-radius: 8px;
             font-size: 1.2rem;
             cursor: pointer;
             
-            &:disabled {
-              opacity: 0.5;
-              cursor: not-allowed;
-            }
+            &:disabled { opacity: 0.5; cursor: not-allowed; }
           }
         }
       }
@@ -426,16 +383,13 @@ body {
       display: flex;
       justify-content: space-between;
       gap: 1rem;
-      background: rgba($background, 0.5);
-      border-top: 1px solid $border;
+      background: rgba($color-background, 0.5);
+      border-top: 1px solid $color-border;
       
       .total-price {
         font-weight: 700;
         font-size: 1.3rem;
-        
-        span {
-          color: $primary;
-        }
+        span { color: $color-primary; } // AJUSTE
       }
       
       .modal-buttons {
@@ -450,13 +404,13 @@ body {
           
           &.cancel-btn {
             background: transparent;
-            border: 2px solid $error;
-            color: $error;
+            border: 2px solid $color-error; // AJUSTE
+            color: $color-error; // AJUSTE
           }
           
           &.confirm-btn {
-            background: $primary;
-            color: $light;
+            background: $color-primary; // AJUSTE
+            color: $color-white;
             border: none;
           }
         }
@@ -471,7 +425,7 @@ body {
   background: rgba(0,0,0,0.7);
   
   .confirmation-card {
-    background: $light;
+    background: $color-white;
     border-radius: 16px;
     padding: 2.5rem;
     width: 90%;
@@ -481,7 +435,7 @@ body {
     h3 {
       font-size: 1.8rem;
       margin-bottom: 2rem;
-      color: $dark;
+      color: $color-secondary;
     }
     
     .confirmation-buttons {
@@ -501,22 +455,16 @@ body {
         
         &.continue-btn {
           background: transparent;
-          border: 2px solid $text;
-          color: $text;
-          
-          &:hover {
-            background: rgba($text, 0.1);
-          }
+          border: 2px solid $color-text;
+          color: $color-text;
+          &:hover { background: rgba($color-text, 0.1); }
         }
         
         &.review-btn {
-          background: $primary;
-          color: $light;
+          background: $color-primary; // AJUSTE
+          color: $color-white;
           border: none;
-          
-          &:hover {
-            background: color.adjust($primary, $lightness: -10%, $space: hsl);
-          }
+          &:hover { background: color.adjust($color-primary, $lightness: -10%); }
         }
       }
     }
@@ -526,8 +474,8 @@ body {
 .success-popup {
   @include absolute-center;
   z-index: 9500;
-  background: $success;
-  color: $light;
+  background: $color-success; // AJUSTE
+  color: $color-white;
   padding: 1.2rem 2.5rem;
   border-radius: 50px;
   font-weight: 700;
@@ -547,13 +495,8 @@ body {
 
 // Responsividade
 @media (max-width: $tablet) {
-  .container {
-    padding: 0.8rem;
-  }
-  
-  .products-grid {
-    gap: 1.5rem;
-  }
+  .container { padding: 0.8rem; }
+  .products-grid { gap: 1.5rem; }
   
   .floating-cart-btn {
     width: 50px;
@@ -566,14 +509,8 @@ body {
   .confirmation-overlay .confirmation-buttons {
     flex-direction: column;
     gap: 1rem;
-    
-    button {
-      width: 100%;
-      min-width: auto;
-    }
+    button { width: 100%; min-width: auto; }
   }
   
-  .cart-sidebar .order-form {
-    padding: 1rem;
-  }
+  .cart-sidebar .order-form { padding: 1rem; }
 }
