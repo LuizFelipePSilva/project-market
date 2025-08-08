@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar #navbar></app-navbar>
 <app-error-popup
   *ngIf="errorMessage"
   [errorMessage]="errorMessage"
@@ -48,7 +48,10 @@
   }}
 </h2>
 
-<div class="cards-container">
+<div
+  class="cards-container"
+  *ngIf="{ userRole: navbar.userRole$ | async } as state"
+>
   <div
     class="order-card"
     [ngClass]="{
@@ -59,7 +62,10 @@
     (click)="openOrderDetails(order.id!)"
   >
     <div class="card-content">
-      <button (click)="onEditOrderClick(order.id!, $event)">
+      <button
+        *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)"
+        (click)="onEditOrderClick(order.id!, $event)"
+      >
         <i class="fas fa-edit"></i>
       </button>
 
