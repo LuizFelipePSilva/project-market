@@ -3,9 +3,11 @@
     <button class="btn-close" (click)="closeModal()">×</button>
 
     <h2>Editar Pedido #{{ data.id }}</h2>
-    <p>Cliente: {{ data.cliente.nome }} | Status: {{ data.status }}</p>
-    <p>Total: R$ {{ data.valorTotal | number : "1.2-2" }}</p>
-
+    <p>
+      Cliente: {{ data.cliente.nome }} | Status: {{ data.status }}| Total: R$
+      {{ data.valorTotal | number : "1.2-2" }}
+    </p>
+    <p>Selecione os que deseja retirar</p>
     <div class="product-item" *ngFor="let produto of selectableProducts">
       <div class="product-header">
         <label>
@@ -14,7 +16,6 @@
           {{ produto.valorUnitario | number : "1.2-2" }}
         </label>
       </div>
-
       <div class="adicionais-container" *ngIf="produto.adicionais.length > 0">
         <div
           class="additional-item"
@@ -32,8 +33,15 @@
       </div>
     </div>
 
-    <button class="btn-save" (click)="sendEditOrder()">
-      Salvar Alterações
+    <button
+      class="btn-save"
+      (click)="sendEditOrder()"
+      [disabled]="!hasSelectedItems()"
+    >
+      Retirar itens
+    </button>
+    <button class="btn-add-product" (click)="openAddItemsModal()">
+      Adicionar Itens
     </button>
   </div>
 </div>
@@ -43,3 +51,16 @@
   [errorMessage]="errorMessage"
   (close)="closeErrorPopup()"
 ></app-error-popup>
+
+<app-add-items-modal
+  *ngIf="showAddItemsModal"
+  [tenantId]="tenantId"
+  [orderId]="orderId"
+  (itemsAdded)="handleItemsAdded()"
+  (closed)="handleAddItemsModalClosed()"
+></app-add-items-modal>
+
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>Atualizando pedido...</p>
+</div>

@@ -13,11 +13,18 @@ import { IChangeItensOrders } from '../domain/IChangeItensOrders';
 import { EditOrderService } from '../../../../services/order-service/edit-order.service';
 import { ErrorPopupComponent } from '../../error-popup/error-popup.component';
 import { SelectableOrderProduct } from '../domain/SelectableOrderTypes';
+import { environment } from '../../../../../../environments/environment.development';
+import { AddItemsModalComponent } from '../add-items-modal/add-items-modal.component';
 
 @Component({
   selector: 'app-edit-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, ErrorPopupComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ErrorPopupComponent,
+    AddItemsModalComponent,
+  ],
   templateUrl: './edit-order.component.html',
   styleUrls: ['./edit-order.component.scss'],
 })
@@ -27,10 +34,10 @@ export class EditOrderComponent implements OnChanges {
 
   data: IOrderResponse | null = null;
   errorMessage: string | null = null;
-
-  // Armazenamos os produtos selecionáveis separadamente
   selectableProducts: SelectableOrderProduct[] = [];
-
+  showAddItemsModal = false;
+  tenantId = environment.adminApiKey;
+  isLoading = false;
   constructor(private editOrderService: EditOrderService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -46,8 +53,12 @@ export class EditOrderComponent implements OnChanges {
         this.selectableProducts = res.produtos.map(
           (p) => new SelectableOrderProduct(p)
         );
+        this.isLoading = false;
       },
-      error: (err) => (this.errorMessage = err.error.message),
+      error: (err) => {
+        this.errorMessage = err.error.message;
+        this.isLoading = false;
+      },
     });
   }
 
@@ -95,17 +106,36 @@ export class EditOrderComponent implements OnChanges {
 
     this.editOrderService.editOrder(payload).subscribe({
       next: () => {
-        this.fetchOrder();
+        this.fetchOrder(); // Recarrega os dados do pedido
       },
-      error: (err) => (
-        (this.errorMessage = err.error.message), this.fetchOrder()
-      ),
+      error: (err) => {
+        this.errorMessage = err.error.message;
+        this.fetchOrder(); // Recarrega os dados do pedido em caso de erro
+      },
     });
   }
 
-  closeErrorPopup() {
+  openAddItemsModal(): void {
+    this.showAddItemsModal = true;
+  }
+
+  handleItemsAdded(): void {
+    this.fetchOrder();
+  }
+  handleAddItemsModalClosed(): void {
+    this.showAddItemsModal = false;
+    this.fetchOrder(); // Recarrega os dados do pedido
+  }
+  closeErrorPopup(): void {
     this.errorMessage = null;
   }
+
+  hasSelectedItems(): boolean {
+    return this.selectableProducts.some(
+      (p) => p._selected || p.adicionais?.some((a) => a._selected)
+    );
+  }
+
   closeModal(): void {
     this.closed.emit();
   }
