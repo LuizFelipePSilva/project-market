@@ -4,6 +4,7 @@ import { IOrderPaginate } from '../../components/estevam/order/list/order.compon
 import { IOrderResponse } from '../../components/estevam/order/domain/OrderData';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { IResponseShowOrders } from '../../components/estevam/cashier/domain/IResponseShowOrders';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,13 @@ export class CashierService {
     return this.http.get<IOrderResponse>(`${this.baseUrl}/view/${id}`, {
       withCredentials: true,
     });
+  }
+
+  getAllDetailsOfOrders(ids: number[]): Observable<IResponseShowOrders> {
+    const idsString = ids.join(',');
+    return this.http.get<IResponseShowOrders>(
+      `${this.baseUrl}/view/all?data=${idsString}`
+    );
   }
 
   updateOrderInfo(
