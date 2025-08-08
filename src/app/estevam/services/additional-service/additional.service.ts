@@ -105,4 +105,16 @@ export class AdditionalService {
       )
       .pipe(catchError((error) => throwError(() => error)));
   }
+  switchAllAdditionalOfCategory(categoryIdFrom: string, categoryIdTo: string) {
+    return this.http
+      .patch(
+        `${this.baseUrl}/switchCategory`,
+        {
+          categoryIdFrom,
+          categoryIdTo,
+        },
+        { withCredentials: true }
+      )
+      .pipe(catchError((error) => throwError(() => error)));
+  }
 }

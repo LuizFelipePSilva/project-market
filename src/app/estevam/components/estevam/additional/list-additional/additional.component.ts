@@ -24,15 +24,21 @@ export class AdditionalComponent {
   categoryGroup: ICategory[] = [];
   listAdditional: IAditional[] = [];
   selectedCategoryId!: string;
+  selectedCategoryIdToSwitch!: string;
   showList: boolean = false;
   showSuccessPopup: boolean = false;
   showRenamePopup: boolean = false;
   showDeletePopup: boolean = false;
+  showSwitchPopup: boolean = false;
   additionalIdToDelete: string | null = null;
   editId: string | null = null;
   editName: string = '';
   editValue: string = '';
   editMaxAdd: string = '';
+  categoryIdFrom: string = '';
+  categoryIdTo: string = '';
+  categoryNameFrom: string = '';
+  categoryNameTo: string = '';
   constructor(
     private categoryService: CategoryService,
     private additionalService: AdditionalService
@@ -66,15 +72,24 @@ export class AdditionalComponent {
     });
   }
 
-  // Métodos para controle do popup de exclusão
   openDeletePopup(additionalId: string): void {
     this.additionalIdToDelete = additionalId;
     this.showDeletePopup = true;
   }
-
   closeDeletePopup(): void {
     this.showDeletePopup = false;
     this.additionalIdToDelete = null;
+  }
+  openSwitchPopupByCategory(categoryId: string): void {
+    this.categoryIdFrom = categoryId;
+    const selectedCategory = this.categoryGroup.find(
+      (c) => c.id === categoryId
+    );
+    this.categoryNameFrom = selectedCategory?.name || '';
+    this.showSwitchPopup = true;
+  }
+  closeSwitchPopup(): void {
+    this.showSwitchPopup = false;
   }
   openRenameName(additional: IAditional): void {
     this.editId = additional.id!;
@@ -143,7 +158,21 @@ export class AdditionalComponent {
         });
     }
   }
-
+  switchAdditionals(categoryIdFrom: string, categoryIdTo: string) {
+    this.additionalService
+      .switchAllAdditionalOfCategory(categoryIdFrom, categoryIdTo)
+      .subscribe({
+        next: () => {
+          this.closeSwitchPopup();
+          this.listAdditionalByCategory(categoryIdTo);
+        },
+        error: (error) => {
+          console.log(error);
+          this.errorMessage =
+            error.error?.message || 'Erro ao atualizar adicional';
+        },
+      });
+  }
   closeErrorPopup() {
     this.errorMessage = null;
   }
