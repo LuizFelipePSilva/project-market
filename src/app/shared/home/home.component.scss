@@ -226,7 +226,7 @@ $color-black: #000000;
     transform: translateX(-50%);
     width: 90%;
     height: 12px;
-    background: darken($color-border, 30%);
+    background: color.adjust($color-border, $lightness: -30%);
     border-radius: 0 0 8px 8px;
   }
   

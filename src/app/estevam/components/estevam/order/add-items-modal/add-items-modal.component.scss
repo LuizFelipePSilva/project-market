@@ -222,7 +222,7 @@ $color-text-light: #6c757d;    // Cinza para texto secundário
     background-color: $color-border;
     color: $color-secondary;
     &:hover {
-      background-color: darken($color-border, 5%);
+      background-color: color.adjust($color-border, $lightness: -5%);
     }
   }
   .confirm-btn {
@@ -273,7 +273,7 @@ $color-text-light: #6c757d;    // Cinza para texto secundário
     background-color: $color-border;
     color: $color-secondary;
     &:hover {
-      background-color: darken($color-border, 5%);
+      background-color: color.adjust($color-border, $lightness: -5%);
     }
   }
   .finish-btn {

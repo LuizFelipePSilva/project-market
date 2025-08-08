@@ -1,4 +1,5 @@
-// Cores da Marca
+@use "sass:color";
+
 $color-primary: #53B5DB;       // Azul vibrante (links, destaques, botões primários)
 $color-secondary: #154A60;     // Azul escuro profissional (ícones, fundos escuros)
 $color-dark: #0077aa;          // Azul petróleo (textos principais)
@@ -222,18 +223,18 @@ $color-error: #D32F2F;         // Vermelho para erro (não usado aqui, mas bom t
   font-weight: 500;
 
   &.status-aberto {
-    background: lighten($color-warning, 35%);
-    color: darken($color-warning, 15%);
+    background: color.adjust($color-warning, $lightness: 35%);
+    color: color.adjust($color-warning, $lightness: -15%);
   }
 
   &.status-pendente {
-    background: lighten($color-info, 40%);
+    background: color.adjust($color-info, $lightness: 40%);
     color: $color-info;
   }
 
   &.status-concluido {
-    background: lighten($color-success, 45%);
-    color: darken($color-success, 10%);
+    background: color.adjust($color-success, $lightness: 45%);
+    color: color.adjust($color-success, $lightness: -10%);
   }
 
   // AJUSTE: O nome "default" era vago, "cancelado" ou "outro" pode ser melhor.

@@ -106,7 +106,7 @@ $breakpoint-xs: 480px;
           text-align: left;
           font-weight: 600;
           color: $color-white;
-          border-bottom: 2px solid darken($color-secondary, 5%); // AJUSTE
+          border-bottom: 2px solid color.adjust($color-secondary, $lightness: -5%)
         }
       }
       
@@ -293,7 +293,7 @@ $breakpoint-xs: 480px;
         &.cancel-btn {
           background: $color-border; // AJUSTE
           color: $color-secondary; // AJUSTE
-          &:hover { background: darken($color-border, 10%); transform: translateY(-1px); }
+          &:hover { background: color.adjust($color-border, $lightness: -10%); transform: translateY(-1px); }
         }
       }
     }

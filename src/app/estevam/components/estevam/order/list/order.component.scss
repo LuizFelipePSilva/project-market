@@ -206,24 +206,24 @@ $breakpoint-small-mobile: 480px;
 
     /* Cores por status, mantendo o fundo colorido */
     &.status-aberto {
-      background: linear-gradient(135deg, lighten($color-info, 10%), $color-info);
+      background: linear-gradient(135deg, color.adjust($color-info, $lightness: 10%), $color-info);
       color: $color-white;
-      &:hover { background: linear-gradient(135deg, lighten($color-info, 15%), lighten($color-info, 5%)); }
+      &:hover { background: linear-gradient(135deg,color.adjust($color-info, $lightness: 15%), color.adjust($color-info, $lightness: 5%)); }
     }
     &.status-pendente {
-      background: linear-gradient(135deg, lighten($color-warning, 10%), $color-warning);
+      background: linear-gradient(135deg, color.adjust($color-warning, $lightness: 10%), $color-warning);
       color: $color-white;
-      &:hover { background: linear-gradient(135deg, lighten($color-warning, 15%), lighten($color-warning, 5%)); }
+      &:hover { background: linear-gradient(135deg, color.adjust($color-warning, $lightness: 15%), color.adjust($color-warning, $lightness: 5%)); }
     }
     &.status-concluido {
-      background: linear-gradient(135deg, lighten($color-success, 10%), $color-success);
+      background: linear-gradient(135deg, color.adjust($color-success, $lightness: 10%), $color-success);
       color: $color-white;
-      &:hover { background: linear-gradient(135deg, lighten($color-success, 15%), lighten($color-success, 5%)); }
+      &:hover { background: linear-gradient(135deg, color.adjust($color-success, $lightness: 15%), color.adjust($color-success, $lightness: 5%)); }
     }
     &.status-cancelado {
-      background: linear-gradient(135deg, lighten($color-error, 10%), $color-error);
+      background: linear-gradient(135deg, color.adjust($color-error, $lightness: 10%), $color-error);
       color: $color-white;
-      &:hover { background: linear-gradient(135deg, lighten($color-error, 15%), lighten($color-error, 5%)); }
+      &:hover { background: linear-gradient(135deg, color.adjust($color-error, $lightness: 15%), color.adjust($color-error, $lightness: 5%)); }
     }
 
     .card-content {
