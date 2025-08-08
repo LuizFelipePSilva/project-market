@@ -1,16 +1,18 @@
 @use "sass:color";
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
-$verde-status: #00C851;
-$vermelho-status: #ff4444;
+$color-primary: #53B5DB;       // Azul vibrante para interações e destaques
+$color-secondary: #154A60;     // Azul escuro profissional para títulos e fundos escuros
+$color-dark: #0077aa;          // Azul petróleo (usado como cor de apoio e hovers)
+$color-white: #FFFFFF;         // Branco
+$color-background: #F8F9FA;    // Fundo geral
+$color-success: #4CAF50;       // Verde para status "aberto"
+$color-error: #D32F2F;         // Vermelho para status "pedido" ou "remover"
+$color-disabled: #9E9E9E;      // Cinza para status "inutilizável"
+$color-border: #EAEAEA;        // Cor de borda
+$color-text-light: #6c757d;    // Cinza para texto secundário
+$color-black: #000000;         // Preto para sombras
 
+// Breakpoints
 $breakpoint-xxl: 1440px;
 $breakpoint-xl: 1200px;
 $breakpoint-lg: 992px;
@@ -28,46 +30,45 @@ $breakpoint-xs: 480px;
     font-weight: 600;
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #222;
+    color: $color-secondary;
   }
 
   .table-category {
     overflow-x: auto;
     border-radius: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
+    box-shadow: 0 2px 8px rgba($color-black, 0.1);
 
     table {
       width: 100%;
       border-collapse: collapse;
       min-width: 600px;
-      background-color: #fff;
+      background-color: $color-white;
 
       thead {
-        background-color: #6a0572;
+        background-color: $color-secondary;
 
         th {
           padding: 1rem;
           text-align: left;
           font-weight: 600;
-          color: #eee;
-          border-bottom: 2px solid #ddd;
+          color: $color-white;
+          border-bottom: 2px solid $color-border;
         }
       }
 
       tbody {
         tr {
-          border-bottom: 1px solid #eee;
+          border-bottom: 1px solid $color-border;
           transition: background-color 0.2s ease;
 
           &:hover {
-            background-color: #f1f1f1;
+            background-color: $color-background;
           }
 
           td {
             padding: 1rem;
             vertical-align: middle;
-            color: #444;
+            color: $color-secondary;
 
             &[data-label="Nome"] {
               .category-name {
@@ -76,7 +77,7 @@ $breakpoint-xs: 480px;
                 gap: 0.5rem;
 
                 i {
-                  color: #555;
+                  color: $color-text-light;
                 }
               }
             }
@@ -95,18 +96,18 @@ $breakpoint-xs: 480px;
                   transition: background-color 0.2s ease;
 
                   &.delete-btn {
-                    color: #e74c3c;
+                    color: $color-error;
 
                     &:hover {
-                      background-color: rgba(231, 76, 60, 0.1);
+                      background-color: rgba($color-error, 0.1);
                     }
                   }
 
                   &.update-btn {
-                    color: #3498db;
+                    color: $color-primary;
 
                     &:hover {
-                      background-color: rgba(52, 152, 219, 0.1);
+                      background-color: rgba($color-primary, 0.1);
                     }
                   }
 
@@ -123,7 +124,7 @@ $breakpoint-xs: 480px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .category-container {
     padding: 1rem;
 
@@ -139,8 +140,8 @@ $breakpoint-xs: 480px;
           tr {
             display: block;
             margin-bottom: 1rem;
-            background-color: #fff;
-            border: 1px solid #eee;
+            background-color: $color-white;
+            border: 1px solid $color-border;
             border-radius: 0.5rem;
 
             td {
@@ -152,7 +153,7 @@ $breakpoint-xs: 480px;
               &::before {
                 content: attr(data-label);
                 font-weight: bold;
-                color: #666;
+                color: $color-text-light;
               }
 
               .category-actions {
@@ -166,13 +167,13 @@ $breakpoint-xs: 480px;
   }
 }
 
-.popup-delete-overlay{
+.popup-delete-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba($preto, 0.6);
+  background: rgba($color-black, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -180,10 +181,10 @@ $breakpoint-xs: 480px;
 
   .popup-transfer {
     position: relative;
-    background: $branco;
+    background: $color-white;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba($preto, 0.2);
+    box-shadow: 0 8px 32px rgba($color-black, 0.2);
     max-width: 450px;
     width: 90%;
 
@@ -199,18 +200,18 @@ $breakpoint-xs: 480px;
       background: none;
       border: none;
       cursor: pointer;
-      color: $roxo-escuro;
+      color: $color-secondary;
       transition: all 0.2s ease;
 
       &:hover {
-        color: $roxo-primario;
+        color: $color-primary;
         transform: rotate(90deg);
       }
     }
 
     .transfer-form {
       .title {
-        color: $roxo-escuro;
+        color: $color-secondary;
         font-size: 1.3rem;
         margin-bottom: 1rem;
         text-align: center;
@@ -221,7 +222,7 @@ $breakpoint-xs: 480px;
       }
 
       .instructions {
-        color: $roxo-secundario;
+        color: $color-text-light;
         margin-bottom: 2rem;
         text-align: center;
         font-size: 0.95rem;
@@ -258,21 +259,21 @@ $breakpoint-xs: 480px;
           }
 
           &.transfer-btn {
-            background: $roxo-primario;
-            color: $branco;
+            background: $color-error;
+            color: $color-white;
 
             &:hover {
-              background: $roxo-secundario;
+              background: color.adjust($color-error, $lightness: -5%);
               transform: translateY(-1px);
             }
           }
 
           &.cancel-btn {
-            background: $cinza-claro;
-            color: $roxo-escuro;
+            background: $color-border;
+            color: $color-secondary;
 
             &:hover {
-              background: color.adjust($cinza-claro, $lightness: -10%, $space: hsl);
+              background: color.adjust($color-border, $lightness: -10%);
               transform: translateY(-1px);
             }
           }
@@ -281,16 +282,18 @@ $breakpoint-xs: 480px;
     }
   }
 }
+
+// Estilização do formulário de transferência (se usado separadamente)
 .transfer-form {
   .title {
-    color: $roxo-escuro;
+    color: $color-secondary;
     font-size: 1.4rem;
     margin-bottom: 1rem;
     text-align: center;
   }
 
   .instructions {
-    color: $roxo-secundario;
+    color: $color-text-light;
     font-size: 1rem;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -304,7 +307,7 @@ $breakpoint-xs: 480px;
     input {
       padding: 0.75rem 1rem;
       font-size: 1rem;
-      border: 1px solid $cinza-claro;
+      border: 1px solid $color-border;
       border-radius: 6px;
       width: 100%;
     }
@@ -319,11 +322,11 @@ $breakpoint-xs: 480px;
       transition: background 0.2s ease;
 
       &.transfer-btn {
-        background: $roxo-primario;
-        color: $branco;
+        background: $color-primary;
+        color: $color-white;
 
         &:hover {
-          background: $roxo-secundario;
+          background: $color-dark;
         }
       }
     }

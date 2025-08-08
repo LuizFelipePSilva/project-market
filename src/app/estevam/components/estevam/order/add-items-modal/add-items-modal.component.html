@@ -1,0 +1,113 @@
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+
+<div class="modal-overlay" [class.active]="isOpen">
+  <div class="modal-content">
+    <button class="btn-close" (click)="closeModal()">×</button>
+    <h2>Adicionar Itens ao Pedido</h2>
+
+    <div class="products-area">
+      <div *ngFor="let category of categories" class="category-section">
+        <h2 class="category-title">{{ category.name }}</h2>
+        <div class="products-grid">
+          <div
+            *ngFor="let product of getProductsByCategory(category.id)"
+            class="product-card"
+          >
+            <img
+              [src]="getImageUrl(product.image)"
+              class="product-image"
+              alt="{{ product.name }}"
+              (error)="handleImageError($event)"
+            />
+            <div class="product-info">
+              <h3>{{ product.name }}</h3>
+              <p class="product-description">{{ product.description }}</p>
+              <div class="product-footer">
+                <span class="product-price">
+                  {{ product.value | currency : "BRL" }}
+                </span>
+                <button
+                  (click)="openAdditionalModal(product)"
+                  class="add-button"
+                >
+                  Adicionar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Adicionais -->
+<div class="additional-modal" [class.active]="showAdditionalModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Adicionais para {{ currentProduct?.name }}</h3>
+    </div>
+    <div class="additional-list">
+      <div *ngFor="let ad of currentAdditionals" class="additional-item">
+        <div class="additional-info">
+          <span class="additional-name">{{ ad.name }}</span>
+          <div>
+            <span class="additional-price">{{
+              ad.value | currency : "BRL"
+            }}</span>
+            <span class="additional-limit"> (Máximo: {{ ad.maxAdd }})</span>
+          </div>
+        </div>
+        <div class="additional-controls">
+          <button
+            type="button"
+            (click)="decreaseAdditional(ad)"
+            [disabled]="getAdditionalCountInModal(ad.id!) === 0"
+          >
+            -
+          </button>
+          <span class="additional-count">{{
+            getAdditionalCountInModal(ad.id!)
+          }}</span>
+          <button
+            type="button"
+            (click)="increaseAdditional(ad)"
+            [disabled]="!canAddMoreInModal(ad)"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="total-price">
+        Total: <span>{{ getTotalForCurrentProduct() | currency : "BRL" }}</span>
+      </div>
+      <div class="modal-buttons">
+        <button class="cancel-btn" (click)="cancelAdditionalSelection()">
+          Cancelar
+        </button>
+        <button class="confirm-btn" (click)="confirmAdditionalSelection()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup de Confirmação -->
+<div class="confirmation-overlay" [class.active]="showConfirmationPopup">
+  <div class="confirmation-card">
+    <h3>Item adicionado com sucesso!</h3>
+    <div class="confirmation-buttons">
+      <button class="continue-btn" (click)="continueAdding()">
+        Continuar Adicionando
+      </button>
+      <button class="finish-btn" (click)="finishAdding()">Finalizar</button>
+    </div>
+  </div>
+</div>

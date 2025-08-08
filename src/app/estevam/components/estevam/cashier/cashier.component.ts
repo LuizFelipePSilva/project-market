@@ -65,7 +65,7 @@ export class CashierComponent implements OnInit, OnDestroy {
 
     this.intervalId = setInterval(() => {
       this.loadOrders(this.currentPage);
-    }, 5000);
+    }, 15000);
   }
 
   ngOnDestroy(): void {
@@ -81,7 +81,9 @@ export class CashierComponent implements OnInit, OnDestroy {
           this.dataSource = response;
           this.currentPage = response.current_page;
           this.orders = response.data;
-          this.loadOrderDetails();
+          if (response.data.length >= 1) {
+            this.loadOrderDetails();
+          }
         },
         error: (error) => this.showError(error.error.message),
       });
@@ -89,16 +91,16 @@ export class CashierComponent implements OnInit, OnDestroy {
   }
 
   private loadOrderDetails(): void {
-    this.orderDetailsMap = {};
-    this.orders.forEach((order) => {
-      if (order.id) {
-        const sub = this.orderService.getOrderDetails(order.id).subscribe({
-          next: (details) => (this.orderDetailsMap[order.id!] = details),
-          error: (error) => this.showError(error.error.message),
+    const ids = this.orders.filter((o) => o.id).map((o) => o.id!);
+    const sub = this.orderService.getAllDetailsOfOrders(ids).subscribe({
+      next: (response) => {
+        response.data.forEach((order) => {
+          this.orderDetailsMap[order.id] = order;
         });
-        this.subscriptions.push(sub);
-      }
+      },
+      error: (error) => this.showError(error.error.message),
     });
+    this.subscriptions.push(sub);
   }
 
   openEditModal(order: IOrder): void {

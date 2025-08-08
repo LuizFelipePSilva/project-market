@@ -1,13 +1,25 @@
-$color-primary: #4A148C;
-$color-secondary: #7B1FA2;
-$color-accent: #FFAB00;
-$color-dark: #6a0572;
-$color-background: #F5F5F5;
+@use "sass:color";
+
+$color-primary: #53B5DB;       // Azul vibrante (links, destaques, botões primários)
+$color-secondary: #154A60;     // Azul escuro profissional (ícones, fundos escuros)
+$color-dark: #0077aa;          // Azul petróleo (textos principais)
+
+// Cores Neutras
+$color-background: #F8F9FA;    // AJUSTE: Cinza quase branco para o fundo geral (faz os cartões brancos se destacarem)
+$color-white: #FFFFFF;         // Branco puro (fundo de cartões e elementos)
+$color-accent: #A1A1A1;        // Cinza claro neutro (usado em textos secundários)
+$color-border: #EAEAEA;        // AJUSTE: Cor padrão para bordas e divisórias
+
+// Cores Semânticas (para status e gráficos)
+$color-success: #4CAF50;       // Verde para sucesso/faturamento
+$color-warning: #FF5722;       // Laranja para pendente/alerta
+$color-info: #1976D2;          // Azul para informativo
+$color-error: #D32F2F;         // Vermelho para erro (não usado aqui, mas bom ter)
 
 .dashboard-container {
   margin-left: 240px;
   padding: 2rem;
-  background: $color-background;
+  background: $color-background; // AJUSTE: Usando o fundo quase branco
   min-height: 100vh;
 
   @media (max-width: 768px) {
@@ -17,11 +29,11 @@ $color-background: #F5F5F5;
 }
 
 .dashboard-header {
-  background: $color-dark;
-  color: white;
+  background: $color-dark; 
+  color: $color-white;
   border-radius: 12px;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(21, 74, 96, 0.2); // AJUSTE: Sombra com a cor do fundo
 
   .header-content {
     max-width: 1200px;
@@ -49,17 +61,19 @@ $color-background: #F5F5F5;
 }
 
 .new-order-btn {
-  background: $color-accent;
-  color: $color-dark;
+  // AJUSTE: Botão de ação principal deve usar a cor primária para destaque
+  background: $color-primary;
+  color: $color-white;
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
   border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     transform: translateY(-2px);
+    filter: brightness(1.1); // Efeito de hover mais interessante
   }
 
   i {
@@ -77,16 +91,17 @@ $color-background: #F5F5F5;
   }
 
   .stat-card {
-    background: white;
+    background: $color-white;
     padding: 1.5rem;
     border-radius: 12px;
     display: flex;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 
-    &.income { border-left: 4px solid #4CAF50; }
+    // AJUSTE: Usando as variáveis de cores semânticas
+    &.income { border-left: 4px solid $color-success; }
     &.orders { border-left: 4px solid $color-primary; }
-    &.pending { border-left: 4px solid #FF5722; }
+    &.pending { border-left: 4px solid $color-warning; }
   }
 
   .stat-icon {
@@ -98,11 +113,12 @@ $color-background: #F5F5F5;
   .stat-value {
     font: 700 1.8rem 'Montserrat', sans-serif;
     display: block;
+    color: $color-secondary; // AJUSTE: Cor do valor para o azul escuro
   }
 
   .stat-label {
     font: 400 0.9rem 'Montserrat', sans-serif;
-    color: #666;
+    color: $color-accent; // AJUSTE: Usando o cinza neutro para o texto secundário
   }
 }
 
@@ -117,7 +133,6 @@ $color-background: #F5F5F5;
 }
 
 .quick-actions {
-  
   .actions-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -125,17 +140,17 @@ $color-background: #F5F5F5;
   }
 
   .action-card {
-    background: white;
+    background: $color-white;
     padding: 1.5rem;
     border-radius: 8px;
     text-align: center;
-    transition: transform 0.2s;
+    transition: all 0.2s;
     cursor: pointer;
     text-decoration: none !important;
 
     &:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .action-icon {
@@ -145,8 +160,7 @@ $color-background: #F5F5F5;
     }
 
     span {
-      display: block; 
-      text-decoration: none !important;
+      display: block;
       font: 700 1rem 'Montserrat', sans-serif;
       color: $color-dark;
     }
@@ -154,7 +168,7 @@ $color-background: #F5F5F5;
 }
 
 .recent-orders {
-  background: white;
+  background: $color-white;
   border-radius: 12px;
   padding: 1.5rem;
 
@@ -171,13 +185,13 @@ $color-background: #F5F5F5;
     font-weight: 500;
 
     &:hover {
-      text-decoration: none;
+      text-decoration: underline;
     }
   }
 
   .order-item {
     padding: 1rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $color-border; // AJUSTE: Usando a cor de borda padrão
 
     &:last-child {
       border-bottom: none;
@@ -188,7 +202,7 @@ $color-background: #F5F5F5;
     display: flex;
     justify-content: space-between;
     font-size: 0.9rem;
-    color: #666;
+    color: $color-accent; // AJUSTE: Usando o cinza neutro
     margin-bottom: 0.5rem;
   }
 
@@ -197,39 +211,36 @@ $color-background: #F5F5F5;
     justify-content: space-between;
     align-items: center;
   }
-
-  .order-status {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    background: #09ff00; 
-    color: #000000; 
-  }
 }
-// home.component.scss
+
+// AJUSTE: Classe genérica removida, as classes específicas abaixo são melhores.
+// .order-status { ... }
+
 .order-status {
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
-  
-  &.status-aberto { 
-    background: #FFF3E0; 
-    color: #EF6C00; 
+  font-weight: 500;
+
+  &.status-aberto {
+    background: color.adjust($color-warning, $lightness: 35%);
+    color: color.adjust($color-warning, $lightness: -15%);
   }
-  
-  &.status-pendente { 
-    background: #E3F2FD; 
-    color: #1976D2; 
+
+  &.status-pendente {
+    background: color.adjust($color-info, $lightness: 40%);
+    color: $color-info;
   }
-  
-  &.status-concluido { 
-    background: #E8F5E9; 
-    color: #388E3C; 
+
+  &.status-concluido {
+    background: color.adjust($color-success, $lightness: 45%);
+    color: color.adjust($color-success, $lightness: -10%);
   }
-  
-  &.status-default { 
-    background: #F5F5F5; 
-    color: #616161; 
+
+  // AJUSTE: O nome "default" era vago, "cancelado" ou "outro" pode ser melhor.
+  &.status-cancelado {
+    background: #F5F5F5;
+    color: #616161;
   }
 }
 

@@ -1,13 +1,13 @@
 @use "sass:color";
 
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
-$sombra: 0 4px 12px rgba(0, 0, 0, 0.15);
+// Paleta de Cores especificada
+$color-primary: #56C3E0;       // Azul claro vibrante (base para botões, destaques)
+$color-secondary:#0077aa;      // Azul escuro (menu lateral, fontes)
+$color-accent: #6E6E6E;        // Cinza médio (borda, ícones neutros)
+$color-dark: #1B1B1B;          // Quase preto (títulos, textos escuros)
+$color-background: #F9FAFB;    // Cinza quase branco (background geral)
+$color-white: #ffffff;         // Branco puro (cartões e contrastes)
+$color-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); // Sombra sutil
 
 header[role="banner"] {
   position: fixed;
@@ -17,8 +17,9 @@ header[role="banner"] {
   width: 200px;
   height: 100vh;
   z-index: 1000;
-  background: linear-gradient(to bottom, $roxo-escuro, color.adjust($roxo-escuro, $lightness: -8%, $space: hsl));
-  box-shadow: $sombra;
+  // Fundo em gradiente com a cor secundária, como no original
+  background: linear-gradient(to bottom, $color-secondary, color.adjust($color-secondary, $lightness: -8%));
+  box-shadow: $color-shadow;
   transition: width 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
@@ -33,7 +34,7 @@ header[role="banner"] {
       margin: 0 0 2rem 0;
       padding: 0 1.5rem;
       font-size: 1.8rem;
-      color: $branco;
+      color: $color-white; // Título em branco sobre fundo escuro
       font-weight: 600;
       text-align: center;
       letter-spacing: 0.5px;
@@ -47,7 +48,7 @@ header[role="banner"] {
       right: 1.5rem;
       background: transparent;
       border: none;
-      color: $branco;
+      color: $color-white; // Ícone do menu em branco
       font-size: 1.8rem;
       cursor: pointer;
       z-index: 1100;
@@ -67,7 +68,8 @@ header[role="banner"] {
           display: flex;
           align-items: center;
           text-decoration: none;
-          color: rgba($branco, 0.9);
+          // Cor do texto com leve transparência para hierarquia
+          color: rgba($color-white, 0.9);
           padding: 0.9rem 1.5rem;
           transition: all 0.25s ease;
           border-radius: 6px;
@@ -79,7 +81,7 @@ header[role="banner"] {
           text-align: left;
           position: relative;
           overflow: hidden;
-          
+
           i {
             font-size: 1.25rem;
             min-width: 30px;
@@ -99,9 +101,10 @@ header[role="banner"] {
           }
 
           &:hover {
-            background: rgba($roxo-primario, 0.6);
-            color: $branco;
-            
+            // Destaque no hover com a cor primária
+            background: rgba($color-primary, 0.6);
+            color: $color-white; // Texto fica branco sólido no hover
+
             i:not(.fa-chevron-down) {
               transform: scale(1.1);
             }
@@ -112,7 +115,7 @@ header[role="banner"] {
           .fa-chevron-down {
             transform: rotate(0);
           }
-          
+
           &.active .fa-chevron-down {
             transform: rotate(-180deg);
           }
@@ -122,33 +125,29 @@ header[role="banner"] {
           list-style: none;
           padding: 0.5rem 0 0.5rem 0.5rem;
           margin: 0.25rem 0 0.5rem 1rem;
-          background: rgba($roxo-primario, 0.2);
-          border-left: 2px solid $roxo-claro;
+          background: rgba($color-primary, 0.2);
+          border-left: 2px solid $color-accent; // Borda de destaque sutil
           border-radius: 0 8px 8px 0;
           animation: slideDown 0.35s ease-out;
-          
+
           li {
             margin: 0.25rem 0;
-            
+
             a {
               padding: 0.75rem 1.5rem !important;
               font-size: 0.95rem;
-              color: rgba($branco, 0.8);
+              color: rgba($color-white, 0.8);
               border-radius: 4px;
-              
+
               i {
                 font-size: 1rem;
                 min-width: 24px;
               }
 
               &:hover {
-                background: rgba($roxo-claro, 0.15) !important;
-                color: $branco !important;
+                background: rgba($color-primary, 0.15) !important;
+                color: $color-white !important;
                 padding-left: 1.8rem !important;
-                
-                &::before {
-                  opacity: 1;
-                }
               }
             }
           }
@@ -156,12 +155,12 @@ header[role="banner"] {
       }
 
       .logout-btn {
-        background: rgba($roxo-primario, 0.3) !important;
+        background: rgba($color-primary, 0.3) !important;
         margin-top: 1.5rem;
-        border: 1px solid rgba($branco, 0.1) !important;
-        
+        border: 1px solid rgba($color-white, 0.1) !important;
+
         &:hover {
-          background: rgba(color.adjust($roxo-primario, $lightness: -10%, $space: hsl), 0.5) !important;
+          background: rgba(color.adjust($color-primary, $lightness: -10%), 0.5) !important;
         }
       }
     }
@@ -181,37 +180,39 @@ header[role="banner"] {
   }
 }
 
+// Media queries mantêm a lógica de cores consistente
 @media (max-width: 992px) {
   header[role="banner"] {
     width: 70px;
     overflow: hidden;
     transition: width 0.3s ease;
-    
+
     .sidebar {
       > h1 {
         font-size: 0;
+
         &::after {
           content: "S";
           font-size: 1.8rem;
         }
       }
-      
+
       .nav-links {
         li {
           a, button {
             padding: 1rem 0.75rem;
             justify-content: center;
-            
+
             span, .fa-chevron-down {
               display: none;
             }
-            
+
             i:first-child {
               margin-right: 0;
               font-size: 1.4rem;
             }
           }
-          
+
           .submenu {
             position: static;
             left: auto;
@@ -221,7 +222,7 @@ header[role="banner"] {
             margin: 0.5rem 0 0 0;
             border-left: none;
             border-radius: 0;
-            
+
             li a {
               span {
                 display: block;
@@ -232,22 +233,25 @@ header[role="banner"] {
         }
       }
     }
-    
+
     &:hover {
       width: 240px;
-      
+
       .sidebar {
         > h1 {
           font-size: 1.8rem;
-          &::after { content: none; }
+
+          &::after {
+            content: none;
+          }
         }
-        
+
         .nav-links li {
           a, button {
             span, .fa-chevron-down {
               display: block;
             }
-            
+
             i:first-child {
               margin-right: 1rem;
             }
@@ -266,78 +270,82 @@ header[role="banner"] {
     top: auto;
     bottom: auto;
     overflow: visible;
-    
+
     .sidebar {
       flex-direction: row;
       flex-wrap: wrap;
       padding: 0;
-      
+
       > h1 {
         padding: 1.2rem 1.5rem;
         margin: 0;
         font-size: 1.5rem;
-        &::after { content: none; }
+
+        &::after {
+          content: none;
+        }
       }
-      
+
       .menu-toggle {
         display: block;
       }
-      
+
       .nav-links {
         position: fixed;
         top: 70px;
         left: 0;
         right: 0;
         height: calc(100vh - 70px);
-        background: $roxo-escuro;
+        // Fundo do menu mobile correspondente ao tema
+        background: $color-secondary;
         flex-direction: column;
         display: none;
         padding: 1rem 0 2rem;
         overflow-y: auto;
-        
+
         &.open {
           display: flex;
         }
-        
+
         li {
           margin-bottom: 0.2rem;
           padding: 0 1rem;
-          
+
           a, button {
             padding: 1.1rem 1.5rem;
-            
+
             i:first-child {
               margin-right: 1rem;
               font-size: 1.25rem;
             }
-            
+
             span, .fa-chevron-down {
               display: block;
             }
           }
-          
+
           .submenu {
             position: static;
             width: 100%;
             margin: 0.5rem 0 0 0;
             padding-left: 1rem;
             animation: none;
-            
+
             li a {
               padding: 0.9rem 1rem !important;
             }
           }
         }
-        
+
         .logout-btn {
           margin-top: 1rem;
         }
       }
     }
-    
+
     &:hover {
       width: 100%;
-      
+
       .sidebar > h1 {
         font-size: 1.5rem;
       }

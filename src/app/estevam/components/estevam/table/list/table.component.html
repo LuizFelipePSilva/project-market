@@ -109,7 +109,10 @@
       </ul>
     </div>
 
-    <div class="total-section">
+    <div
+      class="total-section"
+      *ngIf="{ userRole: navbar.userRole$ | async } as state"
+    >
       <div class="total-item">
         <span class="total-label">Valor Total:</span>
         <span class="total-value">
@@ -121,7 +124,10 @@
           Transferir Pedidos
         </button>
         <button
-          *ngIf="selectedTableDetails.order.StatusDoPedido === 'Pronto'"
+          *ngIf="
+            selectedTableDetails.order.StatusDoPedido === 'Pronto' &&
+            ['super', 'admin', 'clerk'].includes(state.userRole!)
+          "
           (click)="navigateToCashier()"
           class="payment-btn"
         >
@@ -164,7 +170,10 @@
 
     <div class="status-actions">
       <button
-        *ngIf="['Aberto', 'Reservado'].includes(detailsOfTable.status)"
+        *ngIf="
+          ['Aberto', 'Reservado'].includes(detailsOfTable.status) &&
+          ['super', 'admin'].includes(state.userRole!)
+        "
         (click)="InutilzarMesa(detailsOfTable.id!)"
         class="status-btn inutilizar"
       >
@@ -172,7 +181,10 @@
       </button>
 
       <button
-        *ngIf="detailsOfTable.status === 'Aberto'"
+        *ngIf="
+          detailsOfTable.status === 'Aberto' &&
+          ['super', 'admin', 'clerk'].includes(state.userRole!)
+        "
         (click)="OpenReserved()"
         class="status-btn reservar"
       >
@@ -180,7 +192,10 @@
       </button>
 
       <button
-        *ngIf="['Reservado', 'Inutilizavel'].includes(detailsOfTable.status)"
+        *ngIf="
+          ['Reservado', 'Inutilizavel'].includes(detailsOfTable.status) &&
+          ['super', 'admin'].includes(state.userRole!)
+        "
         (click)="AbrirMesa(detailsOfTable.id!)"
         class="status-btn abrir"
       >
@@ -190,7 +205,7 @@
         *ngIf="
           ['Aberto', 'Reservado', 'Inutilizavel'].includes(
             detailsOfTable.status
-          ) && state.userRole == 'admin'
+          ) && ['super', 'admin'].includes(state.userRole!)
         "
         (click)="deleteTable(detailsOfTable.id!)"
         class="status-btn remover"

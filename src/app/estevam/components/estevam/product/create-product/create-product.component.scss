@@ -1,24 +1,29 @@
 @use "sass:color";
 
-/* LOGIN-COMPONENT */
-$primary: #2ecc71;
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
+/* Color Palette */
+$color-primary: #53B5DB;       // Vibrant blue for interactions and highlights
+$color-secondary: #154A60;     // Professional dark blue for titles and dark backgrounds
+$color-dark: #0077aa;          // Teal (used as a support and hover color)
+$color-white: #FFFFFF;         // White
+$color-background: #F8F9FA;    // General background
+$color-success: #4CAF50;       // Green for "open" status
+$color-warning: #FFB300;       // Yellow/Orange for "reserved" status
+$color-error: #D32F2F;         // Red for "ordered" or "remove" status
+$color-disabled: #9E9E9E;      // Gray for "unusable" status
+$color-border: #EAEAEA;        // Border color
+$color-text-light: #6c757d;    // Gray for secondary text
+$color-black: #000000;         // Black for shadows
+
 .product-container {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
-  background: $branco;
+  background: $color-white;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba($color-black, 0.1);
 
   h2 {
-    color: $roxo-escuro;
+    color: $color-secondary;
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -29,7 +34,7 @@ $preto: #000000;
     label {
       display: block;
       margin-bottom: 0.5rem;
-      color: $roxo-escuro;
+      color: $color-secondary;
       font-weight: 500;
     }
   
@@ -38,14 +43,14 @@ $preto: #000000;
     select {
       width: 100%;
       padding: 0.8rem;
-      border: 1px solid $cinza-claro;
+      border: 1px solid $color-border;
       border-radius: 4px;
       transition: border-color 0.3s ease;
   
       &:focus {
-        border-color: $roxo-primario;
+        border-color: $color-primary;
         outline: none;
-        box-shadow: 0 0 0 2px rgba($roxo-primario, 0.1);
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
       }
     }
   
@@ -55,21 +60,21 @@ $preto: #000000;
   
       input[type='file'] {
         padding: 0.5rem;
-        background: $branco;
-        border: 1px dashed $roxo-primario;
+        background: $color-white;
+        border: 1px dashed $color-primary;
         cursor: pointer;
   
         &::file-selector-button {
           padding: 0.5rem 1rem;
-          background: $roxo-claro;
+          background: rgba($color-primary, 0.2);
           border: none;
           border-radius: 4px;
-          color: $roxo-escuro;
+          color: $color-secondary;
           cursor: pointer;
           transition: background 0.3s ease;
   
           &:hover {
-            background: color.adjust($roxo-claro, $lightness: -5%, $space: hsl);
+            background: rgba($color-primary, 0.3);
           }
         }
       }
@@ -83,13 +88,13 @@ $preto: #000000;
         max-width: 200px;
         max-height: 200px;
         border-radius: 4px;
-        border: 1px solid $cinza-claro;
+        border: 1px solid $color-border;
         object-fit: cover;
       }
     }
   
     span {
-      color: #dc3545;
+      color: $color-error;
       font-size: 0.875rem;
       margin-top: 0.25rem;
       display: block;
@@ -100,8 +105,8 @@ $preto: #000000;
   button {
     width: 100%;
     padding: 1rem;
-    background: $roxo-primario;
-    color: $branco;
+    background: $color-primary;
+    color: $color-white;
     border: none;
     border-radius: 4px;
     font-weight: 500;
@@ -109,16 +114,17 @@ $preto: #000000;
     transition: background 0.3s ease, transform 0.2s ease;
 
     &:hover:not(:disabled) {
-      background: color.adjust($roxo-primario, $lightness: -5%, $space: hsl);
+      background: $color-dark;
       transform: translateY(-1px);
     }
 
     &:disabled {
-      background: $cinza-claro;
+      background: $color-disabled;
       cursor: not-allowed;
     }
   }
 }
+
 .success-popup {
   position: fixed;
   top: -100px;
@@ -135,12 +141,12 @@ $preto: #000000;
   }
 
   .success-content {
-    background: $primary;
-    color: white;
+    background: $color-success;
+    color: $color-white;
     padding: 1rem 2rem;
     border-radius: 30px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba($color-black, 0.2);
     font-weight: 500;
   }
 }

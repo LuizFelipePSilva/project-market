@@ -1,0 +1,66 @@
+<div *ngIf="data" class="modal-overlay">
+  <div class="modal-content">
+    <button class="btn-close" (click)="closeModal()">×</button>
+
+    <h2>Editar Pedido #{{ data.id }}</h2>
+    <p>
+      Cliente: {{ data.cliente.nome }} | Status: {{ data.status }}| Total: R$
+      {{ data.valorTotal | number : "1.2-2" }}
+    </p>
+    <p>Selecione os que deseja retirar</p>
+    <div class="product-item" *ngFor="let produto of selectableProducts">
+      <div class="product-header">
+        <label>
+          <input type="checkbox" [(ngModel)]="produto._selected" />
+          <strong>{{ produto.nome }}</strong> - R$
+          {{ produto.valorUnitario | number : "1.2-2" }}
+        </label>
+      </div>
+      <div class="adicionais-container" *ngIf="produto.adicionais.length > 0">
+        <div
+          class="additional-item"
+          *ngFor="let adicional of produto.adicionais"
+        >
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="adicional._selected"
+              [disabled]="produto._selected"
+            />
+            + {{ adicional.nome }} (R$ {{ adicional.valor | number : "1.2-2" }})
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="btn-save"
+      (click)="sendEditOrder()"
+      [disabled]="!hasSelectedItems()"
+    >
+      Retirar itens
+    </button>
+    <button class="btn-add-product" (click)="openAddItemsModal()">
+      Adicionar Itens
+    </button>
+  </div>
+</div>
+
+<app-error-popup
+  *ngIf="errorMessage"
+  [errorMessage]="errorMessage"
+  (close)="closeErrorPopup()"
+></app-error-popup>
+
+<app-add-items-modal
+  *ngIf="showAddItemsModal"
+  [tenantId]="tenantId"
+  [orderId]="orderId"
+  (itemsAdded)="handleItemsAdded()"
+  (closed)="handleAddItemsModalClosed()"
+></app-add-items-modal>
+
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>Atualizando pedido...</p>
+</div>

@@ -1,31 +1,43 @@
-// Variáveis de tema
 @use "sass:map";
+
+// --- SUA PALETA (AZUL E NEUTROS) ---
+$color-primary: #53B5DB;
+$color-secondary: #154A60;
+$color-dark: #0077aa;
+$color-success: #4CAF50;
+$color-error: #D32F2F;
+$color-background: #F8F9FA;
+$color-white: #FFFFFF;
+$color-border: #EAEAEA;
+$color-text-light: #6c757d;
+
+// AJUSTE: O mapa de temas agora usa as variáveis da sua paleta.
 $themes: (
   light: (
-    primary:  #6a0572,
-    secondary:  #9c27b0,
-    background: #f8f9fa,
-    text: #212121,
-    border: #dee2e6,
-    error: #dc3545,
-    hover: #e9ecef
+    primary: $color-primary,
+    secondary: $color-dark,
+    background: $color-white,
+    text: $color-secondary,
+    border: $color-border,
+    error: $color-error,
+    hover: $color-background
   ),
   dark: (
-    primary: #2196f3,
-    secondary: #ba68c8,
-    background: #121212,
-    text: #e0e0e0,
-    border: #424242,
-    error: #ff5252,
+    primary: $color-primary,
+    secondary: $color-dark,
+    background: #1A1D21, // Um cinza escuro para o fundo
+    text: #E0E0E0,       // Texto claro
+    border: #424242,     // Borda sutil no tema escuro
+    error: #ff5252,      // Um vermelho mais brilhante para contraste
     hover: #2d2d2d
   )
 );
 
-// Mixins
+// Mixins (mantidos como estavam)
 @mixin theme($property, $key) {
   @each $theme, $colors in $themes {
     .theme-#{$theme} & {
-      #{$property}: map.get($colors, $key)
+      #{$property}: map.get($colors, $key);
     }
   }
 }
@@ -39,7 +51,7 @@ $themes: (
   margin: 2rem auto;
   padding: 2rem;
   border-radius: 8px;
-  @include theme('background', background);
+  @include theme('background-color', background);
   @include theme('border-color', border);
   border: 1px solid;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -81,25 +93,19 @@ $themes: (
         border-width: 2px;
         @include theme('border-color', primary);
       }
-
+      
+      // MELHORIA: Usando o mixin para simplificar
       &[aria-invalid="true"] {
-        border-color: map.get(map.get($themes, light), error);
-        
-        .theme-dark & {
-          border-color: map.get(map.get($themes, dark), error);
-        }
+        @include theme('border-color', error);
       }
     }
 
     span {
-      color: map.get(map.get($themes, light), "primary");
+      // MELHORIA: Mensagem de erro deve ter cor de erro em ambos os temas
+      @include theme('color', error);
       font-size: 0.875rem;
       height: 1.25rem;
       display: block;
-
-      .theme-dark & {
-        color: map.get(map.get($themes, dark), error);
-      }
     }
   }
 
@@ -125,34 +131,27 @@ $themes: (
     border-radius: 4px;
     cursor: pointer;
     @include theme('background-color', primary);
-    @include theme('color', background);
+    @include theme('color', white); // Texto do botão deve ser branco
     @include transition;
 
-    &:hover {
+    &:hover:not(:disabled) { // Adicionado :not(:disabled)
       opacity: 0.9;
     }
 
+    // MELHORIA: Usando o mixin para simplificar
     &:disabled {
-      background-color: map.get(map.get($themes, light), border);
+      @include theme('background-color', border);
       cursor: not-allowed;
-
-      .theme-dark & {
-        background-color: map.get(map.get($themes, dark), border);
-      }
     }
   }
 
   .error {
-    color: map.get(map.get($themes, light), error);
     text-align: center;
     margin-top: 1rem;
     padding: 0.5rem;
     border-radius: 4px;
+    @include theme('color', error);
     @include theme('background-color', hover);
-
-    .theme-dark & { 
-      color: map.get(map.get($themes, dark), error);
-    }
   }
 }
 

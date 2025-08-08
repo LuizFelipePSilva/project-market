@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar #navbar></app-navbar>
 <app-error-popup
   *ngIf="errorMessage"
   [errorMessage]="errorMessage"
@@ -48,7 +48,10 @@
   }}
 </h2>
 
-<div class="cards-container">
+<div
+  class="cards-container"
+  *ngIf="{ userRole: navbar.userRole$ | async } as state"
+>
   <div
     class="order-card"
     [ngClass]="{
@@ -59,6 +62,13 @@
     (click)="openOrderDetails(order.id!)"
   >
     <div class="card-content">
+      <button
+        *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)"
+        (click)="onEditOrderClick(order.id!, $event)"
+      >
+        <i class="fas fa-edit"></i>
+      </button>
+
       <h3>Pedido #{{ order.id }}</h3>
       <p>Cliente: {{ order.nameClient }}</p>
       <p>Status: {{ order.status }}</p>
@@ -136,7 +146,6 @@
         <span>{{ item.nome }}</span>
         <span>R$ {{ (item.valorUnitario | number : "1.2-2") || "0,00" }}</span>
 
-        <!-- Fixed adicionais loop -->
         <div *ngIf="item.adicionais && item.adicionais.length">
           <div *ngFor="let additional of item.adicionais">
             Adicional: {{ additional.nome }} (+R$
@@ -189,3 +198,8 @@
     </div>
   </div>
 </div>
+<app-edit-order
+  *ngIf="selectedOrderId"
+  [orderId]="selectedOrderId"
+  (closed)="selectedOrderId = null"
+></app-edit-order>

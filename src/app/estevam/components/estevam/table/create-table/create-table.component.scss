@@ -1,23 +1,24 @@
-/* LOGIN-COMPONENT */
-$roxo-primario: #6a0572;
-$roxo-secundario: #9c27b0;
-$roxo-claro: #d6a2e8;
-$roxo-escuro: #4a0250;
-$cinza-claro: #e0e0e0;
-$branco: #ffffff;
-$preto: #000000;
+@use "sass:color";
+
+// --- SUA PALETA (AZUL E NEUTROS) ---
+$color-primary: #53B5DB;
+$color-secondary: #154A60;
+$color-dark: #0077aa;
+$color-error: #D32F2F;
+$color-white: #FFFFFF;
+$color-border: #EAEAEA;
 
 .table-container {
   width: 320px;
   margin: 3rem auto;
   padding: 25px;
   border-radius: 8px;
-  background-color: $branco;
-  box-shadow: 0 4px 12px rgba($preto, 0.1);
+  background-color: $color-white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 6px 16px rgba($preto, 0.15);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   }
 
   .container-form {
@@ -28,21 +29,21 @@ $preto: #000000;
 h2 {
   text-align: center;
   margin-bottom: 1rem;
-  color: $roxo-escuro;
+  color: $color-secondary; // AJUSTE
 }
 
 input {
   width: 100%;
   padding: 10px;
   margin-top: 8px;
-  border: 1px solid $cinza-claro;
+  border: 1px solid $color-border; // AJUSTE
   border-radius: 4px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:focus {
-    border-color: $roxo-primario;
+    border-color: $color-primary; // AJUSTE
     outline: none;
-    box-shadow: 0 0 4px rgba($roxo-primario, 0.3);
+    box-shadow: 0 0 4px rgba($color-primary, 0.3); // AJUSTE
   }
 }
 
@@ -50,35 +51,37 @@ button {
   width: 100%;
   padding: 12px;
   margin-top: 15px;
-  background-color: $roxo-primario;
-  color: $branco;
+  background-color: $color-primary; // AJUSTE
+  color: $color-white;
   border: none;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover:not(:disabled) {
-    background-color: $roxo-secundario;
+    background-color: $color-dark; // AJUSTE
     transform: translateY(-2px);
   }
 }
 
 button:disabled {
-  background-color: $cinza-claro;
+  background-color: $color-border; // AJUSTE
+  color: color.adjust($color-border, $lightness: -30%);
   cursor: not-allowed;
 }
 
 .error {
-  color: #ff0000; 
+  color: $color-error; // AJUSTE
   padding: 8px;
   margin-top: 10px;
   border-radius: 4px;
-  background-color: #ffeeee; 
-  border: 1px solid #ffcccc;
+  background-color: rgba($color-error, 0.1); // AJUSTE
+  border: 1px solid rgba($color-error, 0.3); // AJUSTE
+  text-align: center;
 }
 
 @media (max-width: 768px) {
-  .login-container {
+  .table-container {
     width: 90%;
     padding: 20px;
   }

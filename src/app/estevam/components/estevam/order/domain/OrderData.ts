@@ -9,6 +9,21 @@ export interface OrderData {
   numberTable: number | null;
 }
 
+export interface OrderAdditional {
+  id: string | undefined;
+  nome: string;
+  valor: number;
+  orderAdditionalId: string;
+}
+
+export interface OrderProduct {
+  id: string | undefined;
+  nome: string;
+  valorUnitario: number;
+  orderId: string;
+  adicionais: OrderAdditional[] | null;
+}
+
 export interface IOrderResponse {
   id: number;
   cliente: {
@@ -20,15 +35,6 @@ export interface IOrderResponse {
   observacoes: string | null;
   dataPedido: Date;
   valorTotal: number;
-  produtos: Array<{
-    id: string | undefined; // Ou `string`
-    nome: string;
-    valorUnitario: number;
-    adicionais: Array<{
-      id: string | undefined; // Ou `string`
-      nome: string;
-      valor: number;
-    }> | null;
-  }>;
+  produtos: OrderProduct[];
   mesa: number | null;
 }

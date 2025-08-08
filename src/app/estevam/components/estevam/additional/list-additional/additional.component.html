@@ -73,6 +73,13 @@
     </button>
     <div *ngIf="showList" class="list-aditionals">
       <h2>Adicionais</h2>
+      <button
+        type="button"
+        class="btn transfer-btn"
+        (click)="openSwitchPopupByCategory(selectedCategoryId)"
+      >
+        Transferir Adicionais da Categoria
+      </button>
       <table>
         <thead>
           <th>Nome</th>
@@ -82,11 +89,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let additional of listAdditional">
-            <td>{{ additional.name }}</td>
-            <td>{{ additional.value }} R$</td>
-            <td>{{ additional.maxAdd }}</td>
+            <td data-label="Nome">{{ additional.name }}</td>
+            <td data-label="Valor">{{ additional.value }} R$</td>
+            <td data-label="Maximo por Pedido">{{ additional.maxAdd }}</td>
             <td
-              *ngIf="['super', 'admin'].includes(state.userRole!)"
+              *ngIf="['super', 'admin', 'clerk'].includes(state.userRole!)"
               data-label="Ações"
             >
               <div class="action-buttons">
@@ -161,6 +168,60 @@
           (click)="update(editId!, editName, editValue, editMaxAdd)"
         >
           Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="showSwitchPopup"
+  class="popup-delete-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="deleteTitle"
+>
+  <div class="popup-transfer">
+    <button class="close-btn" (click)="closeSwitchPopup()" aria-label="Fechar">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 1L1 13M1 1L13 13"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <div class="switch-form">
+      <h2 id="switchTitle">Transferir Adicionais de Categoria</h2>
+      <a>
+        Observação: Transfere todos adicionais de uma categoria para outra
+      </a>
+      <label>Categoria de Origem</label>
+      <input type="text" [(ngModel)]="categoryNameFrom" />
+
+      <label>Categoria que deseja enviar</label>
+      <select required [(ngModel)]="selectedCategoryIdToSwitch" name="category">
+        <option *ngFor="let category of categoryGroup" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div class="button-group">
+        <button type="button" class="btn cancel-btn">Cancelar</button>
+        <button
+          (click)="
+            switchAdditionals(categoryIdFrom, selectedCategoryIdToSwitch)
+          "
+          type="button"
+          class="btn transfer-btn"
+        >
+          Trocar
         </button>
       </div>
     </div>
